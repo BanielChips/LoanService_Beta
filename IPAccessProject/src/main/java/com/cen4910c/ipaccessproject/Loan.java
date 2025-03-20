@@ -31,21 +31,21 @@ public class Loan {
     @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
 
-    public int loanID() {
+    public int getLoanID() {
         return loanID;
     }
     public void setLoanID(int loanID) {
         this.loanID = loanID;
     }
 
-    public int userID() {
+    public int getUserID() {
         return userID;
     }
     public void setUserID(int userID) {
         this.userID = userID;
     }
 
-    public int deviceID() {
+    public int getDeviceID() {
         return deviceID;
     }
     public void setDeviceID(int deviceID) {
@@ -100,9 +100,9 @@ public class Loan {
     @Override
     public String toString() {
         return "LoanInformation [" +
-                "loanID=" + loanID +
+                "getLoanID=" + loanID +
                 ", userID=" + userID +
-                ", deviceID=" + deviceID +
+                ", getDeviceID=" + deviceID +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", loanStatus=" + loanStatus +

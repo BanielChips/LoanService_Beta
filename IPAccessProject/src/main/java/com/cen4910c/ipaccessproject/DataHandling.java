@@ -1,12 +1,12 @@
 package com.cen4910c.ipaccessproject;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -190,6 +190,10 @@ public class DataHandling {
     @Transactional
     public Loan addLoan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, String loanStatus){
         Loan loan = new Loan(userID, deviceID, startDate, endDate, loanStatus);
+        Device device = getDeviceByID(deviceID);
+        device.setAvailability(false);
+        device.setRenterID(userID);
+        entityManager.persist(device);
         entityManager.persist(loan);
 
         System.out.println("Loan created successfully: " + loan);
@@ -198,16 +202,23 @@ public class DataHandling {
 
     @Transactional
     public void deleteLoanByID(int ID){
-        String executeString = "DELETE FROM Loan l WHERE l.loanID = :ID";
-        Query query = entityManager.createQuery(executeString);
-        query.setParameter("ID", ID);
-        int rowsAffected = query.executeUpdate();
+        Loan loan = getLoanByID(ID);
+        entityManager.remove(loan);
+        Device device = getDeviceByID(loan.getDeviceID());
+        device.setAvailability(true);
+        device.setRenterID(null);
+        entityManager.persist(device);
 
-        if (rowsAffected > 0) {
+        //String executeString = "DELETE FROM Loan l WHERE l.getLoanID = :ID";
+        //Query query = entityManager.createQuery(executeString);
+        //query.setParameter("ID", ID);
+        //int rowsAffected = query.executeUpdate();
+
+        /*if (rowsAffected > 0) {
             System.out.println("Rows affected: " + rowsAffected);
         } else {
             System.out.println("No rows affected");
-        }
+        }*/
     }
 
     @Transactional
@@ -331,8 +342,8 @@ public class DataHandling {
     }
 
     @Transactional
-    public Device addDevice(String deviceName, boolean availability, int renterID){
-        Device device = new Device(deviceName, availability, renterID);
+    public Device addDevice(String deviceName, boolean availability){
+        Device device = new Device(deviceName, availability);
         entityManager.persist(device);
 
         System.out.println("Device added successfully: " + device);

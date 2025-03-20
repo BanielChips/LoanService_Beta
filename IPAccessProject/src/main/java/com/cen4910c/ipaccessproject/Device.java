@@ -24,6 +24,19 @@ public class Device {
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
+    public Device(){}
+
+    public Device(String deviceName, boolean availability) {
+        setDeviceName(deviceName);
+        setAvailability(availability);
+    }
+
+    public Device(String deviceName, boolean availability, int renterID) {
+        setDeviceName(deviceName);
+        setAvailability(availability);
+        setRenterID(renterID);
+    }
+
     public int getDeviceID() {
         return deviceID;
     }
@@ -59,17 +72,10 @@ public class Device {
         this.createdAt = created_at;
     }
 
-    public Device(){}
-    public Device(String deviceName, boolean availability, int renterID) {
-        this.deviceName = deviceName;
-        this.availability = availability;
-        this.renterID = renterID;
-    }
-
     @Override
     public String toString() {
         return "Device [" +
-                "deviceID: " + deviceID +
+                "getDeviceID: " + deviceID +
                 ", deviceName: " + deviceName +
                 ", available: " + availability +
                 ", renterID: " + renterID +

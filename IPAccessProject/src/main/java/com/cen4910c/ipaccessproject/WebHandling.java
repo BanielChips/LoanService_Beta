@@ -40,14 +40,20 @@ public class WebHandling {
     @GetMapping("/IPaccess/getUserByID")
     public String getUserByID(@RequestParam int userID, RedirectAttributes redirectAttributes) {
         User user = dataHandling.getUserByID(userID);
-        redirectAttributes.addFlashAttribute("message", user.toString());
+        if (user != null)
+            redirectAttributes.addFlashAttribute("message", user.toString());
+        else
+            redirectAttributes.addFlashAttribute("message", "User not found!");
         return "redirect:/";
     }
 
     @GetMapping("/IPaccess/getUserByName")
     public String getUserByName(@RequestParam String firstName, @RequestParam String lastName, RedirectAttributes redirectAttributes) {
         User user = dataHandling.getUserByName(firstName, lastName);
-        redirectAttributes.addFlashAttribute("message", user.toString());
+        if (user != null)
+            redirectAttributes.addFlashAttribute("message", user.toString());
+        else
+            redirectAttributes.addFlashAttribute("message", "User not found!");
         return "redirect:/";
     }
 
@@ -92,8 +98,8 @@ public class WebHandling {
     }
 
     @PostMapping("/IPaccess/addDevice")
-    public String addDevice(@RequestParam String deviceName, @RequestParam boolean availability, @RequestParam int renterID, RedirectAttributes redirectAttributes) {
-        Device device = dataHandling.addDevice(deviceName, availability, renterID);
+    public String addDevice(@RequestParam String deviceName, @RequestParam boolean availability, @RequestParam Integer renterID, RedirectAttributes redirectAttributes) {
+        Device device = dataHandling.addDevice(deviceName, availability);
         redirectAttributes.addFlashAttribute("message", "Device added successfully. Device: " + device.toString());
         return "redirect:/";
     }
@@ -101,7 +107,10 @@ public class WebHandling {
     @GetMapping("/IPaccess/getDeviceByID")
     public String getDeviceByID(@RequestParam int deviceID, RedirectAttributes redirectAttributes) {
         Device device = dataHandling.getDeviceByID(deviceID);
-        redirectAttributes.addFlashAttribute("message", device.toString());
+        if(device != null)
+            redirectAttributes.addFlashAttribute("message", device.toString());
+        else
+            redirectAttributes.addFlashAttribute("message", "Device not found!");
         return "redirect:/";
     }
 
@@ -129,7 +138,10 @@ public class WebHandling {
     @GetMapping("/IPaccess/getLoanByID")
     public String getLoanByID(@RequestParam int loanID, RedirectAttributes redirectAttributes) {
         Loan loan = dataHandling.getLoanByID(loanID);
-        redirectAttributes.addFlashAttribute("message", loan.toString());
+        if(loan != null)
+            redirectAttributes.addFlashAttribute("message", loan.toString());
+        else
+            redirectAttributes.addFlashAttribute("message", "Loan not found!");
 
         return "redirect:/";
     }
