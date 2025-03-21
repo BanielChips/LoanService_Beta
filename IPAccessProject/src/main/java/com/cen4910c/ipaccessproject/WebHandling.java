@@ -1,13 +1,11 @@
 package com.cen4910c.ipaccessproject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Controller
 public class WebHandling {
@@ -153,5 +151,9 @@ public class WebHandling {
 
         return "redirect:/";
     }
+    /*@GetMapping("/devices")
+    public String devicesHtml() {
+        return "devices";
+    }*/
 
 }
