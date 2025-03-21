@@ -33,16 +33,9 @@ public class DataHandling {
      * Methods for managing User data: getting, adding, deleting users.
      */
     public User getUserByID(int ID) {
-        String executeString = "SELECT u FROM User u WHERE u.userID = :ID";
-        Query query = entityManager.createQuery(executeString);
-        query.setParameter("ID", ID);
-        List<User> queryUser = query.getResultList();
-
-        if (queryUser.isEmpty()) {
-            System.out.println("User not found, ID: " + ID);
-            return null;
-        }
-        return queryUser.getFirst();
+        User user = entityManager.find(User.class, ID);
+        System.out.println("User: " + user);
+        return user;
     }
 
     public User getUserByEmail(String email) {
@@ -86,20 +79,16 @@ public class DataHandling {
     @Transactional
     public void deleteUserByID(int ID) {
         System.out.println("Deleting User with ID: " + ID);
+        User user = getUserByID(ID);
 
         // This is here to affect the foreign key constraint
         deleteLoanByUserID(ID);
 
-        String executeString = "DELETE FROM User u WHERE u.userID = :userID";
-        Query query = entityManager.createQuery(executeString);
-        query.setParameter("userID", ID);
-        int rowsAffected = query.executeUpdate();
-
-        if (rowsAffected > 0) {
-            System.out.println("Rows affected: " + rowsAffected);
-        } else {
-            System.out.println("No rows affected");
-        }
+        if (user != null) {
+            entityManager.remove(user);
+            System.out.println("User deleted successfully: " + user);
+        } else
+            System.out.println("User not found");
     }
 
     @Transactional
@@ -127,15 +116,9 @@ public class DataHandling {
      * Does not include deleteLoanByUserID as a User can have multiple loans.
      */
     public Loan getLoanByID(int ID) {
-        String executeString = "SELECT l FROM Loan l WHERE l.loanID = :ID";
-        Query query = entityManager.createQuery(executeString);
-        query.setParameter("ID", ID);
-        List<Loan> queryLoan = query.getResultList();
-
-        if (queryLoan.isEmpty()) {
-            return null;
-        }
-        return queryLoan.getFirst();
+        Loan loan = entityManager.find(Loan.class, ID);
+        System.out.println("Loan: " + loan);
+        return loan;
     }
 
     public Loan getLoanByDeviceID(int ID) {
@@ -222,22 +205,17 @@ public class DataHandling {
         device.setAvailability(true);
         device.setRenterID(null);
         entityManager.persist(device);
-
-        //String executeString = "DELETE FROM Loan l WHERE l.getLoanID = :ID";
-        //Query query = entityManager.createQuery(executeString);
-        //query.setParameter("ID", ID);
-        //int rowsAffected = query.executeUpdate();
-
-        /*if (rowsAffected > 0) {
-            System.out.println("Rows affected: " + rowsAffected);
-        } else {
-            System.out.println("No rows affected");
-        }*/
     }
 
     @Transactional
     public void deleteLoanByUserID(int ID) {
-        System.out.println("Deleting User with ID: " + ID);
+        Loan loan = getLoanByID(ID);
+        if (loan != null) {
+            entityManager.remove(loan);
+            System.out.println("Loan deleted successfully: " + loan);
+        } else
+            System.out.println("Loan not found");
+        /*System.out.println("Deleting User with ID: " + ID);
 
         String executeString = "DELETE FROM Loan l WHERE l.userID = :ID";
         Query query = entityManager.createQuery(executeString);
@@ -248,7 +226,7 @@ public class DataHandling {
             System.out.println("Rows affected: " + rowsAffected);
         } else {
             System.out.println("No rows affected");
-        }
+        }*/
     }
 
     @Transactional
@@ -270,7 +248,10 @@ public class DataHandling {
      * Methods for managing Device data: getting, adding, deleting devices.
      */
     public Device getDeviceByID(int ID) {
-        String executeString = "SELECT d FROM Device d WHERE d.deviceID = :ID";
+        Device device = entityManager.find(Device.class, ID);
+        System.out.println("Device: " + device);
+        return device;
+        /*String executeString = "SELECT d FROM Device d WHERE d.deviceID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
         List<Device> queryDevice = query.getResultList();
@@ -281,7 +262,7 @@ public class DataHandling {
         } else {
             System.out.println("Device found for ID: " + ID);
             return queryDevice.getFirst();
-        }
+        }*/
     }
 
     public Device getDeviceByUserID(int ID) {
@@ -366,7 +347,13 @@ public class DataHandling {
 
     @Transactional
     public void removeDeviceByID(int ID) {
-        String executeString = "DELETE FROM Device d WHERE d.deviceID = :ID";
+        Device device = getDeviceByID(ID);
+        if (device != null) {
+            entityManager.remove(device);
+            System.out.println("Device removed successfully: " + device);
+        } else
+            System.out.println("Device not found");
+        /*String executeString = "DELETE FROM Device d WHERE d.deviceID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
         int rowsAffected = query.executeUpdate();
@@ -375,7 +362,7 @@ public class DataHandling {
             System.out.println("Rows affected: " + rowsAffected);
         } else {
             System.out.println("No rows affected");
-        }
+        }*/
     }
 }
 
