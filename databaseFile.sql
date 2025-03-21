@@ -57,14 +57,13 @@ CREATE TABLE `loaninformation` (
   `deviceId` int NOT NULL,
   `startDate` date NOT NULL,
   `endDate` date DEFAULT NULL,
-  `loanStatus` varchar(20) NOT NULL DEFAULT 'on time',
+  `loanStatus` enum('active', 'overdue', 'reserved', 'review') not null,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`loanID`),
   KEY `fk_loan_user` (`userID`),
   KEY `fk_loan_device` (`deviceId`),
   CONSTRAINT `fk_loan_device` FOREIGN KEY (`deviceId`) REFERENCES `devices` (`deviceID`),
-  CONSTRAINT `fk_loan_user` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`),
-  CONSTRAINT `loaninformation_chk_1` CHECK ((`loanStatus` in (_utf8mb4'on time',_utf8mb4'past due')))
+  CONSTRAINT `fk_loan_user` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -91,6 +90,7 @@ CREATE TABLE `users` (
   `zipCode` varchar(10) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
     `password` varchar(30) NOT NULL,
+  `role` ENUM('user','admin') not null,
   `phoneNumber` varchar(20) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`userID`),
@@ -104,7 +104,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,'John','Doe','12345','john.doe@email.com','555-1234','2025-03-16 18:06:19'),(5,'Jane','Smith','67890','jane.smith@email.com','555-5678','2025-03-16 18:06:19'),(7,'Bob','Williams','11223','bob.williams@email.com','555-2468','2025-03-16 18:06:19'),(9,'bobby','person','11223','bobbyp@email.com','1112223333','2025-03-16 23:41:06'),(11,'donald','duck','11223','donaldD@email.com','1112223333','2025-03-17 00:25:00'),(13,'daffy','duck',NULL,'daffyD@email.com','2223334444','2025-03-17 00:36:14'),(15,'will','weaton',NULL,'will@email.com','2223334444','2025-03-17 00:42:37'),(16,'alan','david','22334','alanD@email.com','1112224444','2025-03-17 00:44:30'),(17,'miller','lee','33445','miller@email.com','3334446666','2025-03-17 00:49:54'),(18,'cat','fish','11223','catfish@email.com','3334445555','2025-03-17 02:06:38');
+/*INSERT INTO `users` VALUES (4,'John','Doe','12345','john.doe@email.com','password', 'user','6666666666','2025-03-16 18:06:19'),(5,'Jane','Smith','67890','jane.smith@email.com','555-5678','2025-03-16 18:06:19'),(7,'Bob','Williams','11223','bob.williams@email.com','555-2468','2025-03-16 18:06:19'),(9,'bobby','person','11223','bobbyp@email.com','1112223333','2025-03-16 23:41:06'),(11,'donald','duck','11223','donaldD@email.com','1112223333','2025-03-17 00:25:00'),(13,'daffy','duck',NULL,'daffyD@email.com','2223334444','2025-03-17 00:36:14'),(15,'will','weaton',NULL,'will@email.com','2223334444','2025-03-17 00:42:37'),(16,'alan','david','22334','alanD@email.com','1112224444','2025-03-17 00:44:30'),(17,'miller','lee','33445','miller@email.com','3334446666','2025-03-17 00:49:54'),(18,'cat','fish','11223','catfish@email.com','3334445555','2025-03-17 02:06:38');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

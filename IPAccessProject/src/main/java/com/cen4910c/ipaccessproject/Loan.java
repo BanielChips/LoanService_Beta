@@ -25,8 +25,11 @@ public class Loan {
     @Column(name = "endDate")
     private LocalDate endDate;
 
-    @Column(name = "loanStatus")
-    private String loanStatus;
+    public enum LoanStatus {
+        ACTIVE, OVERDUE, RESERVED, REVIEW
+    }
+    @Enumerated(EnumType.STRING)
+    private LoanStatus loanStatus;
 
     @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
@@ -67,10 +70,13 @@ public class Loan {
     }
 
     public String getLoanStatus() {
-        return loanStatus;
+        return loanStatus.toString();
     }
-    public void setLoanStatus(String loanStatus) {
+    public void setLoanStatus(LoanStatus loanStatus) {
         this.loanStatus = loanStatus;
+    }
+    public void setLoanStatus(String status) {
+        this.loanStatus = LoanStatus.valueOf(status.toUpperCase());
     }
 
     public Timestamp getCreatedAt() {
@@ -86,7 +92,7 @@ public class Loan {
         this.deviceID = deviceID;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.loanStatus = loanStatus;
+        setLoanStatus(loanStatus);
     }
 
     // I noticed the database was not automatically assigning a created_at date because JPA was overriding it
@@ -105,7 +111,7 @@ public class Loan {
                 ", getDeviceID=" + deviceID +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", loanStatus=" + loanStatus +
+                ", LoanStatus=" + loanStatus +
                 ", created: " + createdAt +
                 "]";
     }

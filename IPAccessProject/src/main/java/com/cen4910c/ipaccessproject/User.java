@@ -25,19 +25,19 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    public enum Role {
+        USER, ADMIN
+    }
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public int getUserID() {
         return userID;
@@ -73,6 +73,25 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setRole(String role) {
+        this.role = Role.valueOf(role.toUpperCase());
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -94,6 +113,7 @@ public class User {
         setZipCode(zipCode);
         setEmail(email);
         setPassword(password);
+        setRole("USER");
         setPhoneNumber(phoneNumber);
     }
 
