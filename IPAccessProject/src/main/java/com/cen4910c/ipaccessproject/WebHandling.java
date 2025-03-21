@@ -28,9 +28,10 @@ public class WebHandling {
         String lastName = user.getLastName();
         String zipCode = user.getZipCode();
         String email = user.getEmail();
+        String password = user.getPassword();
         String phoneNumber = user.getPhoneNumber();
 
-        dataHandling.addUser(firstName, lastName, zipCode, email, phoneNumber);
+        dataHandling.addUser(firstName, lastName, zipCode, email, password, phoneNumber);
         redirectAttributes.addFlashAttribute("message", "User created successfully!");
         return "redirect:/";
     }
@@ -52,6 +53,18 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", user.toString());
         else
             redirectAttributes.addFlashAttribute("message", "User not found!");
+        return "redirect:/";
+    }
+
+    @GetMapping("/IPaccess/login")
+    public String login(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes) {
+        User user = dataHandling.getUserByEmail(email);
+        if (user != null) {
+            if (user.getPassword().equals(password)) {
+                redirectAttributes.addFlashAttribute("message", "User logged in successfully!");
+            } else
+                redirectAttributes.addFlashAttribute("message", "Invalid credentials");
+        }
         return "redirect:/";
     }
 
@@ -151,9 +164,6 @@ public class WebHandling {
 
         return "redirect:/";
     }
-    /*@GetMapping("/devices")
-    public String devicesHtml() {
-        return "devices";
-    }*/
+
 
 }

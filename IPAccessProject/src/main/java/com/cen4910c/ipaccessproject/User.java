@@ -22,11 +22,22 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public int getUserID() {
         return userID;
@@ -77,12 +88,13 @@ public class User {
     }
 
     public User() {}
-    public User(String firstName, String lastName, String zipCode, String email, String phoneNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.zipCode = zipCode;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
+    public User(String firstName, String lastName, String zipCode, String email, String password, String phoneNumber) {
+        setFirstName(firstName);
+        setLastName(lastName);
+        setZipCode(zipCode);
+        setEmail(email);
+        setPassword(password);
+        setPhoneNumber(phoneNumber);
     }
 
     @Override

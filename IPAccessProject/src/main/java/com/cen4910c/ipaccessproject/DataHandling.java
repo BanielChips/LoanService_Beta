@@ -32,7 +32,7 @@ public class DataHandling {
     /**
      * Methods for managing User data: getting, adding, deleting users.
      */
-    public User getUserByID(int ID){
+    public User getUserByID(int ID) {
         String executeString = "SELECT u FROM User u WHERE u.userID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
@@ -45,7 +45,21 @@ public class DataHandling {
         return queryUser.getFirst();
     }
 
-    public User getUserByName(String firstName, String lastName){
+    public User getUserByEmail(String email) {
+        String executeString = "SELECT d FROM User d WHERE d.email = :email";
+        Query query = entityManager.createQuery(executeString);
+        query.setParameter("email", email);
+        List<User> queryUser = query.getResultList();
+        if (queryUser.isEmpty()) {
+            System.out.println("No User found for email: " + email);
+            return null;
+        } else {
+            System.out.println("User found for email: " + email);
+        }
+        return queryUser.getFirst();
+    }
+
+    public User getUserByName(String firstName, String lastName) {
         String executeString = "SELECT u FROM User u WHERE u.firstName = :firstName AND u.lastName = :lastName";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("firstName", firstName);
@@ -61,8 +75,8 @@ public class DataHandling {
     }
 
     @Transactional
-    public User addUser(String firstName, String lastName, String zip, String email, String phoneNumber){
-        User user = new User(firstName, lastName, zip, email, phoneNumber);
+    public User addUser(String firstName, String lastName, String zip, String email, String password, String phoneNumber) {
+        User user = new User(firstName, lastName, zip, email, password, phoneNumber);
         entityManager.persist(user);
 
         System.out.println("User created successfully: " + user);
@@ -70,7 +84,7 @@ public class DataHandling {
     }
 
     @Transactional
-    public void deleteUserByID(int ID){
+    public void deleteUserByID(int ID) {
         System.out.println("Deleting User with ID: " + ID);
 
         // This is here to affect the foreign key constraint
@@ -89,7 +103,7 @@ public class DataHandling {
     }
 
     @Transactional
-    public void deleteUserByName(String firstName, String lastName){
+    public void deleteUserByName(String firstName, String lastName) {
         System.out.println("Deleting User: " + firstName + " " + lastName);
 
         // This is here to affect the foreign key constraint
@@ -112,7 +126,7 @@ public class DataHandling {
      * Methods for managing Loan data: getting, adding, deleting loans.
      * Does not include deleteLoanByUserID as a User can have multiple loans.
      */
-    public Loan getLoanByID(int ID){
+    public Loan getLoanByID(int ID) {
         String executeString = "SELECT l FROM Loan l WHERE l.loanID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
@@ -124,7 +138,7 @@ public class DataHandling {
         return queryLoan.getFirst();
     }
 
-    public Loan getLoanByDeviceID(int ID){
+    public Loan getLoanByDeviceID(int ID) {
         String executeString = "SELECT l FROM Loan l WHERE l.deviceID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
@@ -136,7 +150,7 @@ public class DataHandling {
         return queryLoan.getFirst();
     }
 
-    public String getLoanStatusByID(int ID){
+    public String getLoanStatusByID(int ID) {
         String executeString = "SELECT l FROM Loan l WHERE l.loanID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
@@ -154,7 +168,7 @@ public class DataHandling {
         }
     }
 
-    public void changeLoanStatusByID(int ID, String newStatus){
+    public void changeLoanStatusByID(int ID, String newStatus) {
         String executeQuery = "SELECT l FROM Loan l WHERE l.loanID = :ID";
         Query query = entityManager.createQuery(executeQuery);
         query.setParameter("ID", ID);
@@ -172,7 +186,7 @@ public class DataHandling {
         }
     }
 
-    public List<Loan> retrieveActiveLoansByUser(int ID){
+    public List<Loan> retrieveActiveLoansByUser(int ID) {
         String executeString = "SELECT l FROM Loan l WHERE l.userID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
@@ -188,7 +202,7 @@ public class DataHandling {
     }
 
     @Transactional
-    public Loan addLoan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, String loanStatus){
+    public Loan addLoan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, String loanStatus) {
         Loan loan = new Loan(userID, deviceID, startDate, endDate, loanStatus);
         Device device = getDeviceByID(deviceID);
         device.setAvailability(false);
@@ -201,7 +215,7 @@ public class DataHandling {
     }
 
     @Transactional
-    public void deleteLoanByID(int ID){
+    public void deleteLoanByID(int ID) {
         Loan loan = getLoanByID(ID);
         entityManager.remove(loan);
         Device device = getDeviceByID(loan.getDeviceID());
@@ -222,7 +236,7 @@ public class DataHandling {
     }
 
     @Transactional
-    public void deleteLoanByUserID(int ID){
+    public void deleteLoanByUserID(int ID) {
         System.out.println("Deleting User with ID: " + ID);
 
         String executeString = "DELETE FROM Loan l WHERE l.userID = :ID";
@@ -238,7 +252,7 @@ public class DataHandling {
     }
 
     @Transactional
-    public void deleteLoanByDeviceID(int ID){
+    public void deleteLoanByDeviceID(int ID) {
         String executeString = "DELETE FROM Loan l WHERE l.deviceID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
@@ -255,13 +269,13 @@ public class DataHandling {
     /**
      * Methods for managing Device data: getting, adding, deleting devices.
      */
-    public Device getDeviceByID(int ID){
+    public Device getDeviceByID(int ID) {
         String executeString = "SELECT d FROM Device d WHERE d.deviceID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
         List<Device> queryDevice = query.getResultList();
 
-        if(queryDevice.isEmpty()){
+        if (queryDevice.isEmpty()) {
             System.out.println("No device found for ID: " + ID);
             return null;
         } else {
@@ -270,13 +284,13 @@ public class DataHandling {
         }
     }
 
-    public Device getDeviceByUserID(int ID){
+    public Device getDeviceByUserID(int ID) {
         String executeString = "SELECT d FROM Device d WHERE d.renterID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
         List<Device> queryDevice = query.getResultList();
 
-        if(queryDevice.isEmpty()){
+        if (queryDevice.isEmpty()) {
             System.out.println("No device found for user: " + ID);
             return null;
         } else {
@@ -285,12 +299,12 @@ public class DataHandling {
         }
     }
 
-    public List<Device> getAvailableDevices(){
+    public List<Device> getAvailableDevices() {
         String executeString = "SELECT d FROM Device d WHERE d.availability = TRUE";
         Query query = entityManager.createQuery(executeString);
         List<Device> queryDevice = query.getResultList();
 
-        if(queryDevice.isEmpty()){
+        if (queryDevice.isEmpty()) {
             System.out.println("No available devices found");
             return null;
         } else {
@@ -304,20 +318,20 @@ public class DataHandling {
         Query query = entityManager.createQuery(executeString);
         List<Device> queryDevice = query.getResultList();
 
-        if(queryDevice.isEmpty()){
+        if (queryDevice.isEmpty()) {
             System.out.println("No available devices found");
             return null;
         }
         return queryDevice;
     }
 
-    public List<Device> getAvailableDeviceByType(String type){
+    public List<Device> getAvailableDeviceByType(String type) {
         String executeString = "SELECT d FROM Device d WHERE d.deviceName = :type AND d.availability = TRUE";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("type", type);
         List<Device> queryDevice = query.getResultList();
 
-        if(queryDevice.isEmpty()){
+        if (queryDevice.isEmpty()) {
             System.out.println("No available " + type + "s found");
             return null;
         } else {
@@ -326,13 +340,13 @@ public class DataHandling {
         }
     }
 
-    public Device getFirstAvailableDeviceByType(String type){
+    public Device getFirstAvailableDeviceByType(String type) {
         String executeString = "SELECT d FROM Device d WHERE d.deviceName = :type AND d.availability = TRUE";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("type", type);
         List<Device> queryDevice = query.getResultList();
 
-        if(queryDevice.isEmpty()){
+        if (queryDevice.isEmpty()) {
             System.out.println("No available " + type + "s found");
             return null;
         } else {
@@ -342,7 +356,7 @@ public class DataHandling {
     }
 
     @Transactional
-    public Device addDevice(String deviceName, boolean availability){
+    public Device addDevice(String deviceName, boolean availability) {
         Device device = new Device(deviceName, availability);
         entityManager.persist(device);
 
@@ -351,7 +365,7 @@ public class DataHandling {
     }
 
     @Transactional
-    public void removeDeviceByID(int ID){
+    public void removeDeviceByID(int ID) {
         String executeString = "DELETE FROM Device d WHERE d.deviceID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
@@ -364,3 +378,5 @@ public class DataHandling {
         }
     }
 }
+
+

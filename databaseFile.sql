@@ -90,6 +90,7 @@ CREATE TABLE `users` (
   `lastName` varchar(50) NOT NULL,
   `zipCode` varchar(10) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
+    `password` varchar(30) NOT NULL,
   `phoneNumber` varchar(20) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`userID`),
