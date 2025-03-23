@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Sign-In</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Blue Ribbon with City of Orlando Image -->
+    <div class="ribbon-container">
+        <img src="orlando.jpg" alt="City of Orlando" class="orlando-image">
+    </div>
+
+    <!-- Sign-In Form (Dialog Box) -->
+    <div class="signin-container">
+        <h2>Admin Sign-In</h2>
+        <form action="/admin-dashboard" method="POST">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="input-field" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+
+        <!-- Forgot password link -->
+        <div class="forgot-password">
+            <a href="/forgot-password">Forgot Password?</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
