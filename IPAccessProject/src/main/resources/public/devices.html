@@ -14,7 +14,7 @@
                     <img src="logo.png" alt="Logo" class="logo">
                 </a>
             </div>
-            <nav>
+            <nav class="menu">
                 <ul class="menu">
                     <li><a href="request.html">Request</a></li>
                     <li><a href="devices.html">Devices</a></li>
@@ -26,8 +26,57 @@
         </header>
 
     <div class="content">
-        <h1>My Devices Page</h1>
-        <p>This is the Devices page content.</p>
+        <h1>My Devices</h1>
+        <div class="device-selection">
+            <h2>Please Select a Device.</h2>
+            <p>Device availability is determined by <a href="locations.html">location</a>.</p>
+            
+            <label for="location-select"><strong>Select a Location:</strong></label>
+            <select id="location-select">
+                <option value="" disabled selected>Select Location...</option>
+                <option value="callahan">Dr. J. B. Callahan Neighborhood Center</option>
+                <option value="hankins">Sylvester Hankins Park</option>
+                <option value="northwest">Northwest Community Center</option>
+                <option value="rosemont">Rosemont Community Center</option>
+                <option value="smith">Dr. James R. Smith Neighborhood Center</option>
+                <option value="citrus">Citrus Square Recreation Site</option>
+                <option value="englewood">Englewood Neighborhood Center</option>
+                <option value="jackson">John H. Jackson Community Center</option>
+                <option value="allen">L. Claudia Allen Senior Center</option>
+                <option value="grand">Grand Avenue Neighborhood Center</option>
+                <option value="ivey">Ivey Lane Recreation Site</option>
+                <option value="langford">Langford Park & Center</option>
+                <option value="rock">Rock Lake Community Center</option>
+            </select>
+
+            <div class="device-grid">
+                <div class="device-card available">
+                    <span class="device-icon">📶</span>
+                    <p>Hotspot</p>
+                </div>
+                <div class="device-card available">
+                    <span class="device-icon">📱</span>
+                    <p>Phone</p>
+                </div>
+                <div class="device-card available">
+                    <span class="device-icon">💻</span>
+                    <p>Laptop</p>
+                </div>
+                <div class="device-card available">
+                    <span class="device-icon">📟</span>
+                    <p>Tablet</p>
+                </div>
+            </div>
+        
+            <label for="device-select">Select Device...</label>
+            <select id="device-select">
+                <option value="" disabled selected>Select Device...</option>
+                <option value="hotspot">Hotspot</option>
+                <option value="phone">Phone</option>
+                <option value="laptop">Laptop</option>
+                <option value="tablet">Tablet</option>
+            </select>
+        </div>
     </div>
 </body>
 </html>
