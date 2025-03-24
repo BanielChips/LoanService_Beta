@@ -25,30 +25,28 @@ public class Loan {
     @Column(name = "endDate")
     private LocalDate endDate;
 
-    public enum LoanStatus {
-        ACTIVE, OVERDUE, RESERVED, REVIEW
-    }
     @Enumerated(EnumType.STRING)
-    private LoanStatus loanStatus;
+    @Column(name = "loanStatus")
+    private ApplicationEnums.LoanStatus loanStatus;
 
     @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
 
-    public int getLoanID() {
+    public int loanID() {
         return loanID;
     }
     public void setLoanID(int loanID) {
         this.loanID = loanID;
     }
 
-    public int getUserID() {
+    public int userID() {
         return userID;
     }
     public void setUserID(int userID) {
         this.userID = userID;
     }
 
-    public int getDeviceID() {
+    public int deviceID() {
         return deviceID;
     }
     public void setDeviceID(int deviceID) {
@@ -69,14 +67,11 @@ public class Loan {
         this.endDate = endDate;
     }
 
-    public String getLoanStatus() {
-        return loanStatus.toString();
+    public ApplicationEnums.LoanStatus getLoanStatus() {
+        return loanStatus;
     }
-    public void setLoanStatus(LoanStatus loanStatus) {
+    public void setLoanStatus(ApplicationEnums.LoanStatus loanStatus) {
         this.loanStatus = loanStatus;
-    }
-    public void setLoanStatus(String status) {
-        this.loanStatus = LoanStatus.valueOf(status.toUpperCase());
     }
 
     public Timestamp getCreatedAt() {
@@ -87,12 +82,12 @@ public class Loan {
     }
 
     public Loan(){};
-    public Loan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, String loanStatus) {
+    public Loan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, ApplicationEnums.LoanStatus loanStatus) {
         this.userID = userID;
         this.deviceID = deviceID;
         this.startDate = startDate;
         this.endDate = endDate;
-        setLoanStatus(loanStatus);
+        this.loanStatus = loanStatus;
     }
 
     // I noticed the database was not automatically assigning a created_at date because JPA was overriding it
@@ -106,12 +101,12 @@ public class Loan {
     @Override
     public String toString() {
         return "LoanInformation [" +
-                "getLoanID=" + loanID +
+                "loanID=" + loanID +
                 ", userID=" + userID +
-                ", getDeviceID=" + deviceID +
+                ", deviceID=" + deviceID +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", LoanStatus=" + loanStatus +
+                ", loanStatus=" + loanStatus +
                 ", created: " + createdAt +
                 "]";
     }

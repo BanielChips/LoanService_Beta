@@ -27,22 +27,10 @@
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required><br>
 
-    <label for="password">password:</label>
-    <input type="password" id="password" name="password" required><br>
-
     <label for="phoneNumber">Phone Number:</label>
     <input type="text" id="phoneNumber" name="phoneNumber" required><br>
 
     <button type="submit">Create User</button>
-</form>
-
-<h2>Login</h2>
-<form action="/IPaccess/login" method="GET">
-    <label for="loginEmail">Email</label>
-    <input type="text" id="loginEmail" name="email">
-    <label for="loginPassword">Password</label>
-    <input type="text" id="loginPassword" name="password">
-    <button type="submit">Login</button>
 </form>
 
 <h2>Get User by ID</h2>
@@ -132,10 +120,8 @@
 
     <label for="loanStatus">Loan Status:</label>
     <select id="loanStatus" name="loanStatus" required>
-        <option value="active">active</option>
-        <option value="overdue">Past Due</option>
-        <option value="reserved">Reserved</option>
-        <option value="review">Review</option>
+        <option value="on time">On Time</option>
+        <option value="past due">Past Due</option>
     </select><br>
 
     <button type="submit">Create Loan</button>

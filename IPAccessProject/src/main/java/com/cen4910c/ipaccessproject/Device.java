@@ -12,8 +12,9 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int deviceID;
 
-    @Column(name = "deviceName")
-    private String deviceName;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "deviceType", nullable = false)
+    private ApplicationEnums.DeviceType deviceType;
 
     @Column(name = "availability")
     private boolean availability;
@@ -24,18 +25,9 @@ public class Device {
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
-    public Device(){}
-
-    public Device(String deviceName, boolean availability) {
-        setDeviceName(deviceName);
-        setAvailability(availability);
-    }
-
-    public Device(String deviceName, boolean availability, int renterID) {
-        setDeviceName(deviceName);
-        setAvailability(availability);
-        setRenterID(renterID);
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "deviceStatus", nullable = false)
+    private ApplicationEnums.DeviceStatus deviceStatus = ApplicationEnums.DeviceStatus.ACTIVE;
 
     public int getDeviceID() {
         return deviceID;
@@ -44,11 +36,11 @@ public class Device {
         this.deviceID = deviceID;
     }
 
-    public String getDeviceName() {
-        return deviceName;
+    public ApplicationEnums.DeviceType getDeviceType() {
+        return deviceType;
     }
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
+    public void setDeviceType(ApplicationEnums.DeviceType deviceType) {
+        this.deviceType = deviceType;
     }
 
     public boolean isAvailable() {
@@ -72,14 +64,29 @@ public class Device {
         this.createdAt = created_at;
     }
 
+    public ApplicationEnums.DeviceStatus getDeviceStatus() {
+        return deviceStatus;
+    }
+    public void setDeviceStatus(ApplicationEnums.DeviceStatus deviceStatus) {
+        this.deviceStatus = deviceStatus;
+    }
+
+    public Device(){}
+    public Device(ApplicationEnums.DeviceType deviceType, boolean availability, int renterID) {
+        this.deviceType = deviceType;
+        this.availability = availability;
+        this.renterID = renterID;
+    }
+
     @Override
     public String toString() {
-        return "Device [" +
-                "getDeviceID: " + deviceID +
-                ", deviceName: " + deviceName +
+        return "Device: [" +
+                "deviceID: " + deviceID +
+                ", deviceType: " + deviceType +
                 ", available: " + availability +
                 ", renterID: " + renterID +
                 ", created_at: " + createdAt +
+                ", deviceStatus: " + deviceStatus +
                 "]";
     }
 

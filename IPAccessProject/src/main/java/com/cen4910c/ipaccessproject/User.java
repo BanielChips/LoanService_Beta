@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,22 +22,11 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
-    private String password;
-
-    public enum Role {
-        USER, ADMIN
-    }
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
-
-
 
     public int getUserID() {
         return userID;
@@ -73,25 +62,6 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public void setRole(String role) {
-        this.role = Role.valueOf(role.toUpperCase());
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -107,14 +77,12 @@ public class User {
     }
 
     public User() {}
-    public User(String firstName, String lastName, String zipCode, String email, String password, String phoneNumber) {
-        setFirstName(firstName);
-        setLastName(lastName);
-        setZipCode(zipCode);
-        setEmail(email);
-        setPassword(password);
-        setRole("USER");
-        setPhoneNumber(phoneNumber);
+    public User(String firstName, String lastName, String zipCode, String email, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.zipCode = zipCode;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
