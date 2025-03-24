@@ -111,6 +111,14 @@ public class DataHandling {
         }
     }
 
+    //For testing
+    public User getFirstUser() {
+        String executeQuery = "select u from User u";
+        Query query = entityManager.createQuery(executeQuery);
+        List<User> queryUser = query.getResultList();
+        return queryUser.getFirst();
+    }
+
     /**
      * Methods for managing Loan data: getting, adding, deleting loans.
      * Does not include deleteLoanByUserID as a User can have multiple loans.
@@ -190,6 +198,18 @@ public class DataHandling {
         Device device = getDeviceByID(deviceID);
         device.setAvailability(false);
         device.setRenterID(userID);
+        entityManager.persist(device);
+        entityManager.persist(loan);
+
+        System.out.println("Loan created successfully: " + loan);
+        return loan;
+    }
+
+    @Transactional
+    public Loan addLoan(Loan loan) {
+        Device device = getDeviceByID(loan.getDeviceID());
+        device.setAvailability(false);
+        device.setRenterID(loan.getUserID());
         entityManager.persist(device);
         entityManager.persist(loan);
 

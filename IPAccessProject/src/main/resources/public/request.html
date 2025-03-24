@@ -33,10 +33,10 @@
         <h1>Device Loan Request Form</h1>
 
         <!-- Form Section -->
-        <form action="Home.html" method="POST" class="request-form">
+        <form action="/IPaccess/requestLoan" method="POST" class="request-form">
             <!-- Device Dropdown Question -->
-            <label for="device">What device do you want to check out?</label>
-            <select id="device" name="device" required>
+            <label for="deviceType">What device do you want to check out?</label>
+            <select id="deviceType" name="deviceType" required>
                 <option value="" disabled selected>Select a device</option>
                 <option value="hotspot">Hotspot</option>
                 <option value="phone">Phone</option>
@@ -87,12 +87,12 @@
             </select>
 
             <!-- Pickup Date Question -->
-            <label for="pickup-date">Select a pickup date:</label>
-            <input type="date" id="pickup-date" name="pickup-date" required>
+            <label for="startDate">Select a pickup date:</label>
+            <input type="date" id="startDate" name="startDate" required>
 
             <!-- Return Date Question -->
-            <label for="return-date">Select a return date:</label>
-            <input type="date" id="return-date" name="return-date" required>
+            <label for="endDate">Select a return date:</label>
+            <input type="date" id="endDate" name="endDate" required>
 
             <!-- Submit Button -->
             <div class="button-container">

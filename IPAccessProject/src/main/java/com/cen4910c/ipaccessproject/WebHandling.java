@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
 public class WebHandling {
@@ -165,5 +166,16 @@ public class WebHandling {
         return "redirect:/";
     }
 
-
+    @PostMapping("/IPaccess/requestLoan")
+    public String requestLoan(@RequestParam String deviceType, @RequestParam String startDate, @RequestParam String endDate, RedirectAttributes redirectAttributes) {
+        Device device = dataHandling.getFirstAvailableDeviceByType(deviceType);
+        Loan loan = null;
+        //temporary as user isn't tracked
+        User user = dataHandling.getFirstUser();
+        System.out.println(user);
+        if(device != null && user != null)
+            loan = dataHandling.addLoan(new Loan(user.getUserID(),device.getDeviceID(), startDate, endDate, "RESERVED"));
+        redirectAttributes.addFlashAttribute("message", loan);
+        return "redirect:/Home.html";
+    }
 }
