@@ -107,7 +107,38 @@ LOCK TABLES `users` WRITE;
 /*INSERT INTO `users` VALUES (4,'John','Doe','12345','john.doe@email.com','password', 'user','6666666666','2025-03-16 18:06:19'),(5,'Jane','Smith','67890','jane.smith@email.com','555-5678','2025-03-16 18:06:19'),(7,'Bob','Williams','11223','bob.williams@email.com','555-2468','2025-03-16 18:06:19'),(9,'bobby','person','11223','bobbyp@email.com','1112223333','2025-03-16 23:41:06'),(11,'donald','duck','11223','donaldD@email.com','1112223333','2025-03-17 00:25:00'),(13,'daffy','duck',NULL,'daffyD@email.com','2223334444','2025-03-17 00:36:14'),(15,'will','weaton',NULL,'will@email.com','2223334444','2025-03-17 00:42:37'),(16,'alan','david','22334','alanD@email.com','1112224444','2025-03-17 00:44:30'),(17,'miller','lee','33445','miller@email.com','3334446666','2025-03-17 00:49:54'),(18,'cat','fish','11223','catfish@email.com','3334445555','2025-03-17 02:06:38');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `alerts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `alerts` (
+                          `alertID` int NOT NULL AUTO_INCREMENT,
+                          `alertName` varchar(50),
+                          `alertBody` varchar(50),
+                          `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                          `alertType` ENUM('NEW_OVERDUE_DEVICE',
+                              'ANNOUNCEMENT',
+                              'DEVICE_REPAIR_STATUS_UPDATE',
+                              'NEW_DEVICE_REQUEST',
+                              'DEVICE_RETURNED',
+                              'LOAN_APPROVAL_REQUIRED',
+                              'SYSTEM_MAINTENANCE',
+                              'URGENT_ACTION_REQUIRED',
+                              'NOTIFICATION') NOT NULL,
+                          `alertPriority` ENUM('LOW','MEDIUM','HIGH') NOT NULL,
+                          `isRead` tinyint(1) NOT NULL DEFAULT 0,
+                          `expiryDate` DATETIME NOT NULL,
+                          PRIMARY KEY (`alertID`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `alerts` WRITE;
+/*!40000 ALTER TABLE `alerts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alerts` ENABLE KEYS */;
+UNLOCK TABLES;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -116,5 +147,6 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
 
 -- Dump completed on 2025-03-16 22:35:49
