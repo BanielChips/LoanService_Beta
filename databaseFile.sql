@@ -111,24 +111,25 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `alerts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `alerts` (
-                          `alertID` int NOT NULL AUTO_INCREMENT,
-                          `alertName` varchar(50),
-                          `alertBody` varchar(50),
-                          `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-                          `alertType` ENUM('NEW_OVERDUE_DEVICE',
-                              'ANNOUNCEMENT',
-                              'DEVICE_REPAIR_STATUS_UPDATE',
-                              'NEW_DEVICE_REQUEST',
-                              'DEVICE_RETURNED',
-                              'LOAN_APPROVAL_REQUIRED',
-                              'SYSTEM_MAINTENANCE',
-                              'URGENT_ACTION_REQUIRED',
-                              'NOTIFICATION') NOT NULL,
-                          `alertPriority` ENUM('LOW','MEDIUM','HIGH') NOT NULL,
-                          `isRead` tinyint(1) NOT NULL DEFAULT 0,
-                          `expiryDate` DATETIME NOT NULL,
-                          PRIMARY KEY (`alertID`)
+CREATE TABLE alerts (
+                        alertID int AUTO_INCREMENT PRIMARY KEY,
+                        alertName VARCHAR(255) NOT NULL,
+                        alertBody TEXT NOT NULL,
+                        timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        alertType ENUM(
+                            'NEW_OVERDUE_DEVICE',
+                            'ANNOUNCEMENT',
+                            'DEVICE_REPAIR_STATUS_UPDATE',
+                            'NEW_DEVICE_REQUEST',
+                            'DEVICE_RETURNED',
+                            'LOAN_APPROVAL_REQUIRED',
+                            'SYSTEM_MAINTENANCE',
+                            'URGENT_ACTION_REQUIRED',
+                            'NOTIFICATION'
+                            ) NOT NULL,
+                        alertPriority ENUM('LOW', 'MEDIUM', 'HIGH') NOT NULL,
+                        isRead BOOLEAN NOT NULL DEFAULT FALSE,
+                        expiryDate DATETIME NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
