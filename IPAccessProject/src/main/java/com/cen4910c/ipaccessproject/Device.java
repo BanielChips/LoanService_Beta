@@ -12,8 +12,17 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int deviceID;
 
-    @Column(name = "deviceName")
-    private String deviceName;
+    public enum DeviceType {
+        LAPTOP, TABLET, PHONE, HOTSPOT
+    }
+    @Enumerated(EnumType.STRING)
+    private DeviceType deviceType;
+
+    public enum DeviceStatus {
+        ACTIVE, INACTIVE, LOANED, DAMAGED
+    }
+    @Enumerated(EnumType.STRING)
+    private DeviceStatus deviceStatus;
 
     @Column(name = "availability")
     private boolean availability;
@@ -26,15 +35,17 @@ public class Device {
 
     public Device(){}
 
-    public Device(String deviceName, boolean availability) {
-        setDeviceName(deviceName);
+    public Device(String deviceType, boolean availability) {
+        setDeviceType(deviceType);
         setAvailability(availability);
+        setDeviceStatus(DeviceStatus.ACTIVE);
     }
 
-    public Device(String deviceName, boolean availability, int renterID) {
-        setDeviceName(deviceName);
+    public Device(String deviceType, boolean availability, int renterID) {
+        setDeviceType(deviceType);
         setAvailability(availability);
         setRenterID(renterID);
+        setDeviceStatus(DeviceStatus.ACTIVE);
     }
 
     public int getDeviceID() {
@@ -44,11 +55,30 @@ public class Device {
         this.deviceID = deviceID;
     }
 
-    public String getDeviceName() {
-        return deviceName;
+    public DeviceType getDeviceType() {
+        return deviceType;
     }
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
+    public void setDeviceType(String deviceName) {
+        try {
+            this.deviceType = DeviceType.valueOf(deviceName);
+        } catch (Exception e) {
+            this.deviceType = DeviceType.LAPTOP;
+        }
+    }
+
+    public DeviceStatus getDeviceStatus() {
+        return deviceStatus;
+    }
+
+    public void setDeviceStatus(DeviceStatus deviceStatus) {
+        this.deviceStatus = deviceStatus;
+    }
+    public void setDeviceStatus(String deviceStatus) {
+        try {
+            this.deviceStatus = DeviceStatus.valueOf(deviceStatus);
+        } catch (Exception e) {
+            this.deviceStatus = DeviceStatus.INACTIVE;
+        }
     }
 
     public boolean isAvailable() {
@@ -76,7 +106,7 @@ public class Device {
     public String toString() {
         return "Device [" +
                 "getDeviceID: " + deviceID +
-                ", deviceName: " + deviceName +
+                ", deviceName: " + deviceType +
                 ", available: " + availability +
                 ", renterID: " + renterID +
                 ", created_at: " + createdAt +

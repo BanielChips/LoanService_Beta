@@ -24,7 +24,8 @@ DROP TABLE IF EXISTS `devices`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `devices` (
   `deviceID` int NOT NULL AUTO_INCREMENT,
-  `deviceName` varchar(50) DEFAULT NULL,
+  `deviceType` ENUM('LAPTOP', 'TABLET', 'PHONE', 'HOTSPOT') NOT NULL,
+  `deviceStatus` ENUM('ACTIVE', 'INACTIVE', 'LOANED', 'DAMAGED') NOT NULL,
   `availability` tinyint(1) NOT NULL DEFAULT '1',
   `renterID` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -40,7 +41,7 @@ CREATE TABLE `devices` (
 
 LOCK TABLES `devices` WRITE;
 /*!40000 ALTER TABLE `devices` DISABLE KEYS */;
-INSERT INTO `devices` VALUES (46,'Laptop A',1,NULL,'2025-03-16 18:09:26'),(47,'Laptop B',0,NULL,'2025-03-16 18:09:26'),(48,'Projector A',1,NULL,'2025-03-16 18:09:26'),(49,'Tablet A',1,NULL,'2025-03-16 18:09:26'),(50,'Smartphone B',0,NULL,'2025-03-16 18:09:26'),(51,'Laptop',1,5,'2025-03-17 01:26:31'),(52,'Laptop',1,5,'2025-03-17 01:28:53'),(53,'Laptop',1,5,'2025-03-17 01:29:50');
+INSERT INTO `devices` VALUES (46,'Laptop A','ACTIVE', 1,NULL,'2025-03-16 18:09:26'),(47,'Laptop B','ACTIVE',0,NULL,'2025-03-16 18:09:26'),(48,'Projector A','ACTIVE',1,NULL,'2025-03-16 18:09:26'),(49,'Tablet A','ACTIVE',1,NULL,'2025-03-16 18:09:26'),(50,'Smartphone B','ACTIVE',0,NULL,'2025-03-16 18:09:26'),(51,'Laptop','ACTIVE',1,5,'2025-03-17 01:26:31'),(52,'Laptop','ACTIVE',1,5,'2025-03-17 01:28:53'),(53,'Laptop','ACTIVE',1,5,'2025-03-17 01:29:50');
 /*!40000 ALTER TABLE `devices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,7 +105,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*INSERT INTO `users` VALUES (4,'John','Doe','12345','john.doe@email.com','password', 'user','6666666666','2025-03-16 18:06:19'),(5,'Jane','Smith','67890','jane.smith@email.com','555-5678','2025-03-16 18:06:19'),(7,'Bob','Williams','11223','bob.williams@email.com','555-2468','2025-03-16 18:06:19'),(9,'bobby','person','11223','bobbyp@email.com','1112223333','2025-03-16 23:41:06'),(11,'donald','duck','11223','donaldD@email.com','1112223333','2025-03-17 00:25:00'),(13,'daffy','duck',NULL,'daffyD@email.com','2223334444','2025-03-17 00:36:14'),(15,'will','weaton',NULL,'will@email.com','2223334444','2025-03-17 00:42:37'),(16,'alan','david','22334','alanD@email.com','1112224444','2025-03-17 00:44:30'),(17,'miller','lee','33445','miller@email.com','3334446666','2025-03-17 00:49:54'),(18,'cat','fish','11223','catfish@email.com','3334445555','2025-03-17 02:06:38');
+INSERT INTO `users` VALUES (4,'John','Doe','12345','john.doe@email.com','password', 'user','6666666666','2025-03-16 18:06:19')/*(5,'Jane','Smith','67890','jane.smith@email.com','pass','USER',555-5678,'2025-03-16 18:06:19'),(7,'Bob','Williams','11223','bob.williams@email.com','rah','USER',555-2468,'2025-03-16 18:06:19'),(9,'bobby','person','11223','bobbyp@email.com','rahhh','USER','1112223333','2025-03-16 23:41:06'),(11,'donald','duck','11223','donaldD@email.com','aerre','USER','1112223333','2025-03-17 00:25:00'),(13,'daffy','duck',NULL,'daffyD@email.com','bor','USER','2223334444','2025-03-17 00:36:14'),(15,'will','weaton',NULL,'will@email.com','gyah','USER','2223334444','2025-03-17 00:42:37'),(16,'alan','david','22334','alanD@email.com','brooo','1112224444','2025-03-17 00:44:30'),(17,'miller','lee','33445','miller@email.com','3334446666','2025-03-17 00:49:54'),(18,'cat','fish','11223','catfish@email.com','3334445555','2025-03-17 02:06:38');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -327,7 +327,7 @@ public class DataHandling {
     }
 
     public List<Device> getAvailableDeviceByType(String type) {
-        String executeString = "SELECT d FROM Device d WHERE d.deviceName = :type AND d.availability = TRUE";
+        String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("type", type);
         List<Device> queryDevice = query.getResultList();
@@ -342,7 +342,7 @@ public class DataHandling {
     }
 
     public Device getFirstAvailableDeviceByType(String type) {
-        String executeString = "SELECT d FROM Device d WHERE d.deviceName = :type AND d.availability = TRUE";
+        String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("type", type);
         List<Device> queryDevice = query.getResultList();
