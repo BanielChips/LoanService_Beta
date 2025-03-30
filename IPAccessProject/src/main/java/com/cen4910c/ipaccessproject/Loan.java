@@ -61,26 +61,12 @@ public class Loan {
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
-    public void setStartDate(String startDate) {
-        try {
-            this.startDate = LocalDate.parse(startDate);
-        } catch (Exception e) {
-            this.startDate = LocalDate.now();
-        }
-    }
 
     public LocalDate getEndDate() {
         return endDate;
     }
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
-    }
-    public void setEndDate(String endDate) {
-        try {
-            this.endDate = LocalDate.parse(endDate);
-        } catch (Exception e) {
-            this.endDate = LocalDate.now();
-        }
     }
 
     public String getLoanStatus() {
@@ -106,13 +92,6 @@ public class Loan {
         this.deviceID = deviceID;
         this.startDate = startDate;
         this.endDate = endDate;
-        setLoanStatus(loanStatus);
-    }
-    public Loan(int userID, int deviceID, String startDate, String endDate, String loanStatus) {
-        setUserID(userID);
-        setDeviceID(deviceID);
-        setStartDate(startDate);
-        setEndDate(endDate);
         setLoanStatus(loanStatus);
     }
 

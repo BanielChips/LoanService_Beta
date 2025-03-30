@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+</head>
+<body>
+<h1>User Functions</h1>
+
+<h2>Create User</h2>
+<form action="/IPaccess/addUser" method="POST">
+    <label>First Name: <input type="text" name="firstName" required></label><br>
+    <label>Last Name: <input type="text" name="lastName" required></label><br>
+    <label>Zip Code: <input type="text" name="zipCode" required></label><br>
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>Password: <input type="password" name="password" required></label><br>
+    <label>Phone Number: <input type="text" name="phoneNumber" required></label><br>
+    <button type="submit">Create User</button>
+</form>
+
+<h2>Login</h2>
+<form action="/IPaccess/login" method="GET">
+    <label>Email: <input type="text" name="email"></label>
+    <label>Password: <input type="text" name="password"></label>
+    <button type="submit">Login</button>
+</form>
+
+<h2>Get User by ID</h2>
+<form action="/IPaccess/getUserByID" method="GET">
+    <label>User ID: <input type="number" name="userID" required></label>
+    <button type="submit">Get User</button>
+</form>
+
+<h2>Get User by Name</h2>
+<form action="/IPaccess/getUserByName" method="GET">
+    <label>First Name: <input type="text" name="firstName" required></label>
+    <label>Last Name: <input type="text" name="lastName" required></label>
+    <button type="submit">Get User</button>
+</form>
+
+<h2>Delete User by ID</h2>
+<form action="/IPaccess/deleteUserByID" method="POST">
+    <label>User ID: <input type="number" name="userID" required></label>
+    <button type="submit">Delete User</button>
+</form>
+
+<h2>Delete User by Name</h2>
+<form action="/IPaccess/deleteUserByName" method="POST">
+    <label>First Name: <input type="text" name="firstName" required></label>
+    <label>Last Name: <input type="text" name="lastName" required></label>
+    <button type="submit">Delete User</button>
+</form>
+</body>
+</html>

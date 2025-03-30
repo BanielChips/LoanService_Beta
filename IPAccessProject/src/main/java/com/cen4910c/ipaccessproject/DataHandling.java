@@ -1,6 +1,5 @@
 package com.cen4910c.ipaccessproject;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -111,14 +110,6 @@ public class DataHandling {
         }
     }
 
-    //For testing
-    public User getFirstUser() {
-        String executeQuery = "select u from User u";
-        Query query = entityManager.createQuery(executeQuery);
-        List<User> queryUser = query.getResultList();
-        return queryUser.getFirst();
-    }
-
     /**
      * Methods for managing Loan data: getting, adding, deleting loans.
      * Does not include deleteLoanByUserID as a User can have multiple loans.
@@ -192,24 +183,38 @@ public class DataHandling {
         }
     }
 
+    public List<Loan> getOverdueLoans() {
+        String executeString = "SELECT l FROM Loan l WHERE l.endDate < :today AND l.loanStatus <> 'OVERDUE'";
+        Query query = entityManager.createQuery(executeString);
+        query.setParameter("today", LocalDate.now());
+
+        List<Loan> overdueLoans = query.getResultList();
+        if (overdueLoans.isEmpty()) {
+            System.out.println("No overdue loans found.");
+            return List.of();
+        } else {
+            System.out.println(overdueLoans.size() + " overdue loans found.");
+            return overdueLoans;
+        }
+    }
+
+    @Transactional
+    public void checkAndUpdateOverdueLoans() {
+        List<Loan> overdueLoans = getOverdueLoans();
+        for (Loan loan : overdueLoans) {
+            loan.setLoanStatus("OVERDUE");
+            entityManager.merge(loan);
+            System.out.println("Updated loan to OVERDUE: " + loan.getLoanID());
+        }
+    }
+
+
     @Transactional
     public Loan addLoan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, String loanStatus) {
         Loan loan = new Loan(userID, deviceID, startDate, endDate, loanStatus);
         Device device = getDeviceByID(deviceID);
         device.setAvailability(false);
         device.setRenterID(userID);
-        entityManager.persist(device);
-        entityManager.persist(loan);
-
-        System.out.println("Loan created successfully: " + loan);
-        return loan;
-    }
-
-    @Transactional
-    public Loan addLoan(Loan loan) {
-        Device device = getDeviceByID(loan.getDeviceID());
-        device.setAvailability(false);
-        device.setRenterID(loan.getUserID());
         entityManager.persist(device);
         entityManager.persist(loan);
 
@@ -327,7 +332,7 @@ public class DataHandling {
     }
 
     public List<Device> getAvailableDeviceByType(String type) {
-        String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
+        String executeString = "SELECT d FROM Device d WHERE d.deviceName = :type AND d.availability = TRUE";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("type", type);
         List<Device> queryDevice = query.getResultList();
@@ -342,7 +347,7 @@ public class DataHandling {
     }
 
     public Device getFirstAvailableDeviceByType(String type) {
-        String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
+        String executeString = "SELECT d FROM Device d WHERE d.deviceName = :type AND d.availability = TRUE";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("type", type);
         List<Device> queryDevice = query.getResultList();

@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Device Management</title>
+</head>
+<body>
+<h1>Device Functions</h1>
+
+<h2>Create Device</h2>
+<form action="/IPaccess/addDevice" method="POST">
+    <label>Device Name:
+        <select name="deviceName" required>
+            <option value="Laptop">Laptop</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Phone">Phone</option>
+        </select>
+    </label><br>
+    <label>Available: <input type="checkbox" name="availability" value="true"></label><br>
+    <label>Renter ID: <input type="number" name="renterID" required></label><br>
+    <button type="submit">Add Device</button>
+</form>
+
+<h2>Get Device by ID</h2>
+<form action="/IPaccess/getDeviceByID" method="GET">
+    <label>Device ID: <input type="number" name="deviceID" required></label>
+    <button type="submit">Get Device</button>
+</form>
+
+<h2>Delete Device by ID</h2>
+<form action="/IPaccess/removeDeviceByID" method="POST">
+    <label>Device ID: <input type="number" name="deviceID" required></label>
+    <button type="submit">Remove Device</button>
+</form>
+</body>
+</html>

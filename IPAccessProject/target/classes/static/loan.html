@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loan Management</title>
+</head>
+<body>
+<h1>Loan Functions</h1>
+
+<h2>Create Loan</h2>
+<form action="/IPaccess/addLoan" method="POST">
+    <label>User ID: <input type="number" name="userID" required></label><br>
+    <label>Device ID: <input type="number" name="deviceID" required></label><br>
+    <label>Loan Status:
+        <select name="loanStatus" required>
+            <option value="active">Active</option>
+            <option value="overdue">Past Due</option>
+            <option value="reserved">Reserved</option>
+            <option value="review">Review</option>
+        </select>
+    </label><br>
+    <button type="submit">Create Loan</button>
+</form>
+
+<h2>Get Loan by ID</h2>
+<form action="/IPaccess/getLoanByID" method="GET">
+    <label>Loan ID: <input type="number" name="loanID" required></label>
+    <button type="submit">Get Loan</button>
+</form>
+
+<h2>Delete Loan by ID</h2>
+<form action="/IPaccess/deleteLoanByID" method="GET">
+    <label>Loan ID to Delete: <input type="number" name="loanID" required></label>
+    <button type="submit">Delete Loan</button>
+</form>
+</body>
+</html>

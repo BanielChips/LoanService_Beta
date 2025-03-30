@@ -24,8 +24,7 @@ DROP TABLE IF EXISTS `devices`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `devices` (
   `deviceID` int NOT NULL AUTO_INCREMENT,
-  `deviceType` ENUM('LAPTOP', 'TABLET', 'PHONE', 'HOTSPOT') NOT NULL,
-  `deviceStatus` ENUM('ACTIVE', 'INACTIVE', 'LOANED', 'DAMAGED') NOT NULL,
+  `deviceName` varchar(50) DEFAULT NULL,
   `availability` tinyint(1) NOT NULL DEFAULT '1',
   `renterID` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -41,7 +40,7 @@ CREATE TABLE `devices` (
 
 LOCK TABLES `devices` WRITE;
 /*!40000 ALTER TABLE `devices` DISABLE KEYS */;
-INSERT INTO `devices` VALUES (46,'Laptop A','ACTIVE', 1,NULL,'2025-03-16 18:09:26'),(47,'Laptop B','ACTIVE',0,NULL,'2025-03-16 18:09:26'),(48,'Projector A','ACTIVE',1,NULL,'2025-03-16 18:09:26'),(49,'Tablet A','ACTIVE',1,NULL,'2025-03-16 18:09:26'),(50,'Smartphone B','ACTIVE',0,NULL,'2025-03-16 18:09:26'),(51,'Laptop','ACTIVE',1,5,'2025-03-17 01:26:31'),(52,'Laptop','ACTIVE',1,5,'2025-03-17 01:28:53'),(53,'Laptop','ACTIVE',1,5,'2025-03-17 01:29:50');
+INSERT INTO `devices` VALUES (46,'Laptop A',1,NULL,'2025-03-16 18:09:26'),(47,'Laptop B',0,NULL,'2025-03-16 18:09:26'),(48,'Projector A',1,NULL,'2025-03-16 18:09:26'),(49,'Tablet A',1,NULL,'2025-03-16 18:09:26'),(50,'Smartphone B',0,NULL,'2025-03-16 18:09:26'),(51,'Laptop',1,5,'2025-03-17 01:26:31'),(52,'Laptop',1,5,'2025-03-17 01:28:53'),(53,'Laptop',1,5,'2025-03-17 01:29:50');
 /*!40000 ALTER TABLE `devices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +57,7 @@ CREATE TABLE `loaninformation` (
   `deviceId` int NOT NULL,
   `startDate` date NOT NULL,
   `endDate` date DEFAULT NULL,
-  `loanStatus` enum('ACTIVE', 'OVERDUE', 'RESERVED', 'REVIEW') not null,
+  `loanStatus` enum('active', 'overdue', 'reserved', 'review') not null,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`loanID`),
   KEY `fk_loan_user` (`userID`),
@@ -91,7 +90,7 @@ CREATE TABLE `users` (
   `zipCode` varchar(10) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
     `password` varchar(30) NOT NULL,
-  `role` ENUM('USER','ADMIN') not null,
+  `role` ENUM('user','admin') not null,
   `phoneNumber` varchar(20) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`userID`),
@@ -105,42 +104,10 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,'John','Doe','12345','john.doe@email.com','password', 'user','6666666666','2025-03-16 18:06:19')/*(5,'Jane','Smith','67890','jane.smith@email.com','pass','USER',555-5678,'2025-03-16 18:06:19'),(7,'Bob','Williams','11223','bob.williams@email.com','rah','USER',555-2468,'2025-03-16 18:06:19'),(9,'bobby','person','11223','bobbyp@email.com','rahhh','USER','1112223333','2025-03-16 23:41:06'),(11,'donald','duck','11223','donaldD@email.com','aerre','USER','1112223333','2025-03-17 00:25:00'),(13,'daffy','duck',NULL,'daffyD@email.com','bor','USER','2223334444','2025-03-17 00:36:14'),(15,'will','weaton',NULL,'will@email.com','gyah','USER','2223334444','2025-03-17 00:42:37'),(16,'alan','david','22334','alanD@email.com','brooo','1112224444','2025-03-17 00:44:30'),(17,'miller','lee','33445','miller@email.com','3334446666','2025-03-17 00:49:54'),(18,'cat','fish','11223','catfish@email.com','3334445555','2025-03-17 02:06:38');
+/*INSERT INTO `users` VALUES (4,'John','Doe','12345','john.doe@email.com','password', 'user','6666666666','2025-03-16 18:06:19'),(5,'Jane','Smith','67890','jane.smith@email.com','555-5678','2025-03-16 18:06:19'),(7,'Bob','Williams','11223','bob.williams@email.com','555-2468','2025-03-16 18:06:19'),(9,'bobby','person','11223','bobbyp@email.com','1112223333','2025-03-16 23:41:06'),(11,'donald','duck','11223','donaldD@email.com','1112223333','2025-03-17 00:25:00'),(13,'daffy','duck',NULL,'daffyD@email.com','2223334444','2025-03-17 00:36:14'),(15,'will','weaton',NULL,'will@email.com','2223334444','2025-03-17 00:42:37'),(16,'alan','david','22334','alanD@email.com','1112224444','2025-03-17 00:44:30'),(17,'miller','lee','33445','miller@email.com','3334446666','2025-03-17 00:49:54'),(18,'cat','fish','11223','catfish@email.com','3334445555','2025-03-17 02:06:38');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
-DROP TABLE IF EXISTS `alerts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE alerts (
-                        alertID int AUTO_INCREMENT PRIMARY KEY,
-                        alertName VARCHAR(255) NOT NULL,
-                        alertBody TEXT NOT NULL,
-                        timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                        alertType ENUM(
-                            'NEW_OVERDUE_DEVICE',
-                            'ANNOUNCEMENT',
-                            'DEVICE_REPAIR_STATUS_UPDATE',
-                            'NEW_DEVICE_REQUEST',
-                            'DEVICE_RETURNED',
-                            'LOAN_APPROVAL_REQUIRED',
-                            'SYSTEM_MAINTENANCE',
-                            'URGENT_ACTION_REQUIRED',
-                            'NOTIFICATION'
-                            ) NOT NULL,
-                        alertPriority ENUM('LOW', 'MEDIUM', 'HIGH') NOT NULL,
-                        isRead BOOLEAN NOT NULL DEFAULT FALSE,
-                        expiryDate DATETIME NULL
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-LOCK TABLES `alerts` WRITE;
-/*!40000 ALTER TABLE `alerts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `alerts` ENABLE KEYS */;
-UNLOCK TABLES;
-
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -149,6 +116,5 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
 
 -- Dump completed on 2025-03-16 22:35:49

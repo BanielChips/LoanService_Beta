@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
 public class WebHandling {
@@ -34,7 +33,7 @@ public class WebHandling {
 
         dataHandling.addUser(firstName, lastName, zipCode, email, password, phoneNumber);
         redirectAttributes.addFlashAttribute("message", "User created successfully!");
-        return "redirect:/";
+        return "redirect:/user.html";
     }
 
     @GetMapping("/IPaccess/getUserByID")
@@ -44,7 +43,7 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", user.toString());
         else
             redirectAttributes.addFlashAttribute("message", "User not found!");
-        return "redirect:/";
+        return "redirect:/user.html";
     }
 
     @GetMapping("/IPaccess/getUserByName")
@@ -54,7 +53,7 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", user.toString());
         else
             redirectAttributes.addFlashAttribute("message", "User not found!");
-        return "redirect:/";
+        return "redirect:/user.html";
     }
 
     @GetMapping("/IPaccess/login")
@@ -66,21 +65,28 @@ public class WebHandling {
             } else
                 redirectAttributes.addFlashAttribute("message", "Invalid credentials");
         }
-        return "redirect:/";
+        return "redirect:/user.html";
+    }
+
+    @GetMapping("/IPaccess/checkOverdue")
+    public String checkOverdue(RedirectAttributes redirectAttributes) {
+        dataHandling.checkAndUpdateOverdueLoans();
+        redirectAttributes.addFlashAttribute("message", "Overdue loans updated successfully.");
+        return "redirect:/admin.html";
     }
 
     @PostMapping("/IPaccess/deleteUserByID")
     public String deleteUserByID(@RequestParam int userID, RedirectAttributes redirectAttributes) {
         dataHandling.deleteUserByID(userID);
         redirectAttributes.addFlashAttribute("message", "User deleted successfully. ID: " + userID);
-        return "redirect:/";
+        return "redirect:/user.html";
     }
 
     @PostMapping("/IPaccess/deleteUserByName")
     public String deleteUserByName(@RequestParam String firstName, @RequestParam String lastName, RedirectAttributes redirectAttributes) {
         dataHandling.deleteUserByName(firstName, lastName);
         redirectAttributes.addFlashAttribute("message", "User deleted successfully. User: " + firstName + " " + lastName);
-        return "redirect:/";
+        return "redirect:/user.html";
     }
 
     //    ================================
@@ -91,29 +97,26 @@ public class WebHandling {
     public String getAllDevices(@RequestParam(required = false) Boolean available, RedirectAttributes redirectAttributes){
         StringBuilder deviceString = new StringBuilder();
 
-        // This looks confusing so to clarify, query is based on availability
-        // If Boolean available = True, the request is for all *available* devices
-        // If it is False, the request is for all devices
         if(available != null && available){
             for (Device device : dataHandling.getAvailableDevices()) {
                 deviceString.append(device.toString()).append("\n");
             }
             redirectAttributes.addFlashAttribute("message", deviceString.toString());
-            return "redirect:/";
+            return "redirect:/device.html";
         }
 
         for (Device device : dataHandling.getAllDevices()) {
             deviceString.append(device.toString()).append("\n");
         }
         redirectAttributes.addFlashAttribute("message", deviceString.toString());
-        return "redirect:/";
+        return "redirect:/device.html";
     }
 
     @PostMapping("/IPaccess/addDevice")
     public String addDevice(@RequestParam String deviceName, @RequestParam boolean availability, @RequestParam Integer renterID, RedirectAttributes redirectAttributes) {
         Device device = dataHandling.addDevice(deviceName, availability);
         redirectAttributes.addFlashAttribute("message", "Device added successfully. Device: " + device.toString());
-        return "redirect:/";
+        return "redirect:/device.html";
     }
 
     @GetMapping("/IPaccess/getDeviceByID")
@@ -123,14 +126,14 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", device.toString());
         else
             redirectAttributes.addFlashAttribute("message", "Device not found!");
-        return "redirect:/";
+        return "redirect:/device.html";
     }
 
     @PostMapping("/IPaccess/removeDeviceByID")
     public String removeDeviceByID(@RequestParam int deviceID, RedirectAttributes redirectAttributes) {
         dataHandling.removeDeviceByID(deviceID);
         redirectAttributes.addFlashAttribute("message", "Device removed successfully. ID: " + deviceID);
-        return "redirect:/";
+        return "redirect:/device.html";
     }
 
     //    ================================
@@ -144,7 +147,7 @@ public class WebHandling {
         Loan loan = dataHandling.addLoan(userID, deviceID, start, end, loanStatus);
 
         redirectAttributes.addFlashAttribute("message", loan.toString());
-        return "redirect:/";
+        return "redirect:/loan.html";
     }
 
     @GetMapping("/IPaccess/getLoanByID")
@@ -155,7 +158,7 @@ public class WebHandling {
         else
             redirectAttributes.addFlashAttribute("message", "Loan not found!");
 
-        return "redirect:/";
+        return "redirect:/loan.html";
     }
 
     @GetMapping("/IPaccess/deleteLoanByID")
@@ -163,19 +166,6 @@ public class WebHandling {
         dataHandling.deleteLoanByID(loanID);
         redirectAttributess.addFlashAttribute("message", "Loan deleted successfully. ID: " + loanID);
 
-        return "redirect:/";
-    }
-
-    @PostMapping("/IPaccess/requestLoan")
-    public String requestLoan(@RequestParam String deviceType, @RequestParam String startDate, @RequestParam String endDate, RedirectAttributes redirectAttributes) {
-        Device device = dataHandling.getFirstAvailableDeviceByType(deviceType);
-        Loan loan = null;
-        //temporary as user isn't tracked
-        User user = dataHandling.getFirstUser();
-        System.out.println(user);
-        if(device != null && user != null)
-            loan = dataHandling.addLoan(new Loan(user.getUserID(),device.getDeviceID(), startDate, endDate, "RESERVED"));
-        redirectAttributes.addFlashAttribute("message", loan);
-        return "redirect:/Home.html";
+        return "redirect:/loan.html";
     }
 }
