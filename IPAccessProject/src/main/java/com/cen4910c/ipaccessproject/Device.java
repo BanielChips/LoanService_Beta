@@ -15,12 +15,14 @@ public class Device {
     public enum DeviceType {
         LAPTOP, TABLET, PHONE, HOTSPOT
     }
+
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
 
     public enum DeviceStatus {
         ACTIVE, INACTIVE, LOANED, DAMAGED
     }
+
     @Enumerated(EnumType.STRING)
     private DeviceStatus deviceStatus;
 
@@ -33,7 +35,8 @@ public class Device {
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
-    public Device(){}
+    public Device() {
+    }
 
     public Device(String deviceType, boolean availability) {
         setDeviceType(deviceType);
@@ -51,6 +54,7 @@ public class Device {
     public int getDeviceID() {
         return deviceID;
     }
+
     public void setDeviceID(int deviceID) {
         this.deviceID = deviceID;
     }
@@ -58,13 +62,15 @@ public class Device {
     public DeviceType getDeviceType() {
         return deviceType;
     }
+
     public void setDeviceType(String deviceName) {
         try {
-            this.deviceType = DeviceType.valueOf(deviceName);
+            this.deviceType = DeviceType.valueOf(deviceName.toUpperCase());
         } catch (Exception e) {
             this.deviceType = DeviceType.LAPTOP;
         }
     }
+
 
     public DeviceStatus getDeviceStatus() {
         return deviceStatus;
@@ -73,6 +79,7 @@ public class Device {
     public void setDeviceStatus(DeviceStatus deviceStatus) {
         this.deviceStatus = deviceStatus;
     }
+
     public void setDeviceStatus(String deviceStatus) {
         try {
             this.deviceStatus = DeviceStatus.valueOf(deviceStatus);
@@ -84,6 +91,7 @@ public class Device {
     public boolean isAvailable() {
         return availability;
     }
+
     public void setAvailability(boolean availability) {
         this.availability = availability;
     }
@@ -91,6 +99,7 @@ public class Device {
     public Integer getRenterID() {
         return renterID;
     }
+
     public void setRenterID(Integer renterID) {
         this.renterID = renterID;
     }
@@ -98,6 +107,7 @@ public class Device {
     public Timestamp getCreatedAt() {
         return createdAt;
     }
+
     public void setCreatedAt(Timestamp created_at) {
         this.createdAt = created_at;
     }
@@ -108,7 +118,6 @@ public class Device {
                 "getDeviceID: " + deviceID +
                 ", deviceName: " + deviceType +
                 ", available: " + availability +
-                ", renterID: " + renterID +
                 ", created_at: " + createdAt +
                 "]";
     }

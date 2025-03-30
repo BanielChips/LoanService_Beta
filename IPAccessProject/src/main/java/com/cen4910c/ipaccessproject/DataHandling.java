@@ -271,7 +271,9 @@ public class DataHandling {
         Device device = entityManager.find(Device.class, ID);
         System.out.println("Device: " + device);
         return device;
-        /*String executeString = "SELECT d FROM Device d WHERE d.deviceID = :ID";
+        /*
+
+        String executeString = "SELECT d FROM Device d WHERE d.deviceID = :ID";
         Query query = entityManager.createQuery(executeString);
         query.setParameter("ID", ID);
         List<Device> queryDevice = query.getResultList();
@@ -282,7 +284,9 @@ public class DataHandling {
         } else {
             System.out.println("Device found for ID: " + ID);
             return queryDevice.getFirst();
-        }*/
+        }
+
+         */
     }
 
     public Device getDeviceByUserID(int ID) {
@@ -384,6 +388,20 @@ public class DataHandling {
             System.out.println("No rows affected");
         }*/
     }
+
+    @Transactional
+    public List<Loan> getAllLoans() {
+        String executeString = "SELECT l FROM Loan l";
+        Query query = entityManager.createQuery(executeString);
+        List<Loan> loans = query.getResultList();
+
+        if (loans.isEmpty()) {
+            System.out.println("No loans found.");
+            return null;
+        }
+        return loans;
+    }
+
 }
 
 

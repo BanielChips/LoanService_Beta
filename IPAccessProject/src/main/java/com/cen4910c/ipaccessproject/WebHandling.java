@@ -1,9 +1,11 @@
 package com.cen4910c.ipaccessproject;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.*;
 
 import java.time.LocalDate;
 import java.util.concurrent.atomic.AtomicReference;
@@ -24,7 +26,7 @@ public class WebHandling {
     //    User endpoints
     //    ================================
     @PostMapping("/IPaccess/addUser")
-    public String addUser(@ModelAttribute User user, RedirectAttributes redirectAttributes){
+    public String addUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         String zipCode = user.getZipCode();
@@ -57,17 +59,20 @@ public class WebHandling {
         return "redirect:/";
     }
 
-    @GetMapping("/IPaccess/login")
-    public String login(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes) {
+    @PostMapping("/IPaccess/login")
+    public String login(@RequestParam String email,
+                        @RequestParam String password,
+                        RedirectAttributes redirectAttributes) {
         User user = dataHandling.getUserByEmail(email);
-        if (user != null) {
-            if (user.getPassword().equals(password)) {
-                redirectAttributes.addFlashAttribute("message", "User logged in successfully!");
-            } else
-                redirectAttributes.addFlashAttribute("message", "Invalid credentials");
+        if (user != null && user.getPassword().equals(password)) {
+            redirectAttributes.addFlashAttribute("message", "User logged in successfully!");
+            return "redirect:/";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Invalid credentials");
+            return "redirect:/login.html";
         }
-        return "redirect:/";
     }
+
 
     @PostMapping("/IPaccess/deleteUserByID")
     public String deleteUserByID(@RequestParam int userID, RedirectAttributes redirectAttributes) {
@@ -86,15 +91,29 @@ public class WebHandling {
     //    ================================
     //    Device endpoints
     //    ================================
+
+    // Created this method to ALL and/or Available devices
+    // If true only returns available devices .. if false returns all devices
+    // Returns list into JSON and sends to response body
     @GetMapping("/IPaccess/getAllDevices")
     @ResponseBody
-    public String getAllDevices(@RequestParam(required = false) Boolean available, RedirectAttributes redirectAttributes){
+    public List<Device> getAllDevices(@RequestParam(required = false) Boolean available) {
+        if (available != null && available) {
+            return dataHandling.getAvailableDevices();
+        }
+        return dataHandling.getAllDevices();
+    }
+
+/*
+    @GetMapping("/IPaccess/getAllDevices")
+    @ResponseBody
+    public String getAllDevices(@RequestParam(required = false) Boolean available, RedirectAttributes redirectAttributes) {
         StringBuilder deviceString = new StringBuilder();
 
         // This looks confusing so to clarify, query is based on availability
         // If Boolean available = True, the request is for all *available* devices
         // If it is False, the request is for all devices
-        if(available != null && available){
+        if (available != null && available) {
             for (Device device : dataHandling.getAvailableDevices()) {
                 deviceString.append(device.toString()).append("\n");
             }
@@ -106,20 +125,25 @@ public class WebHandling {
             deviceString.append(device.toString()).append("\n");
         }
         redirectAttributes.addFlashAttribute("message", deviceString.toString());
-        return "redirect:/";
+        return "redirect:/home";
     }
 
+ */
+
     @PostMapping("/IPaccess/addDevice")
-    public String addDevice(@RequestParam String deviceName, @RequestParam boolean availability, @RequestParam Integer renterID, RedirectAttributes redirectAttributes) {
+    public String addDevice(@RequestParam String deviceName,
+                            @RequestParam(name = "availability", defaultValue = "false") boolean availability,
+                            RedirectAttributes redirectAttributes) {
         Device device = dataHandling.addDevice(deviceName, availability);
         redirectAttributes.addFlashAttribute("message", "Device added successfully. Device: " + device.toString());
         return "redirect:/";
     }
 
+
     @GetMapping("/IPaccess/getDeviceByID")
     public String getDeviceByID(@RequestParam int deviceID, RedirectAttributes redirectAttributes) {
         Device device = dataHandling.getDeviceByID(deviceID);
-        if(device != null)
+        if (device != null)
             redirectAttributes.addFlashAttribute("message", device.toString());
         else
             redirectAttributes.addFlashAttribute("message", "Device not found!");
@@ -150,7 +174,7 @@ public class WebHandling {
     @GetMapping("/IPaccess/getLoanByID")
     public String getLoanByID(@RequestParam int loanID, RedirectAttributes redirectAttributes) {
         Loan loan = dataHandling.getLoanByID(loanID);
-        if(loan != null)
+        if (loan != null)
             redirectAttributes.addFlashAttribute("message", loan.toString());
         else
             redirectAttributes.addFlashAttribute("message", "Loan not found!");
@@ -168,14 +192,23 @@ public class WebHandling {
 
     @PostMapping("/IPaccess/requestLoan")
     public String requestLoan(@RequestParam String deviceType, @RequestParam String startDate, @RequestParam String endDate, RedirectAttributes redirectAttributes) {
-        Device device = dataHandling.getFirstAvailableDeviceByType(deviceType);
+        Device.DeviceType type = Device.DeviceType.valueOf(deviceType.toUpperCase());
+        Device device = dataHandling.getFirstAvailableDeviceByType(String.valueOf(type));
         Loan loan = null;
         //temporary as user isn't tracked
         User user = dataHandling.getFirstUser();
         System.out.println(user);
-        if(device != null && user != null)
-            loan = dataHandling.addLoan(new Loan(user.getUserID(),device.getDeviceID(), startDate, endDate, "RESERVED"));
+        if (device != null && user != null)
+            loan = dataHandling.addLoan(new Loan(user.getUserID(), device.getDeviceID(), startDate, endDate, "RESERVED"));
         redirectAttributes.addFlashAttribute("message", loan);
         return "redirect:/Home.html";
     }
+
+    @GetMapping("/IPaccess/getAllLoans")
+    @ResponseBody
+    public List<Loan> getAllLoans() {
+        return dataHandling.getAllLoans();
+    }
+
+
 }

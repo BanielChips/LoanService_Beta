@@ -36,6 +36,7 @@ public class Alert {
         URGENT_ACTION_REQUIRED,
         NOTIFICATION
     }
+
     @Enumerated(EnumType.STRING)
     @Column(name = "alertType")
     private AlertType alertType;
@@ -43,6 +44,7 @@ public class Alert {
     public enum AlertPriority {
         HIGH, MEDIUM, LOW
     }
+
     @Enumerated(EnumType.STRING)
     @Column(name = "alertPriority")
     private AlertPriority alertPriority;
@@ -61,6 +63,7 @@ public class Alert {
     public String getAlertName() {
         return alertName;
     }
+
     public void setAlertName(String alertName) {
         this.alertName = alertName;
     }
@@ -68,6 +71,7 @@ public class Alert {
     public String getAlertBody() {
         return alertBody;
     }
+
     public void setAlertBody(String alertBody) {
         this.alertBody = alertBody;
     }
@@ -75,6 +79,7 @@ public class Alert {
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
+
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
@@ -82,9 +87,11 @@ public class Alert {
     public AlertType getAlertType() {
         return alertType;
     }
+
     public void setAlertType(AlertType alertType) {
         this.alertType = alertType;
     }
+
     public void setAlertType(String alertType) {
         try {
             this.alertType = AlertType.valueOf(alertType);
@@ -96,9 +103,11 @@ public class Alert {
     public AlertPriority getAlertPriority() {
         return alertPriority;
     }
+
     public void setAlertPriority(AlertPriority alertPriority) {
         this.alertPriority = alertPriority;
     }
+
     public void setAlertPriority(String alertPriority) {
         try {
             this.alertPriority = AlertPriority.valueOf(alertPriority);
@@ -110,6 +119,7 @@ public class Alert {
     public boolean isRead() {
         return isRead;
     }
+
     public void setRead(boolean isRead) {
         this.isRead = isRead;
     }
@@ -117,6 +127,7 @@ public class Alert {
     public LocalDateTime getExpiryDate() {
         return expiryDate;
     }
+
     public void setExpiryDate(LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
     }

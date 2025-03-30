@@ -1,0 +1,106 @@
+/* Global Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Stack the ribbon and form vertically */
+    height: 100vh;
+}
+
+/* Blue Ribbon Container */
+.ribbon-container {
+    width: 100%;
+    background-color: #0066cc; /* Blue Ribbon */
+    padding: 40px 0; /* Padding to give space above and below the image */
+    text-align: center; /* Center the image horizontally */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Shadow for depth */
+}
+
+/* City of Orlando Image */
+.orlando-image {
+    max-width: 80%; /* Limit image size */
+    height: auto;
+    border-radius: 8px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Shadow for depth */
+}
+
+/* Sign-In Form Container */
+.signin-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px; /* Increased width for a more comfortable layout */
+    text-align: center;
+    margin-top: 30px; /* Space between the ribbon and the form */
+}
+
+/* Form Heading */
+.signin-container h2 {
+    margin-bottom: 20px;
+    color: #333; /* Dark color for the heading */
+}
+
+/* Form Group Styling for Label and Input */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+    width: 100%;
+}
+
+/* Form Labels */
+label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Input Fields Styling */
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+/* Submit Button Styling */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff; /* Blue button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Button Hover Effect */
+.btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Forgot Password Link */
+.forgot-password {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+/* Forgot Password Link Styling */
+.forgot-password a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}

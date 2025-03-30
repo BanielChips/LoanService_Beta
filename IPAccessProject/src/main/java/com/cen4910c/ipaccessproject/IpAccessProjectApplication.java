@@ -7,26 +7,26 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class IpAccessProjectApplication implements CommandLineRunner {
 
-    private final DataHandling dataHandling;
+	private final DataHandling dataHandling;
 
-    public IpAccessProjectApplication(DataHandling dataHandling) {
-        this.dataHandling = dataHandling;
-    }
+	public IpAccessProjectApplication(DataHandling dataHandling) {
+		this.dataHandling = dataHandling;
+	}
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        SpringApplication.run(IpAccessProjectApplication.class, args);
-    }
+		SpringApplication.run(IpAccessProjectApplication.class, args);
+	}
 
-    @Override
-    public void run(String... args) throws Exception {
-        String firstName = "Bob";
-        String lastName = "Person";
-        String zip = "22334";
-        String email = "bobEmail@email.com";
-        String PhoneNumber = "5556667777";
+	@Override
+	public void run(String... args) throws Exception {
+		String firstName = "Bob";
+		String lastName = "Person";
+		String zip = "22334";
+		String email = "bobEmail@email.com";
+		String PhoneNumber = "5556667777";
 
-    }
+	}
 
     /*
     TODO:
@@ -38,5 +38,3 @@ public class IpAccessProjectApplication implements CommandLineRunner {
      */
 
 }
-
-

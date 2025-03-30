@@ -1,10 +1,11 @@
 package com.cen4910c.ipaccessproject;
 
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +29,7 @@ public class User {
     public enum Role {
         USER, ADMIN
     }
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -38,10 +40,10 @@ public class User {
     private Timestamp createdAt;
 
 
-
     public int getUserID() {
         return userID;
     }
+
     public void setUserID(int userID) {
         this.userID = userID;
     }
@@ -49,12 +51,15 @@ public class User {
     public String getFirstName() {
         return firstName;
     }
-    public void setFirstName(String firstName) {this.firstName = firstName;
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -62,6 +67,7 @@ public class User {
     public String getZipCode() {
         return zipCode;
     }
+
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
@@ -69,6 +75,7 @@ public class User {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -76,6 +83,7 @@ public class User {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -95,6 +103,7 @@ public class User {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -102,11 +111,14 @@ public class User {
     public Timestamp getCreatedAt() {
         return createdAt;
     }
+
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public User() {}
+    public User() {
+    }
+
     public User(String firstName, String lastName, String zipCode, String email, String password, String phoneNumber) {
         setFirstName(firstName);
         setLastName(lastName);

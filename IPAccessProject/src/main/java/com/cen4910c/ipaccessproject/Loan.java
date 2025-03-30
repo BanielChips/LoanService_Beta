@@ -28,6 +28,7 @@ public class Loan {
     public enum LoanStatus {
         ACTIVE, OVERDUE, RESERVED, REVIEW
     }
+
     @Enumerated(EnumType.STRING)
     private LoanStatus loanStatus;
 
@@ -37,6 +38,7 @@ public class Loan {
     public int getLoanID() {
         return loanID;
     }
+
     public void setLoanID(int loanID) {
         this.loanID = loanID;
     }
@@ -44,6 +46,7 @@ public class Loan {
     public int getUserID() {
         return userID;
     }
+
     public void setUserID(int userID) {
         this.userID = userID;
     }
@@ -51,6 +54,7 @@ public class Loan {
     public int getDeviceID() {
         return deviceID;
     }
+
     public void setDeviceID(int deviceID) {
         this.deviceID = deviceID;
     }
@@ -58,9 +62,11 @@ public class Loan {
     public LocalDate getStartDate() {
         return startDate;
     }
+
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
+
     public void setStartDate(String startDate) {
         try {
             this.startDate = LocalDate.parse(startDate);
@@ -72,9 +78,11 @@ public class Loan {
     public LocalDate getEndDate() {
         return endDate;
     }
+
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
     public void setEndDate(String endDate) {
         try {
             this.endDate = LocalDate.parse(endDate);
@@ -86,9 +94,11 @@ public class Loan {
     public String getLoanStatus() {
         return loanStatus.toString();
     }
+
     public void setLoanStatus(LoanStatus loanStatus) {
         this.loanStatus = loanStatus;
     }
+
     public void setLoanStatus(String status) {
         this.loanStatus = LoanStatus.valueOf(status.toUpperCase());
     }
@@ -96,11 +106,16 @@ public class Loan {
     public Timestamp getCreatedAt() {
         return createdAt;
     }
+
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Loan(){};
+    public Loan() {
+    }
+
+    ;
+
     public Loan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, String loanStatus) {
         this.userID = userID;
         this.deviceID = deviceID;
@@ -108,6 +123,7 @@ public class Loan {
         this.endDate = endDate;
         setLoanStatus(loanStatus);
     }
+
     public Loan(int userID, int deviceID, String startDate, String endDate, String loanStatus) {
         setUserID(userID);
         setDeviceID(deviceID);
