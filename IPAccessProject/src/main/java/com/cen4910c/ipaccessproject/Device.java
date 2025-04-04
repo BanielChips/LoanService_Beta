@@ -102,6 +102,16 @@ public class Device {
         this.createdAt = created_at;
     }
 
+    public static DeviceType convertToDeviceType(String deviceType) {
+        DeviceType result = null;
+        try {
+            result = DeviceType.valueOf(deviceType.toUpperCase());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
     @Override
     public String toString() {
         return "Device [" +

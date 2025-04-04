@@ -344,7 +344,7 @@ public class DataHandling {
     public Device getFirstAvailableDeviceByType(String type) {
         String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
         Query query = entityManager.createQuery(executeString);
-        query.setParameter("type", type);
+        query.setParameter("type", Device.convertToDeviceType(type));
         List<Device> queryDevice = query.getResultList();
 
         if (queryDevice.isEmpty()) {
