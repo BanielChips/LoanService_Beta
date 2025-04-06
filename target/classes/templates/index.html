@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beta Functions</title>
+    <link rel="stylesheet" href="/static/css/betaStyle.css">
+</head>
+<body>
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+<!--====================-->
+<h1>User Functions</h1>
+<h2>Create User</h2>
+<form action="/IPaccess/addUser" method="POST">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" required><br>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" required><br>
+
+    <label for="zip">Zip Code:</label>
+    <input type="text" id="zip" name="zipCode" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" required><br>
+
+    <button type="submit">Create User</button>
+</form>
+
+<h2>Get User by ID</h2>
+<form action="/IPaccess/getUserByID" method="GET">
+    <label for="searchUserID">User ID:</label>
+    <input type="number" id="searchUserID" name="userID" required><br>
+    <button type="submit">Get User</button>
+</form>
+
+<h2>Get User by Name</h2>
+<form action="/IPaccess/getUserByName" method="GET">
+    <label for="searchFirstName">First Name:</label>
+    <input type="text" id="searchFirstName" name="firstName" required><br>
+
+    <label for="searchLastName">Last Name:</label>
+    <input type="text" id="searchLastName" name="lastName" required><br>
+
+    <button type="submit">Get User</button>
+</form>
+
+<h2>Delete User by ID</h2>
+<form action="/IPaccess/deleteUserByID" method="POST">
+    <label for="deleteUserID">User ID:</label>
+    <input type="number" id="deleteUserID" name="userID" required><br>
+    <button type="submit">Delete User</button>
+</form>
+
+<h2>Delete User by Name</h2>
+<form action="/IPaccess/deleteUserByName" method="POST">
+    <label for="deleteFirstName">First Name:</label>
+    <input type="text" id="deleteFirstName" name="firstName" required><br>
+
+    <label for="deleteLastName">Last Name:</label>
+    <input type="text" id="deleteLastName" name="lastName" required><br>
+
+    <button type="submit">Delete User</button>
+</form>
+<!--====================-->
+
+<!--====================-->
+<h1>Device Functions</h1>
+<h2>Create Device</h2>
+<form action="/IPaccess/addDevice" method="post">
+    <label for="deviceName">Device Name:</label><br>
+    <select id="deviceName" name="deviceName" required>
+        <option value="Laptop">Laptop</option>
+        <option value="Tablet">Tablet</option>
+        <option value="Phone">Phone</option>
+    </select><br><br>
+
+    <label for="availability">Available:</label>
+    <input type="checkbox" id="availability" name="availability" value="true"><br><br>
+
+    <label for="renterID">Renter ID:</label>
+    <input type="number" id="renterID" name="renterID" required><br>
+
+    <button type="submit">Add Device</button>
+    <br><br>
+</form>
+<h2>Get Device by ID</h2>
+<form action="/IPaccess/getDeviceByID" method="get">
+    <label for="deviceID">Device ID:</label>
+    <input type="number" id="searchDeviceID" name="deviceID" required><br>
+
+    <button type="submit">Get Device</button>
+    <br><br>
+</form>
+<h2>Delete Device by ID</h2>
+<form action="/IPaccess/removeDeviceByID" method="post">
+    <label for="deviceID">Device ID:</label>
+    <input type="number" id="deleteDeviceID" name="deviceID" required><br>
+
+    <button type="submit">Remove Device</button>
+</form>
+<!--====================-->
+
+
+<!--====================-->
+<h1>Loan Functions</h1>
+<h2>Create Loan</h2>
+<form action="/IPaccess/addLoan" method="POST">
+    <label for="userID">User ID:</label>
+    <input type="number" id="userID" name="userID" required><br>
+
+    <label for="deviceID">Device ID:</label>
+    <input type="number" id="deviceID" name="deviceID" required><br>
+
+    <label for="loanStatus">Loan Status:</label>
+    <select id="loanStatus" name="loanStatus" required>
+        <option value="on time">On Time</option>
+        <option value="past due">Past Due</option>
+    </select><br>
+
+    <button type="submit">Create Loan</button>
+</form>
+<h2>Get Loan by ID</h2>
+<form action="/IPaccess/getLoanByID" method="GET">
+    <label for="loanID">Loan ID:</label>
+    <input type="number" id="loanID" name="loanID" required><br>
+
+    <button type="submit">Get Loan</button>
+</form>
+<h2>Delete Loan by ID</h2>
+<form action="/IPaccess/deleteLoanByID" method="GET">
+    <label for="loanID">Loan ID to Delete:</label>
+    <input type="number" name="loanID" required><br>
+
+    <button type="submit">Delete Loan</button>
+</form>
+
+
+<!--====================-->
+
+</body>
+</html>
