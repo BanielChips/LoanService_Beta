@@ -20,12 +20,11 @@ if (loginForm) {
 
 // handles inventory page using endpoint /IPaccess/getAllDevices
 function loadDevices(onlyAvailable = false) {
-    let url = '/IPaccess/getAllDevices';
+    let url = '/IPaccess/getDeviceInventory';
     if (onlyAvailable) {
         url += '?available=true';
     }
 
-    // send GET to /IPaccess/getAllDevices and then updates the HTML id "deviceTable"
     fetch(url)
         .then(res => res.json())
         .then(devices => {
@@ -38,14 +37,18 @@ function loadDevices(onlyAvailable = false) {
                 row.innerHTML = `
                     <td>${device.deviceID}</td>
                     <td>${device.deviceType}</td>
+                    <td>${device.deviceStatus}</td>
+                    <td>${device.availability ? 'Yes' : 'No'}</td>
+                    <td>${device.locationName}</td>
                 `;
                 tbody.appendChild(row);
             });
         })
         .catch(err => {
-            console.error('Error fetching devices:', err);
+            console.error('Error fetching device inventory:', err);
         });
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const availabilitySelect = document.getElementById('availability');
@@ -91,4 +94,3 @@ document.addEventListener('DOMContentLoaded', () => {
         loadLoans();
     }
 });
-
