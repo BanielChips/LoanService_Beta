@@ -8,7 +8,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DataHandling {
@@ -361,13 +364,22 @@ public class DataHandling {
     }
 
     @Transactional
-    public Device addDevice(String deviceName, boolean availability) {
+    public Device addDevice(String deviceName, boolean availability, int locationID) {
+        Location location = entityManager.find(Location.class, locationID);
+
+        if (location == null) {
+            throw new IllegalArgumentException("Invalid location ID: " + locationID);
+        }
+
         Device device = new Device(deviceName, availability);
+        device.setLocation(location);
+
         entityManager.persist(device);
 
         System.out.println("Device added successfully: " + device);
         return device;
     }
+
 
     @Transactional
     public void removeDeviceByID(int ID) {
@@ -402,4 +414,73 @@ public class DataHandling {
         return loans;
     }
 
+    @Transactional
+    public List<User> getAllUsers() {
+        String executeString = "SELECT u FROM User u";
+        Query query = entityManager.createQuery(executeString);
+        List<User> users = query.getResultList();
+
+        if (users.isEmpty()) {
+            System.out.println("No users found.");
+            return null;
+        }
+        return users;
+    }
+
+   /* @Transactional
+    public void assignDeviceToLocation(int deviceID, String locationName, String address, String city, String state, String zip) {
+        Device device = getDeviceByID(deviceID);
+        if (device == null) {
+            System.out.println("Device does not exist: " + deviceID);
+            return;
+        }
+        Location location = new Location(deviceID, locationName, address, city, state, zip);
+        entityManager.persist(location);
+        System.out.println("Device assigned to location successfully.");
+    }*/
+
+    @Transactional
+    public void assignDeviceToLocation(int deviceID, int locationID) {
+        Device device = entityManager.find(Device.class, deviceID);
+        Location location = entityManager.find(Location.class, locationID);
+
+        if (device == null || location == null) {
+            throw new IllegalArgumentException("Device or location not found.");
+        }
+
+        device.setLocation(location);
+    }
+
+
+    public List<Map<String, Object>> getDeviceInventoryMap(boolean availableOnly) {
+        StringBuilder queryStr = new StringBuilder(
+                "SELECT d.deviceID, d.deviceType, d.deviceStatus, d.availability, d.location.locationName " +
+                        "FROM Device d"
+        );
+
+        if (availableOnly) {
+            queryStr.append(" WHERE d.availability = TRUE");
+        }
+
+        Query query = entityManager.createQuery(queryStr.toString());
+        List<Object[]> resultList = query.getResultList();
+
+        List<Map<String, Object>> responseList = new ArrayList<>();
+        for (Object[] row : resultList) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("deviceID", row[0]);
+            map.put("deviceType", row[1]);
+            map.put("deviceStatus", row[2]);
+            map.put("availability", row[3]);
+            map.put("locationName", row[4] != null ? row[4] : "Unassigned");
+            responseList.add(map);
+        }
+        return responseList;
+    }
+
+
+
 }
+
+
+
