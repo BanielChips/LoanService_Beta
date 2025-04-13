@@ -133,11 +133,18 @@ public class WebHandling {
     @PostMapping("/IPaccess/addDevice")
     public String addDevice(@RequestParam String deviceName,
                             @RequestParam(name = "availability", defaultValue = "false") boolean availability,
+                            @RequestParam int locationID,
                             RedirectAttributes redirectAttributes) {
-        Device device = dataHandling.addDevice(deviceName, availability);
-        redirectAttributes.addFlashAttribute("message", "Device added successfully. Device: " + device.toString());
+        try {
+            Device device = dataHandling.addDevice(deviceName, availability, locationID);
+            redirectAttributes.addFlashAttribute("message", "Device added successfully. Device: " + device);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to add device: " + e.getMessage());
+        }
+
         return "redirect:/";
     }
+
 
 
     @GetMapping("/IPaccess/getDeviceByID")
@@ -209,6 +216,34 @@ public class WebHandling {
     public List<Loan> getAllLoans() {
         return dataHandling.getAllLoans();
     }
+
+    @GetMapping("/IPaccess/getAllUsers")
+    @ResponseBody
+    public List<User> getAllUsers() {
+        return dataHandling.getAllUsers();
+    }
+
+    @PostMapping("/IPaccess/assignDeviceToLocation")
+    public String assignDeviceToLocation(@RequestParam int deviceID,
+                                         @RequestParam int locationID,
+                                         RedirectAttributes redirectAttributes) {
+        try {
+            dataHandling.assignDeviceToLocation(deviceID, locationID);
+            redirectAttributes.addFlashAttribute("message", "Device assigned to location successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Error assigning device: " + e.getMessage());
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/IPaccess/getDeviceInventory")
+    @ResponseBody
+    public List<Map<String, Object>> getDeviceInventory(@RequestParam(required = false) Boolean available) {
+        return dataHandling.getDeviceInventoryMap(available != null && available);
+    }
+
+
+
 
 
 }
