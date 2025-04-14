@@ -198,18 +198,55 @@ public class WebHandling {
     }
 
     @PostMapping("/IPaccess/requestLoan")
-    public String requestLoan(@RequestParam String deviceType, @RequestParam String startDate, @RequestParam String endDate, RedirectAttributes redirectAttributes) {
-        Device.DeviceType type = Device.DeviceType.valueOf(deviceType.toUpperCase());
-        Device device = dataHandling.getFirstAvailableDeviceByType(String.valueOf(type));
+    public String requestLoan(@RequestParam String deviceType,
+                              @RequestParam String location,
+                              @RequestParam String startDate,
+                              @RequestParam String endDate,
+                              @RequestParam String firstName,
+                              @RequestParam String lastName,
+                              RedirectAttributes redirectAttributes) {
+
         Loan loan = null;
-        //temporary as user isn't tracked
-        User user = dataHandling.getFirstUser();
-        System.out.println(user);
-        if (device != null && user != null)
-            loan = dataHandling.addLoan(new Loan(user.getUserID(), device.getDeviceID(), startDate, endDate, "RESERVED"));
-        redirectAttributes.addFlashAttribute("message", loan);
+
+        // Lookup user by name
+        User user = dataHandling.getUserByName(firstName.trim(), lastName.trim());
+
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "User not found. Please check your name and try again.");
+            return "redirect:/Home.html";
+        }
+
+        // Get all available devices of the selected type
+        List<Device> availableDevices = dataHandling.getAvailableDeviceByType(deviceType);
+
+        if (availableDevices != null && !availableDevices.isEmpty()) {
+            Optional<Device> matchingDevice = availableDevices.stream()
+                    .filter(device -> device.getLocation().getLocationName().equalsIgnoreCase(location))
+                    .findFirst();
+
+            if (matchingDevice.isPresent()) {
+                Device device = matchingDevice.get();
+                loan = dataHandling.addLoan(new Loan(
+                        user.getUserID(),
+                        device.getDeviceID(),
+                        startDate,
+                        endDate,
+                        "RESERVED"
+                ));
+
+                System.out.println("Loan reserved for device: " + device.getDeviceID());
+            } else {
+                System.out.println("No available device found at the selected location.");
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("message", loan != null
+                ? "Loan successfully reserved for " + user.getFirstName() + " " + user.getLastName()
+                : "No devices available at the selected location.");
+
         return "redirect:/Home.html";
     }
+
 
     @GetMapping("/IPaccess/getAllLoans")
     @ResponseBody
@@ -242,6 +279,20 @@ public class WebHandling {
         return dataHandling.getDeviceInventoryMap(available != null && available);
     }
 
+    @PostMapping("/IPaccess/updateLoanStatus")
+    public String updateLoanStatus(@RequestParam int loanID,
+                                   @RequestParam String status,
+                                   RedirectAttributes redirectAttributes) {
+        boolean updated = dataHandling.updateLoanStatus(loanID, status);
+
+        if (updated) {
+            redirectAttributes.addFlashAttribute("message", "Loan #" + loanID + " status updated to: " + status.toUpperCase());
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Loan ID #" + loanID + " not found.");
+        }
+
+        return "redirect:/loan-list.html";
+    }
 
 
 
