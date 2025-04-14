@@ -22,13 +22,33 @@
     <div class="login-container">
         <h2>Login</h2>
         <form action="/IPaccess/login" method="get">
-            <input type="text" name="username" placeholder="Username" required>
+            <input type="text" name="email" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Log In</button>
         </form>
         <div class="forgot-password">
             <a href="/forgot-password">Forgot your password?</a>
         </div>
+        <form action="/IPaccess/register" method="post">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required><br>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required><br>
+
+            <label for="zip">Zip Code:</label>
+            <input type="text" id="zip" name="zip" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <label for="password">password:</label>
+            <input type="password" id="password" name="password" required><br>
+
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" required><br>
+            <button type="submit">Register</button>
+        </form>
     </div>
 </body>
 </html>
