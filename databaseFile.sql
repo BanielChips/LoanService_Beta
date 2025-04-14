@@ -48,6 +48,35 @@ INSERT INTO `devices` VALUES (46,'Laptop A','ACTIVE', 1,NULL,'2025-03-16 18:09:2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `locations`
+--
+
+DROP TABLE IF EXISTS `locations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `locations` (
+  `locationID` int NOT NULL AUTO_INCREMENT,
+  `locationName` varchar(255) NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `zipcode` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`locationID`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `locations`
+--
+
+LOCK TABLES `locations` WRITE;
+/*!40000 ALTER TABLE `locations` DISABLE KEYS */;
+INSERT INTO `locations` VALUES (1,'Dr. J. B. Callahan Neighborhood Center','101 North Paramore Avenue','Orlando','FL','32801','2025-04-12 23:44:56'),(2,'Sylvester Hankins Park','1340 Lake Park Court','Orlando','FL','32805','2025-04-12 23:44:56'),(3,'Northwest Community Center','3955 W D Judge Drive','Orlando','FL','32808','2025-04-12 23:44:56'),(4,'Rosemont Community Center','4872 Rose Bay Drive','Orlando','FL','32808','2025-04-12 23:44:56'),(5,'Dr. James R. Smith Neighborhood Center','1723 Bruton Blvd.','Orlando','FL','32805','2025-04-12 23:44:56'),(6,'Citrus Square Recreation Site','4525 Hickey Drive','Orlando','FL','32822','2025-04-12 23:44:56'),(7,'Englewood Neighborhood Center','6123 LaCosta Drive','Orlando','FL','32807','2025-04-12 23:44:56'),(8,'John H. Jackson Community Center','1002 West Carter St.','Orlando','FL','32802','2025-04-12 23:44:56'),(9,'L. Claudia Allen Senior Center','1840 Mable Butler Drive','Orlando','FL','32805','2025-04-12 23:44:56'),(10,'Grand Avenue Neighborhood Center','800 West Grand Street','Orlando','FL','32805','2025-04-12 23:44:56'),(11,'Ivey Lane Recreation Site','291 Silverton Street','Orlando','FL','32811','2025-04-12 23:44:56'),(12,'Langford Park & Center','1808 East Central Blvd.','Orlando','FL','32802','2025-04-12 23:44:56'),(13,'Rock Lake Community Center','440 North Tampa Ave','Orlando','FL','32805','2025-04-12 23:44:56');
+/*!40000 ALTER TABLE `locations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `loaninformation`
 --
 
@@ -69,6 +98,8 @@ CREATE TABLE `loaninformation` (
   CONSTRAINT `fk_loan_user` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+
 
 --
 -- Dumping data for table `loaninformation`
