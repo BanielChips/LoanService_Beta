@@ -203,6 +203,24 @@
     <button type="submit">Delete Loan</button>
 </form>
 
+<h2>Update Loan Status</h2>
+<form action="/IPaccess/updateLoanStatus" method="POST">
+    <label for="loanID">Loan ID:</label>
+    <input type="number" id="loan_ID" name="loanID" required><br>
+
+    <label for="loanStatus">Loan Status:</label>
+    <select id="loan_Status" name="status" required>
+        <option value="ACTIVE">Active</option>
+        <option value="OVERDUE">Overdue</option>
+        <option value="RESERVED">Reserved</option>
+        <option value="REVIEW">Review</option>
+    </select><br>
+
+    <button type="submit">Update Loan</button>
+</form>
+
+
+
 
 <!--====================-->
 
