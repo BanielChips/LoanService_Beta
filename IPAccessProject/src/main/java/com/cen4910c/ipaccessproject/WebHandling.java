@@ -66,6 +66,14 @@ public class WebHandling {
             } else
                 redirectAttributes.addFlashAttribute("message", "Invalid credentials");
         }
+        if (user.getRole() == User.Role.ADMIN) {
+            return "redirect:/admin-dashboard.html";
+        }
+        return "redirect:/";
+    }
+    @PostMapping("/IPaccess/register")
+    public String register(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String zip, @RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber, RedirectAttributes redirectAttributes) {
+        dataHandling.addUser(firstName, lastName, zip, email, password, phoneNumber);
         return "redirect:/";
     }
 
