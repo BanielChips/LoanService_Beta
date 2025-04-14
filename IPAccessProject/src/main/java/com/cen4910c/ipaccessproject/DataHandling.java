@@ -266,6 +266,22 @@ public class DataHandling {
         }
     }
 
+    @Transactional
+    public boolean updateLoanStatus(int loanID, String newStatus) {
+        Loan loan = entityManager.find(Loan.class, loanID);
+        if (loan == null) {
+            System.out.println("Loan not found with ID: " + loanID);
+            return false;
+        }
+
+        loan.setLoanStatus(newStatus.toUpperCase());
+        entityManager.merge(loan);
+
+        System.out.println("Loan status updated: #" + loanID + " -> " + newStatus);
+        return true;
+    }
+
+
 
     /**
      * Methods for managing Device data: getting, adding, deleting devices.
@@ -334,19 +350,29 @@ public class DataHandling {
     }
 
     public List<Device> getAvailableDeviceByType(String type) {
-        String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
-        Query query = entityManager.createQuery(executeString);
-        query.setParameter("type", type);
-        List<Device> queryDevice = query.getResultList();
+        try {
+            Device.DeviceType deviceTypeEnum = Device.DeviceType.valueOf(type.toUpperCase());
 
-        if (queryDevice.isEmpty()) {
-            System.out.println("No available " + type + "s found");
+            String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
+            Query query = entityManager.createQuery(executeString);
+            query.setParameter("type", deviceTypeEnum);
+
+            List<Device> queryDevice = query.getResultList();
+
+            if (queryDevice.isEmpty()) {
+                System.out.println("No available " + type + "s found");
+                return null;
+            } else {
+                System.out.println("Available devices found: " + queryDevice.size());
+                return queryDevice;
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid device type: " + type);
             return null;
-        } else {
-            System.out.println("Available devices found: " + queryDevice.size());
-            return queryDevice;
         }
     }
+
 
     public Device getFirstAvailableDeviceByType(String type) {
         String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
@@ -480,7 +506,11 @@ public class DataHandling {
 
 
 
+
 }
+
+
+
 
 
 
