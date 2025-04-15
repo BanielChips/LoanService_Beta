@@ -59,18 +59,24 @@ public class WebHandling {
         return "redirect:/";
     }
 
-    @PostMapping("/IPaccess/login")
-    public String login(@RequestParam String email,
-                        @RequestParam String password,
-                        RedirectAttributes redirectAttributes) {
+    @GetMapping("/IPaccess/login")
+    public String login(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes) {
         User user = dataHandling.getUserByEmail(email);
-        if (user != null && user.getPassword().equals(password)) {
-            redirectAttributes.addFlashAttribute("message", "User logged in successfully!");
-            return "redirect:/";
-        } else {
-            redirectAttributes.addFlashAttribute("message", "Invalid credentials");
-            return "redirect:/login.html";
+        if (user != null) {
+            if (user.getPassword().equals(password)) {
+                redirectAttributes.addFlashAttribute("message", "User logged in successfully!");
+            } else
+                redirectAttributes.addFlashAttribute("message", "Invalid credentials");
         }
+        if (user.getRole() == User.Role.ADMIN) {
+            return "redirect:/admin-dashboard.html";
+        }
+        return "redirect:/";
+    }
+    @PostMapping("/IPaccess/register")
+    public String register(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String zip, @RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber, RedirectAttributes redirectAttributes) {
+        dataHandling.addUser(firstName, lastName, zip, email, password, phoneNumber);
+        return "redirect:/";
     }
 
 
