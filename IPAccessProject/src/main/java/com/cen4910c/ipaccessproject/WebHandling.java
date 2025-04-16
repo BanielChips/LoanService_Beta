@@ -299,6 +299,27 @@ public class WebHandling {
 
         return "redirect:/loan-list.html";
     }
+    @GetMapping("/IPaccess/getUserList")
+    @ResponseBody
+    public List<Map<String, Object>> getUserList() {
+        List<User> users = dataHandling.getAllUsers();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        if (users != null) {
+            for (User user : users) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("userID", user.getUserID());
+                map.put("firstName", user.getFirstName());
+                map.put("lastName", user.getLastName());
+                map.put("zipCode", user.getZipCode());
+                map.put("email", user.getEmail());
+                map.put("role", user.getRole());
+                map.put("phoneNumber", user.getPhoneNumber());
+                result.add(map);
+            }
+        }
+        return result;
+    }
 
 
 
