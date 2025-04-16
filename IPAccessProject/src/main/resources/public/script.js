@@ -94,3 +94,32 @@ document.addEventListener('DOMContentLoaded', () => {
         loadLoans();
     }
 });
+
+function loadUsers() {
+    fetch('/IPaccess/getUserList')
+        .then(res => res.json())
+        .then(users => {
+            const tbody = document.querySelector('#userTable tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.userID}</td>
+                    <td>${user.firstName} ${user.lastName}</td>
+                    <td>${user.zipCode}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td>${user.phoneNumber}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => {
+            console.error('Error fetching users:', err);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', loadUsers);
+
