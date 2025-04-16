@@ -3,38 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Sign-In page for Loan Service System. Access the admin dashboard.">
     <title>Admin Sign-In</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="stylesLogin.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
-<body>
-    <!-- Blue Ribbon with City of Orlando Image -->
+<body class="login-page">
     <div class="ribbon-container">
-        <img src="orlando.jpg" alt="City of Orlando" class="orlando-image">
+        <img src="orlando-logo.png" alt="City of Orlando" class="orlando-image">
     </div>
 
-    <!-- Sign-In Form (Dialog Box) -->
     <div class="signin-container">
-        <h2>Admin Sign-In</h2>
-        <form action="/admin-dashboard" method="POST">
+        <h2>Sign In</h2>
+        <form id="admin-login-form">
             <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email" required>
+                <label for="email">Email:</label>
+                <input type="email" class="input-field" id="email" name="email" required aria-label="Email Address" autocomplete="off" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
             </div>
-            
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" class="input-field" placeholder="Enter your password" required>
+                <label for="password">Password:</label>
+                <input type="password" class="input-field" id="password" name="password" required aria-label="Password" autocomplete="off">
             </div>
-            
-            <button type="submit" class="btn">Sign In</button>
+            <button type="submit" class="btn">Login</button>
         </form>
 
-        <!-- Forgot password link -->
         <div class="forgot-password">
-            <a href="/forgot-password">Forgot Password?</a>
+            <a href="forgot-password.html">Forgot your password?</a> <!-- Updated link -->
         </div>
+
+        <!-- Error message container -->
+        <div id="error-message" aria-live="assertive"></div> <!-- For live error feedback -->
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            const errorMessageContainer = document.getElementById('error-message');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const email = document.querySelector('input[name="email"]').value;
+                const password = document.querySelector('input[name="password"]').value;
+
+                const adminEmail = "admin@loanservice.com";
+                const adminPassword = "admin1234";
+
+                if (email === adminEmail && password === adminPassword) {
+                    alert("Welcome, Admin!");
+                    window.location.href = "admin-dashboard.html";  // Ensure this points to your actual dashboard
+                } else {
+                    errorMessageContainer.textContent = "Invalid credentials. Please try again.";
+                }
+            });
+        });
+    </script>
 </body>
 </html>
