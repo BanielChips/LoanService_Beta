@@ -1,19 +1,24 @@
-document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent form submission for demonstration
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    var email = document.querySelector('input[name="email"]').value;
-    var password = document.querySelector('input[name="password"]').value;
+        const email = document.querySelector('input[name="email"]').value;
+        const password = document.querySelector('input[name="password"]').value;
 
-    // Admin credentials (hardcoded for demo)
-    var adminEmail = "admin@loanservice.com";
-    var adminPassword = "admin1234";
+        const adminEmail = "admin@loanservice.com";
+        const adminPassword = "admin1234";
 
-    // Check if the entered credentials match the admin credentials
-    if (email === adminEmail && password === adminPassword) {
-        alert("Welcome, Admin!");
-        // Redirect to the admin dashboard (simulated)
-        window.location.href = "/admin-dashboard";  // Change to your actual dashboard URL
-    } else {
-        alert("Invalid credentials. Please try again.");
-    }
+        if (email === adminEmail && password === adminPassword) {
+            // Provide feedback to the user, e.g., welcome message or redirect
+            alert("Welcome, Admin!");
+            window.location.href = "admin-dashboard.html";  // Make sure this points to your actual dashboard
+        } else {
+            // Add error message for the user
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = "Invalid credentials. Please try again.";
+            errorMessage.style.color = "red";
+            form.appendChild(errorMessage);  // Display the error message on the page
+        }
+    });
 });
