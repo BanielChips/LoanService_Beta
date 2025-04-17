@@ -30,6 +30,10 @@ public class Device {
     @Column(name = "renterID")
     private Integer renterID;
 
+    @ManyToOne
+    @JoinColumn(name = "locationID", referencedColumnName = "locationID")
+    private Location location;
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
@@ -110,6 +114,14 @@ public class Device {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     @Override

@@ -8,7 +8,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DataHandling {
@@ -229,6 +232,34 @@ public class DataHandling {
     }
 
     @Transactional
+    public boolean updateLoanStatus(int loanID, String newStatus) {
+        Loan loan = entityManager.find(Loan.class, loanID);
+        if (loan == null) {
+            System.out.println("Loan not found with ID: " + loanID);
+            return false;
+        }
+
+        loan.setLoanStatus(newStatus.toUpperCase());
+        entityManager.merge(loan);
+
+        System.out.println("Loan status updated: #" + loanID + " -> " + newStatus);
+        return true;
+    }
+
+    @Transactional
+    public List<Loan> getAllLoans() {
+        String executeString = "SELECT l FROM Loan l";
+        Query query = entityManager.createQuery(executeString);
+        List<Loan> loans = query.getResultList();
+
+        if (loans.isEmpty()) {
+            System.out.println("No loans found.");
+            return null;
+        }
+        return loans;
+    }
+
+    @Transactional
     public void deleteLoanByID(int ID) {
         Loan loan = getLoanByID(ID);
         entityManager.remove(loan);
@@ -368,8 +399,16 @@ public class DataHandling {
     }
 
     @Transactional
-    public Device addDevice(String deviceName, boolean availability) {
+    public Device addDevice(String deviceName, boolean availability, int locationID) {
+        Location location = entityManager.find(Location.class, locationID);
+
+        if (location == null) {
+            throw new IllegalArgumentException("Invalid location ID: " + locationID);
+        }
+
         Device device = new Device(deviceName, availability);
+        device.setLocation(location);
+
         entityManager.persist(device);
 
         System.out.println("Device added successfully: " + device);
@@ -394,6 +433,45 @@ public class DataHandling {
         } else {
             System.out.println("No rows affected");
         }*/
+    }
+
+    @Transactional
+    public void assignDeviceToLocation(int deviceID, int locationID) {
+        Device device = entityManager.find(Device.class, deviceID);
+        Location location = entityManager.find(Location.class, locationID);
+
+        if (device == null || location == null) {
+            throw new IllegalArgumentException("Device or location not found.");
+        }
+
+        device.setLocation(location);
+    }
+
+
+    public List<Map<String, Object>> getDeviceInventoryMap(boolean availableOnly) {
+        StringBuilder queryStr = new StringBuilder(
+                "SELECT d.deviceID, d.deviceType, d.deviceStatus, d.availability, d.location.locationName " +
+                        "FROM Device d"
+        );
+
+        if (availableOnly) {
+            queryStr.append(" WHERE d.availability = TRUE");
+        }
+
+        Query query = entityManager.createQuery(queryStr.toString());
+        List<Object[]> resultList = query.getResultList();
+
+        List<Map<String, Object>> responseList = new ArrayList<>();
+        for (Object[] row : resultList) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("deviceID", row[0]);
+            map.put("deviceType", row[1]);
+            map.put("deviceStatus", row[2]);
+            map.put("availability", row[3]);
+            map.put("locationName", row[4] != null ? row[4] : "Unassigned");
+            responseList.add(map);
+        }
+        return responseList;
     }
 }
 

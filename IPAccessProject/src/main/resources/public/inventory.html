@@ -7,46 +7,42 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="dashboard-sidebar">
-        <h3>Admin Dashboard</h3>
-        <nav>
-            <ul>
-                <li><a href="inventory.html">Inventory</a></li>
-                <li><a href="loan-list.html">Loan List</a></li>
-                <li><a href="user-profile.html">User Profiles</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-            </ul>
-        </nav>
-    </div>
+<div class="dashboard-sidebar">
+    <h3>Admin Dashboard</h3>
+    <nav>
+        <ul>
+            <li><a href="inventory.html">Inventory</a></li>
+            <li><a href="loan-list.html">Loan List</a></li>
+            <li><a href="user-profile.html">User Profiles</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
+</div>
 
-    <div class="dashboard-content">
-        <h2>Inventory</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Device Name</th>
-                    <th>Quantity</th>
-                    <th>Location</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Hotspot</td>
-                    <td>15</td>
-                    <td>Location 1</td>
-                    <td>Available</td>
-                </tr>
-                <tr>
-                    <td>Phone</td>
-                    <td>10</td>
-                    <td>Location 2</td>
-                    <td>Available</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="dashboard-content">
+    <h2>Inventory</h2>
 
-    <script src="script.js"></script>
+    <label for="availability">Show:</label>
+    <select id="availability">
+        <option value="all">All Devices</option>
+        <option value="available">Available Only</option>
+    </select>
+
+    <table id="deviceTable">
+        <thead>
+        <tr>
+            <th>Device ID</th>
+            <th>Device Type</th>
+            <th>Status</th>
+            <th>Availability</th>
+            <th>Location</th>
+        </tr>
+        </thead>
+
+        <tbody></tbody>
+    </table>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
