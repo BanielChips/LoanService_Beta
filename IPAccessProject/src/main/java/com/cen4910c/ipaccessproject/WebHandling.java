@@ -300,6 +300,7 @@ public class WebHandling {
         return "redirect:/loan-list.html";
     }
 
+    // Created on my local file and pushed to repo anyway. Would have to update user-profile.html access this endpoint
     @GetMapping("/IPaccess/getUserList")
     @ResponseBody
     public List<Map<String, Object>> getUserList() {
