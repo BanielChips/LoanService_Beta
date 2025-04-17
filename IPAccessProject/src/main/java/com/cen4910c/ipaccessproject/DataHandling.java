@@ -369,19 +369,29 @@ public class DataHandling {
     }
 
     public List<Device> getAvailableDeviceByType(String type) {
-        String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
-        Query query = entityManager.createQuery(executeString);
-        query.setParameter("type", type);
-        List<Device> queryDevice = query.getResultList();
+        try {
+            Device.DeviceType deviceTypeEnum = Device.DeviceType.valueOf(type.toUpperCase());
 
-        if (queryDevice.isEmpty()) {
-            System.out.println("No available " + type + "s found");
+            String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
+            Query query = entityManager.createQuery(executeString);
+            query.setParameter("type", deviceTypeEnum);
+
+            List<Device> queryDevice = query.getResultList();
+
+            if (queryDevice.isEmpty()) {
+                System.out.println("No available " + type + "s found");
+                return null;
+            } else {
+                System.out.println("Available devices found: " + queryDevice.size());
+                return queryDevice;
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid device type: " + type);
             return null;
-        } else {
-            System.out.println("Available devices found: " + queryDevice.size());
-            return queryDevice;
         }
     }
+
 
     public Device getFirstAvailableDeviceByType(String type) {
         String executeString = "SELECT d FROM Device d WHERE d.deviceType = :type AND d.availability = TRUE";
