@@ -3,6 +3,7 @@ package com.cen4910c.ipaccessproject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.*;
@@ -57,6 +58,13 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", "User not found!");
         return "redirect:/";
     }
+
+        @GetMapping("/IPaccess/getAllUsers")
+        public String getAllUsers(Model model){
+            List<User> users = dataHandling.getAllUsers();
+            model.addAttribute("users", users);
+            return "user-profile";
+        }
 
     @GetMapping("/IPaccess/login")
     public String login(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes) {
@@ -259,11 +267,11 @@ public class WebHandling {
         return dataHandling.getAllLoans();
     }
 
-    @GetMapping("/IPaccess/getAllUsers")
-    @ResponseBody
-    public List<User> getAllUsers() {
-        return dataHandling.getAllUsers();
-    }
+//    @GetMapping("/IPaccess/getAllUsers")
+//    @ResponseBody
+//    public List<User> getAllUsers() {
+//        return dataHandling.getAllUsers();
+//    }
 
     @PostMapping("/IPaccess/assignDeviceToLocation")
     public String assignDeviceToLocation(@RequestParam int deviceID,
