@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beta Functions</title>
-    <link rel="stylesheet" href="/static/css/betaStyle.css">
+    <link rel="stylesheet" href="/css/betaStyle.css">
 </head>
 <body>
 <div th:if="${message}">
@@ -154,6 +154,22 @@
     <input type="number" name="loanID" required><br>
 
     <button type="submit">Delete Loan</button>
+</form>
+
+<h2>Update Loan Status</h2>
+<form action="/IPaccess/updateLoanStatus" method="POST">
+    <label for="loanID">Loan ID:</label>
+    <input type="number" id="loan_ID" name="loanID" required><br>
+
+    <label for="loanStatus">Loan Status:</label>
+    <select id="loan_Status" name="status" required>
+        <option value="ACTIVE">Active</option>
+        <option value="OVERDUE">Overdue</option>
+        <option value="RESERVED">Reserved</option>
+        <option value="REVIEW">Review</option>
+    </select><br>
+
+    <button type="submit">Update Loan</button>
 </form>
 
 
