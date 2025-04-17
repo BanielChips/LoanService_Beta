@@ -21,7 +21,6 @@ public class WebHandling {
         return "index";
     }
 
-
     //    ================================
     //    User endpoints
     //    ================================
