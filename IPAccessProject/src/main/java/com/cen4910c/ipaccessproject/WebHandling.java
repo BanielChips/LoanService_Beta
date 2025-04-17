@@ -1,8 +1,14 @@
 package com.cen4910c.ipaccessproject;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -12,6 +18,9 @@ public class WebHandling {
 
     @Autowired
     private DataHandling dataHandling;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String home() {
@@ -28,7 +37,7 @@ public class WebHandling {
         String lastName = user.getLastName();
         String zipCode = user.getZipCode();
         String email = user.getEmail();
-        String password = user.getPassword();
+        String password = passwordEncoder.encode(user.getPassword());
         String phoneNumber = user.getPhoneNumber();
 
         dataHandling.addUser(firstName, lastName, zipCode, email, password, phoneNumber);
@@ -59,11 +68,10 @@ public class WebHandling {
     @GetMapping("/IPaccess/login")
     public String login(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes) {
         User user = dataHandling.getUserByEmail(email);
-        if (user != null) {
-            if (user.getPassword().equals(password)) {
-                redirectAttributes.addFlashAttribute("message", "User logged in successfully!");
-            } else
-                redirectAttributes.addFlashAttribute("message", "Invalid credentials");
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            redirectAttributes.addFlashAttribute("message", "User logged in successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Invalid credentials");
         }
         return "redirect:/user.html";
     }
