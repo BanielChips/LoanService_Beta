@@ -71,7 +71,7 @@ public class WebHandling {
         if (user.getRole() == User.Role.ADMIN) {
             return "redirect:/admin-dashboard.html";
         }
-        return "redirect:/request.html";
+        return "redirect:/Home.html";
     }
     @PostMapping("/IPaccess/register")
     public String register(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String zip, @RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber, RedirectAttributes redirectAttributes) {
