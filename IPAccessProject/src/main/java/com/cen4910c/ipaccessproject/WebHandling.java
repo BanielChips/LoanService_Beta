@@ -92,7 +92,10 @@ public class WebHandling {
             } else
                 redirectAttributes.addFlashAttribute("message", "Invalid credentials");
         }
-        return "redirect:/";
+        if (user.getRole() == User.Role.ADMIN) {
+            return "redirect:/admin-dashboard.html";
+        }
+        return "redirect:/Home.html";
     }
 
     @PostMapping("/IPaccess/deleteUserByID")
