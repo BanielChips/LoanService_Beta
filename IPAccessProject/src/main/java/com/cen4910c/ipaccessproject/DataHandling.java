@@ -32,6 +32,17 @@ public class DataHandling {
     /**
      * Methods for managing User data: getting, adding, deleting users.
      */
+    public List<User> getAllUsers(){
+        String executeString = "SELECT u FROM User u";
+        Query query = entityManager.createQuery(executeString);
+        List<User> queryUser = query.getResultList();
+
+        if (queryUser.isEmpty()){
+            System.out.println("No users found");
+        }
+        return queryUser;
+    }
+
     public User getUserByID(int ID) {
         User user = entityManager.find(User.class, ID);
         System.out.println("User: " + user);

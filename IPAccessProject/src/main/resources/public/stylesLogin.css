@@ -47,21 +47,20 @@ button:hover {
     background-color: #0056b3;
 }
 
-.forgot-password {
+.forgot-password, .register {
     margin-top: 10px;
     font-size: 0.9em;
 }
 
-.forgot-password a {
+.forgot-password a, .register a {
     color: #007bff;
     text-decoration: none;
 }
 
-.forgot-password a:hover {
+.forgot-password a:hover, .register a:hover {
     text-decoration: underline;
 }
 
-/* Navigation Bar Styling */
 .navbar {
     background-color: #007bff;
     padding: 10px 0;
@@ -72,7 +71,6 @@ button:hover {
     text-align: center;
 }
 
-/* Logo Container */
 .logo-container {
     margin-bottom: 10px;
 }

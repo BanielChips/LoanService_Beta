@@ -2,10 +2,12 @@ package com.cen4910c.ipaccessproject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
@@ -24,7 +26,7 @@ public class WebHandling {
     //    User endpoints
     //    ================================
     @PostMapping("/IPaccess/addUser")
-    public String addUser(@ModelAttribute User user, RedirectAttributes redirectAttributes){
+    public void addUser(@ModelAttribute User user){
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         String zipCode = user.getZipCode();
@@ -33,8 +35,24 @@ public class WebHandling {
         String phoneNumber = user.getPhoneNumber();
 
         dataHandling.addUser(firstName, lastName, zipCode, email, password, phoneNumber);
-        redirectAttributes.addFlashAttribute("message", "User created successfully!");
-        return "redirect:/";
+    }
+
+    @GetMapping("/IPaccess/register")
+    public String register(Model model){
+        model.addAttribute("user", new User());
+        return "registration";
+    }
+/* TODO:
+    Review what I changed here and copy them to notes.
+    - login.html changes
+    - stylesLogin.css changes
+    - added registration.html, registerSuccess.html
+    - added get and post for /register
+*/
+    @PostMapping("/IPaccess/register")
+    public String confirmRegistration(@ModelAttribute("user") User user){
+        addUser(user);
+        return "redirect:/registerSuccess";
     }
 
     @GetMapping("/IPaccess/getUserByID")
@@ -57,6 +75,14 @@ public class WebHandling {
         return "redirect:/";
     }
 
+    @GetMapping("/IPaccess/getAllUsers")
+    public String getAllUsers(Model model) {
+        List<User> users = dataHandling.getAllUsers();
+        model.addAttribute("users", users);
+
+        return "user-profile";
+    }
+
     @GetMapping("/IPaccess/login")
     public String login(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes) {
         User user = dataHandling.getUserByEmail(email);
@@ -66,14 +92,6 @@ public class WebHandling {
             } else
                 redirectAttributes.addFlashAttribute("message", "Invalid credentials");
         }
-        if (user.getRole() == User.Role.ADMIN) {
-            return "redirect:/admin-dashboard.html";
-        }
-        return "redirect:/";
-    }
-    @PostMapping("/IPaccess/register")
-    public String register(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String zip, @RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber, RedirectAttributes redirectAttributes) {
-        dataHandling.addUser(firstName, lastName, zip, email, password, phoneNumber);
         return "redirect:/";
     }
 
