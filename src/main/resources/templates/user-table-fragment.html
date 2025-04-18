@@ -1,0 +1,24 @@
+<table class="table" th:fragment="userTable(users)">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First</th>
+        <th>Last</th>
+        <th>Zip Code</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.userID}" style="text-align: center;"></td>
+            <td th:text="${user.firstName}" style="text-align: center;"></td>
+            <td th:text="${user.lastName}" style="text-align: center;"></td>
+            <td th:text="${user.zipCode}" style="text-align: center;"></td>
+            <td th:text="${user.email}" style="text-align: center;"></td>
+            <td th:text="${user.phoneNumber}" style="text-align: center;"></td>
+        </tr>
+    </tbody>
+</table>
+
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration</title>
+</head>
+<body>
+<h1>User Registration</h1>
+
+<form th:action="@{/IPaccess/register}" th:object="${user}" method="get">
+    <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" th:field="*{firstName}" id="firstName" required />
+    </div>
+
+    <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" th:field="*{lastName}" id="lastName" required />
+    </div>
+
+    <div>
+        <label for="zip">Zip Code:</label>
+        <input type="text" th:field="*{zipCode}" id="zip" required />
+    </div>
+
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" th:field="*{email}" id="email" required />
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" th:field="*{password}" id="password" required />
+    </div>
+
+    <div>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" required />
+    </div>
+
+    <div>
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" th:field="*{phoneNumber}" id="phoneNumber" required />
+    </div>
+
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>
