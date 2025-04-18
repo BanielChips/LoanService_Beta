@@ -9,7 +9,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.*;
 
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
 public class WebHandling {
@@ -81,10 +80,16 @@ public class WebHandling {
         return "redirect:/Home.html";
     }
 
+    @GetMapping("IPaccess/register")
+    public String registerPage(Model model) {
+        model.addAttribute("user", new User());
+        return "registration";
+    }
+
     @PostMapping("/IPaccess/register")
-    public String register(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String zip, @RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber, RedirectAttributes redirectAttributes) {
-        dataHandling.addUser(firstName, lastName, zip, email, password, phoneNumber);
-        return "redirect:/registerSuccess.html";
+    public String registration(@ModelAttribute("user") User user) {
+        dataHandling.addUser(user.getFirstName(), user.getLastName(), user.getZipCode(), user.getEmail(), user.getPassword(), user.getPhoneNumber());
+        return "registerSuccess";
     }
 
     @PostMapping("/IPaccess/deleteUserByID")
