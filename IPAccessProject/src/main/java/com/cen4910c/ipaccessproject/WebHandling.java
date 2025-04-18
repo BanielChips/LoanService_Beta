@@ -87,7 +87,6 @@ public class WebHandling {
         return "redirect:/registerSuccess.html";
     }
 
-
     @PostMapping("/IPaccess/deleteUserByID")
     public String deleteUserByID(@RequestParam int userID, RedirectAttributes redirectAttributes) {
         dataHandling.deleteUserByID(userID);

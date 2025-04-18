@@ -31,6 +31,7 @@ CREATE TABLE `devices` (
   `availability` tinyint(1) NOT NULL DEFAULT '1',
   `renterID` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `locationID` int,
   PRIMARY KEY (`deviceID`),
   KEY `fk_renter` (`renterID`),
   CONSTRAINT `fk_renter` FOREIGN KEY (`renterID`) REFERENCES `users` (`userID`) ON DELETE SET NULL
@@ -43,7 +44,7 @@ CREATE TABLE `devices` (
 
 LOCK TABLES `devices` WRITE;
 /*!40000 ALTER TABLE `devices` DISABLE KEYS */;
-INSERT INTO `devices` VALUES (46,'Laptop A','ACTIVE', 1,NULL,'2025-03-16 18:09:26'),(47,'Laptop B','ACTIVE',0,NULL,'2025-03-16 18:09:26'),(48,'Projector A','ACTIVE',1,NULL,'2025-03-16 18:09:26'),(49,'Tablet A','ACTIVE',1,NULL,'2025-03-16 18:09:26'),(50,'Smartphone B','ACTIVE',0,NULL,'2025-03-16 18:09:26'),(51,'Laptop','ACTIVE',1,5,'2025-03-17 01:26:31'),(52,'Laptop','ACTIVE',1,5,'2025-03-17 01:28:53'),(53,'Laptop','ACTIVE',1,5,'2025-03-17 01:29:50');
+INSERT INTO `devices` VALUES (46,'Laptop A','ACTIVE', 1,NULL,'2025-03-16 18:09:26',1),(47,'Laptop B','ACTIVE',0,NULL,'2025-03-16 18:09:26',2),(48,'Projector A','ACTIVE',1,NULL,'2025-03-16 18:09:26',3),(49,'Tablet A','ACTIVE',1,NULL,'2025-03-16 18:09:26',4),(50,'Smartphone B','ACTIVE',0,NULL,'2025-03-16 18:09:26',5),(51,'Laptop','ACTIVE',1,5,'2025-03-17 01:26:31',6),(52,'Laptop','ACTIVE',1,5,'2025-03-17 01:28:53',7),(53,'Laptop','ACTIVE',1,5,'2025-03-17 01:29:50',8);
 /*!40000 ALTER TABLE `devices` ENABLE KEYS */;
 UNLOCK TABLES;
 
