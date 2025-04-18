@@ -59,12 +59,12 @@ public class WebHandling {
         return "redirect:/";
     }
 
-        @GetMapping("/IPaccess/getAllUsers")
-        public String getAllUsers(Model model){
-            List<User> users = dataHandling.getAllUsers();
-            model.addAttribute("users", users);
-            return "user-profile";
-        }
+    @GetMapping("/IPaccess/getAllUsers")
+    public String getAllUsers(Model model){
+        List<User> users = dataHandling.getAllUsers();
+        model.addAttribute("users", users);
+        return "user-profile";
+    }
 
     @GetMapping("/IPaccess/login")
     public String login(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes) {
@@ -80,10 +80,11 @@ public class WebHandling {
         }
         return "redirect:/Home.html";
     }
+
     @PostMapping("/IPaccess/register")
     public String register(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String zip, @RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber, RedirectAttributes redirectAttributes) {
         dataHandling.addUser(firstName, lastName, zip, email, password, phoneNumber);
-        return "redirect:/";
+        return "redirect:/registerSuccess.html";
     }
 
 
