@@ -3,6 +3,9 @@ package com.cen4910c.ipaccessproject;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class IpAccessProjectApplication implements CommandLineRunner {
@@ -14,7 +17,6 @@ public class IpAccessProjectApplication implements CommandLineRunner {
     }
 
     public static void main(String[] args) {
-
         SpringApplication.run(IpAccessProjectApplication.class, args);
     }
 
@@ -24,8 +26,14 @@ public class IpAccessProjectApplication implements CommandLineRunner {
         String lastName = "Person";
         String zip = "22334";
         String email = "bobEmail@email.com";
-        String PhoneNumber = "5556667777";
+        String phoneNumber = "5556667777";
 
+        // Sample data insert or test logic can be added here if needed
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     /*
@@ -36,7 +44,4 @@ public class IpAccessProjectApplication implements CommandLineRunner {
         3. Make the page interact with my backend (Springboot controller)
         4. Confirm page running on server can affect and retrieve data in db
      */
-
 }
-
-

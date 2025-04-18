@@ -1,7 +1,6 @@
 package com.cen4910c.ipaccessproject;
 
 import jakarta.persistence.*;
-
 import java.sql.Timestamp;
 
 @Entity
@@ -37,7 +36,7 @@ public class Device {
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
-    public Device(){}
+    public Device() {}
 
     public Device(String deviceType, boolean availability) {
         setDeviceType(deviceType);
@@ -64,7 +63,7 @@ public class Device {
     }
     public void setDeviceType(String deviceName) {
         try {
-            this.deviceType = DeviceType.valueOf(deviceName);
+            this.deviceType = DeviceType.valueOf(deviceName.toUpperCase());
         } catch (Exception e) {
             this.deviceType = DeviceType.LAPTOP;
         }
@@ -79,7 +78,7 @@ public class Device {
     }
     public void setDeviceStatus(String deviceStatus) {
         try {
-            this.deviceStatus = DeviceStatus.valueOf(deviceStatus);
+            this.deviceStatus = DeviceStatus.valueOf(deviceStatus.toUpperCase());
         } catch (Exception e) {
             this.deviceStatus = DeviceStatus.INACTIVE;
         }
@@ -107,13 +106,11 @@ public class Device {
     }
 
     public static DeviceType convertToDeviceType(String deviceType) {
-        DeviceType result = null;
         try {
-            result = DeviceType.valueOf(deviceType.toUpperCase());
+            return DeviceType.valueOf(deviceType.toUpperCase());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Invalid device type: " + deviceType);
         }
-        return result;
     }
 
     public Location getLocation() {
@@ -134,5 +131,4 @@ public class Device {
                 ", created_at: " + createdAt +
                 "]";
     }
-
 }
