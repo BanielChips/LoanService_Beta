@@ -18,8 +18,19 @@
         </ul>
     </nav>
 </div>
-
 <div class="dashboard-content">
+    <form action="/IPaccess/updateLoanStatus" method="post">
+        <label for="loanID">Loan ID:</label>
+        <input id="loanID" type="number" name="loanID">
+        <label for="status">Loan Status:</label>
+        <select id="status" name="status">
+            <option value="RESERVED">Reserved</option>
+            <option value="ACTIVE">Active</option>
+            <option value="RESERVED">Overdue</option>
+            <option value="REVIEW">Review</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
     <h2>Loan List</h2>
     <table id="loanTable">
         <thead>

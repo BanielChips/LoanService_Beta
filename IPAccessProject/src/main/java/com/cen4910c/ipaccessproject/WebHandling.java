@@ -301,6 +301,7 @@ public class WebHandling {
     public String updateLoanStatus(@RequestParam int loanID,
                                    @RequestParam String status,
                                    RedirectAttributes redirectAttributes) {
+        System.out.println("it is being called");
         boolean updated = dataHandling.updateLoanStatus(loanID, status);
 
         if (updated) {
