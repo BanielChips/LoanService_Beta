@@ -28,10 +28,9 @@ public class IpAccessProjectApplication implements CommandLineRunner {
         String email = "bobEmail@email.com";
         String phoneNumber = "5556667777";
 
-        // Sample usage can go here
+        // Sample data insert or test logic can be added here if needed
     }
 
-    // ✅ Moved this here, after constructor and methods
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

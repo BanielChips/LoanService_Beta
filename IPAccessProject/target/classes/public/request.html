@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="stylesElements.css">
 </head>
 <body>
-<!-- Navigation Bar -->
+
 <header class="navbar">
-    <!-- Logo Section -->
+
     <div class="logo-container">
         <a href="Home.html">
             <img src="logo.png" alt="Logo" class="logo">
         </a>
     </div>
-    
-    <!-- Menu Section -->
+
+
     <nav>
         <ul class="menu">
             <li><a href="request.html">Request</a></li>
@@ -28,77 +28,85 @@
     </nav>
 </header>
 
-    <!-- Content Section -->
-    <div class="content">
-        <h1>Device Loan Request Form</h1>
 
-        <!-- Form Section -->
-        <form action="Home.html" method="POST" class="request-form">
-            <!-- Device Dropdown Question -->
-            <label for="device">What device do you want to check out?</label>
-            <select id="device" name="device" required>
-                <option value="" disabled selected>Select a device</option>
-                <option value="hotspot">Hotspot</option>
-                <option value="phone">Phone</option>
-                <option value="tablet">Tablet</option>
-                <option value="laptop">Laptop</option>
-            </select>
+<div class="content">
+    <h1>Device Loan Request Form</h1>
 
-            <!-- Location Dropdown Question -->
-            <label for="location">Select a pickup location:</label>
-            <select id="location" name="location" required>
-                <option value="" disabled selected>Select a location</option>
-                <option value="Dr. J. B. Callahan Neighborhood Center">
-                    Dr. J. B. Callahan Neighborhood Center, 101 North Paramore Avenue, 32801
-                </option>
-                <option value="Sylvester Hankins Park">
-                    Sylvester Hankins Park, 1340 Lake Park Court, 32805
-                </option>
-                <option value="Northwest Community Center">
-                    Northwest Community Center, 3955 W D Judge Drive, 32808
-                </option>
-                <option value="Rosemont Community Center">
-                    Rosemont Community Center, 4872 Rose Bay Drive, 32808
-                </option>
-                <option value="Dr. James R. Smith Neighborhood Center">
-                    Dr. James R. Smith Neighborhood Center, 1723 Bruton Blvd., 32805
-                </option>
-                <option value="Citrus Square Recreation Site">
-                    Citrus Square Recreation Site, 4525 Hickey Drive, 32822
-                </option>
-                <option value="Engelwood Neighborhood Center">
-                    Engelwood Neighborhood Center, 6123 LaCosta Drive, 32807
-                </option>
-                <option value="John H. Jackson Community Center">
-                    John H. Jackson Community Center, 1002 West Carter St., 32802
-                </option>
-                <option value="L. Claudia Allen Senior Center">
-                    L. Claudia Allen Senior Center, 1840 Mable Butler Drive, 32805
-                </option>
-                <option value="Grand Avenue Neighborhood Center">
-                    Grand Avenue Neighborhood Center, 800 West Grand Street, 32805
-                </option>
-                <option value="Ivey Lane Recreation Site">
-                    Ivey Lane Recreation Site, 291 Silverton Street, 32811
-                </option>
-                <option value="Langford Park & Center">
-                    Langford Park & Center, 1808 East Central Blvd., 32802
-                </option>
-            </select>
 
-            <!-- Pickup Date Question -->
-            <label for="pickup-date">Select a pickup date:</label>
-            <input type="date" id="pickup-date" name="pickup-date" required>
+    <form action="/IPaccess/requestLoan" method="POST" class="request-form">
 
-            <!-- Return Date Question -->
-            <label for="return-date">Select a return date:</label>
-            <input type="date" id="return-date" name="return-date" required>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required>
 
-            <!-- Submit Button -->
-            <div class="button-container">
-                <button type="submit">Submit Request</button>
-            </div>
-        </form>
-    </div>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required>
+
+
+        <label for="deviceType">What device do you want to check out?</label>
+        <select id="deviceType" name="deviceType" required>
+            <option value="" disabled selected>Select a device</option>
+            <option value="HOTSPOT">Hotspot</option>
+            <option value="PHONE">Phone</option>
+            <option value="TABLET">Tablet</option>
+            <option value="LAPTOP">Laptop</option>
+        </select>
+
+
+        <label for="location">Select a pickup location:</label>
+        <select id="location" name="location" required>
+            <option value="" disabled selected>Select a location</option>
+            <option value="Dr. J. B. Callahan Neighborhood Center">
+                Dr. J. B. Callahan Neighborhood Center, 101 North Paramore Avenue, 32801
+            </option>
+            <option value="Sylvester Hankins Park">
+                Sylvester Hankins Park, 1340 Lake Park Court, 32805
+            </option>
+            <option value="Northwest Community Center">
+                Northwest Community Center, 3955 W D Judge Drive, 32808
+            </option>
+            <option value="Rosemont Community Center">
+                Rosemont Community Center, 4872 Rose Bay Drive, 32808
+            </option>
+            <option value="Dr. James R. Smith Neighborhood Center">
+                Dr. James R. Smith Neighborhood Center, 1723 Bruton Blvd., 32805
+            </option>
+            <option value="Citrus Square Recreation Site">
+                Citrus Square Recreation Site, 4525 Hickey Drive, 32822
+            </option>
+            <option value="Engelwood Neighborhood Center">
+                Engelwood Neighborhood Center, 6123 LaCosta Drive, 32807
+            </option>
+            <option value="John H. Jackson Community Center">
+                John H. Jackson Community Center, 1002 West Carter St., 32802
+            </option>
+            <option value="L. Claudia Allen Senior Center">
+                L. Claudia Allen Senior Center, 1840 Mable Butler Drive, 32805
+            </option>
+            <option value="Grand Avenue Neighborhood Center">
+                Grand Avenue Neighborhood Center, 800 West Grand Street, 32805
+            </option>
+            <option value="Ivey Lane Recreation Site">
+                Ivey Lane Recreation Site, 291 Silverton Street, 32811
+            </option>
+            <option value="Langford Park & Center">
+                Langford Park & Center, 1808 East Central Blvd., 32802
+            </option>
+        </select>
+
+
+        <label for="startDate">Select a pickup date:</label>
+        <input type="date" id="startDate" name="startDate" required>
+
+
+        <label for="endDate">Select a return date:</label>
+        <input type="date" id="endDate" name="endDate" required>
+
+
+        <div class="button-container">
+            <button type="submit">Submit Request</button>
+        </div>
+    </form>
+</div>
 </body>
 </html>

@@ -1,8 +1,6 @@
 package com.cen4910c.ipaccessproject;
 
-
 import jakarta.persistence.*;
-
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
@@ -34,6 +32,24 @@ public class Loan {
     @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
 
+    public Loan() {}
+
+    public Loan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, String loanStatus) {
+        this.userID = userID;
+        this.deviceID = deviceID;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        setLoanStatus(loanStatus);
+    }
+
+    public Loan(int userID, int deviceID, String startDate, String endDate, String loanStatus) {
+        setUserID(userID);
+        setDeviceID(deviceID);
+        setStartDate(startDate);
+        setEndDate(endDate);
+        setLoanStatus(loanStatus);
+    }
+
     public int getLoanID() {
         return loanID;
     }
@@ -61,12 +77,26 @@ public class Loan {
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
+    public void setStartDate(String startDate) {
+        try {
+            this.startDate = LocalDate.parse(startDate);
+        } catch (Exception e) {
+            this.startDate = LocalDate.now();
+        }
+    }
 
     public LocalDate getEndDate() {
         return endDate;
     }
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+    public void setEndDate(String endDate) {
+        try {
+            this.endDate = LocalDate.parse(endDate);
+        } catch (Exception e) {
+            this.endDate = LocalDate.now();
+        }
     }
 
     public String getLoanStatus() {
@@ -86,16 +116,6 @@ public class Loan {
         this.createdAt = createdAt;
     }
 
-    public Loan(){};
-    public Loan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, String loanStatus) {
-        this.userID = userID;
-        this.deviceID = deviceID;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        setLoanStatus(loanStatus);
-    }
-
-    // I noticed the database was not automatically assigning a created_at date because JPA was overriding it
     @PrePersist
     public void prePersist() {
         if (createdAt == null) {
