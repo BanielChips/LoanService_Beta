@@ -18,6 +18,18 @@
         </ul>
     </nav>
 </div>
+<form action="/IPaccess/updateLoanStatus" method="post">
+    <label for="loanID">Loan ID:</label>
+    <input id="loanID" type="number" name="loanID">
+    <label for="status">Loan Status:</label>
+    <select id="status" name="status">
+        <option value="RESERVED">Reserved</option>
+        <option value="ACTIVE">Active</option>
+        <option value="OVERDUE">Overdue</option>
+        <option value="REVIEW">Review</option>
+    </select>
+    <button type="submit">Submit</button>
+</form>
 <div class="dashboard-content">
     <form action="/IPaccess/updateLoanStatus" method="post">
         <label for="loanID">Loan ID:</label>
@@ -26,7 +38,7 @@
         <select id="status" name="status">
             <option value="RESERVED">Reserved</option>
             <option value="ACTIVE">Active</option>
-            <option value="RESERVED">Overdue</option>
+            <option value="OVERDUE">Overdue</option>
             <option value="REVIEW">Review</option>
         </select>
         <button type="submit">Submit</button>

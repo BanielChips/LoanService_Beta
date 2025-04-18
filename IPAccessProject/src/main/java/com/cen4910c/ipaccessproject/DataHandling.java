@@ -116,6 +116,12 @@ public class DataHandling {
         return user;
     }
 
+    @Transactional
+    public User addUser(User user) {
+        entityManager.persist(user);
+        return user;
+    }
+
     /**
      * deleteUserByID Finds a user in the database by their ID and deletes the user from the database.
      * @param ID int ID of the user.

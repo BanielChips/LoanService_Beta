@@ -92,6 +92,14 @@ public class WebHandling {
         return "registerSuccess";
     }
 
+    @PostMapping("/IPaccess/updateUserRole")
+    public String updateUserRole(@RequestParam int userID, @RequestParam String role, RedirectAttributes redirectAttributes) {
+        User user = dataHandling.getUserByID(userID);
+        user.setRole(role);
+        dataHandling.addUser(user);
+        return "redirect:/";
+    }
+
     @PostMapping("/IPaccess/deleteUserByID")
     public String deleteUserByID(@RequestParam int userID, RedirectAttributes redirectAttributes) {
         dataHandling.deleteUserByID(userID);
