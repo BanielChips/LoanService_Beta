@@ -80,7 +80,7 @@ public class WebHandling {
         return "redirect:/Home.html";
     }
 
-    @GetMapping("IPaccess/register")
+    @GetMapping("/IPaccess/register")
     public String registerPage(Model model) {
         model.addAttribute("user", new User());
         return "registration";
