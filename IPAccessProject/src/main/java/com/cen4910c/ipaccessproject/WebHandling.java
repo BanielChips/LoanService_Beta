@@ -77,6 +77,9 @@ public class WebHandling {
         } else {
             redirectAttributes.addFlashAttribute("message", "Invalid credentials");
         }
+        assert user != null;
+        if(user.getRole() == User.Role.ADMIN)
+            return "admin-dashboard";
         return "redirect:/Home.html";
     }
 
@@ -285,6 +288,11 @@ public class WebHandling {
         }
 
         return "redirect:/loan-list.html";
+    }
+
+    @GetMapping("/loan-list")
+    public String loanList() {
+        return "loan-list";
     }
 
     // Created on my local file and pushed to repo anyway. Would have to update user-profile.html access this endpoint

@@ -139,7 +139,8 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,'John','Doe','12345','john.doe@email.com','password', 'user','6666666666','2025-03-16 18:06:19')
+INSERT INTO `users` VALUES (4,'John','Doe','12345','john.doe@email.com','password', 'user','6666666666','2025-03-16 18:06:19'),
+(5, 'admin','admin','66666','admin@email.com','pass','ADMIN',55555,'2025-03-16 18:06:19')
 /*(5,'Jane','Smith','67890','jane.smith@email.com','pass','USER',555-5678,'2025-03-16 18:06:19'),(7,'Bob','Williams','11223','bob.williams@email.com','rah','USER',555-2468,'2025-03-16 18:06:19'),(9,'bobby','person','11223','bobbyp@email.com','rahhh','USER','1112223333','2025-03-16 23:41:06'),(11,'donald','duck','11223','donaldD@email.com','aerre','USER','1112223333','2025-03-17 00:25:00'),(13,'daffy','duck',NULL,'daffyD@email.com','bor','USER','2223334444','2025-03-17 00:36:14'),(15,'will','weaton',NULL,'will@email.com','gyah','USER','2223334444','2025-03-17 00:42:37'),(16,'alan','david','22334','alanD@email.com','brooo','1112224444','2025-03-17 00:44:30'),(17,'miller','lee','33445','miller@email.com','3334446666','2025-03-17 00:49:54'),(18,'cat','fish','11223','catfish@email.com','3334445555','2025-03-17 02:06:38');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
