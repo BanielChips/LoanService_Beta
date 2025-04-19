@@ -35,7 +35,7 @@ public class WebHandling {
 
         dataHandling.addUser(firstName, lastName, zipCode, email, password, phoneNumber);
         redirectAttributes.addFlashAttribute("message", "User created successfully!");
-        return "redirect:/";
+        return "redirect:/Home.html";
     }
 
     @GetMapping("/IPaccess/getUserByID")
@@ -97,7 +97,7 @@ public class WebHandling {
         User user = dataHandling.getUserByID(userID);
         user.setRole(role);
         dataHandling.addUser(user);
-        return "redirect:/";
+        return "redirect:/admin-dashboard.html";
     }
 
     @PostMapping("/IPaccess/deleteUserByID")

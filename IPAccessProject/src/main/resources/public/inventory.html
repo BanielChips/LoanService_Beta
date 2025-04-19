@@ -21,13 +21,56 @@
 
 <div class="dashboard-content">
     <h2>Inventory</h2>
+    <form action="/IPaccess/addDevice" method="post">
+        <label for="deviceName">Device Name:</label><br>
+        <select id="deviceName" name="deviceName" required>
+            <option value="Laptop">Laptop</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Phone">Phone</option>
+            <option value="Hotspot">Hotspot</option>
+        </select><br><br>
 
+        <label for="deviceAvailability">Available:</label>
+        <input type="checkbox" id="deviceAvailability" name="availability" value="true"><br><br>
+
+        <button type="submit">Add Device</button>
+        <br><br>
+    </form>
+    <form action="/IPaccess/addDevice" method="post">
+        <label for="deviceName">Device Name:</label><br>
+        <select id="deviceName" name="deviceName" required>
+            <option value="LAPTOP">Laptop</option>
+            <option value="TABLET">Tablet</option>
+            <option value="PHONE">Phone</option>
+            <option value="HOTSPOT">Hotspot</option>
+        </select><br><br>
+
+        <label for="deviceAvailability">Available:</label>
+        <input type="checkbox" id="deviceAvailability" name="availability" value="true"><br><br>
+        <select name="locationID">
+            <option value="1">Dr. J. B. Callahan Neighborhood Center</option>
+            <option value="2">Sylvester Hankins Park</option>
+            <option value="3">Northwest Community Center</option>
+            <option value="4">Rosemont Community Center</option>
+            <option value="5">Dr. James R. Smith Neighborhood Center</option>
+            <option value="6">Citrus Square Recreation Site</option>
+            <option value="7">Englewood Neighborhood Center</option>
+            <option value="8">John H. Jackson Community Center</option>
+            <option value="9">L. Claudia Allen Senior Center</option>
+            <option value="10">Grand Avenue Neighborhood Center</option>
+            <option value="11">Ivey Lane Recreation Site</option>
+            <option value="12">Langford Park & Center</option>
+            <option value="13">Rock Lake Community Center</option>
+        </select>
+
+        <button type="submit">Add Device</button>
+        <br><br>
+    </form>
     <label for="availability">Show:</label>
     <select id="availability">
         <option value="all">All Devices</option>
         <option value="available">Available Only</option>
     </select>
-
     <table id="deviceTable">
         <thead>
         <tr>
