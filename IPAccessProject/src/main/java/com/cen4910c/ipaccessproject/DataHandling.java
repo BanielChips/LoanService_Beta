@@ -14,10 +14,27 @@ import java.util.Map;
 
 @Service
 public class DataHandling {
+    /**
+     * The {@code DataHandling} class manages the CRUD operations for
+     * Users, Loans, and Devices in the database. It interacts with the database to allow
+     * for adding, retrieving, and removing records for these entities.
+     *
+     * <p>This class provides a set of methods to perform the following actions:</p>
+     * <ul>
+     *     <li>Retrieve Users by ID or first + last name</li>
+     *     <li>Create and delete User records</li>
+     *     <li>Retrieve Loans by ID or device ID, and manage loan statuses</li>
+     *     <li>Manage Device availability and associated rentals</li>
+     * </ul>
+     */
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<User> getAllUsers() {
+    /**
+     * Methods for managing User data: getting, adding, deleting users.
+     */
+    public List<User> getAllUsers(){
         String executeString = "SELECT u FROM User u";
         Query query = entityManager.createQuery(executeString);
         List<User> queryUser = query.getResultList();
@@ -34,13 +51,22 @@ public class DataHandling {
         List<User> queryUser = query.getResultList();
         return queryUser.getFirst();
     }
-
+    /**
+     * getUserByID
+     * @param ID int user ID
+     * @return Retrieves the user by querying the database for their user ID
+     */
     public User getUserByID(int ID) {
         User user = entityManager.find(User.class, ID);
         System.out.println("User: " + user);
         return user;
     }
 
+    /**
+     * getUserByEmail
+     * @param email String email of the user account
+     * @return User with matching email
+     */
     public User getUserByEmail(String email) {
         String executeString = "SELECT d FROM User d WHERE d.email = :email";
         Query query = entityManager.createQuery(executeString);
@@ -55,6 +81,12 @@ public class DataHandling {
         return queryUser.getFirst();
     }
 
+    /**
+     * getUserByName
+     * @param firstName String firstName of the user
+     * @param lastName String lastName of the user
+     * @return User with matching first and last name
+     */
     public User getUserByName(String firstName, String lastName) {
         String executeString = "SELECT u FROM User u WHERE u.firstName = :firstName AND u.lastName = :lastName";
         Query query = entityManager.createQuery(executeString);
@@ -70,6 +102,16 @@ public class DataHandling {
         return queryUser.getFirst();
     }
 
+    /**
+     * addUser - creates a user with the following parameters and adds it to the database.
+     * @param firstName
+     * @param lastName
+     * @param zip
+     * @param email
+     * @param password
+     * @param phoneNumber
+     * @return The user created and added to the database.
+     */
     @Transactional
     public User addUser(String firstName, String lastName, String zip, String email, String password, String phoneNumber) {
         User user = new User(firstName, lastName, zip, email, password, phoneNumber);
@@ -80,10 +122,21 @@ public class DataHandling {
     }
 
     @Transactional
+    public User addUser(User user) {
+        entityManager.persist(user);
+        return user;
+    }
+
+    /**
+     * deleteUserByID Finds a user in the database by their ID and deletes the user from the database.
+     * @param ID int ID of the user.
+     */
+    @Transactional
     public void deleteUserByID(int ID) {
         System.out.println("Deleting User with ID: " + ID);
         User user = getUserByID(ID);
 
+        // This is here to affect the foreign key constraint
         deleteLoanByUserID(ID);
 
         if (user != null) {
@@ -94,10 +147,17 @@ public class DataHandling {
         }
     }
 
+    /**
+     * deleteUserByName - Finds a user by their first and last name and deletes
+     * the user with the matching first and last name.
+     * @param firstName String firstName of the user
+     * @param lastName String lastName of the user
+     */
     @Transactional
     public void deleteUserByName(String firstName, String lastName) {
         System.out.println("Deleting User: " + firstName + " " + lastName);
 
+        // This is here to affect the foreign key constraint
         deleteLoanByUserID(getUserByName(firstName, lastName).getUserID());
 
         String executeString = "DELETE FROM User u WHERE u.firstName = :firstName AND u.lastName = :lastName";
@@ -112,7 +172,10 @@ public class DataHandling {
             System.out.println("No rows affected");
         }
     }
-
+    /**
+     * Methods for managing Loan data: getting, adding, deleting loans.
+     * Does not include deleteLoanByUserID as a User can have multiple loans.
+     */
     public Loan getLoanByID(int ID) {
         Loan loan = entityManager.find(Loan.class, ID);
         System.out.println("Loan: " + loan);
@@ -166,7 +229,12 @@ public class DataHandling {
             System.out.println("Loan status updated successfully");
         }
     }
-
+    /**
+     * updateLoanStatus - Finds a loan by its ID and updates the loanStatus to a given status.
+     * @param loanID int - ID of the loan.
+     * @param newStatus Values can be: ACTIVE, OVERDUE, RESERVED, REVIEW
+     * @return boolean - whether the loan is found and updated successfully.
+     */
     @Transactional
     public boolean updateLoanStatus(int loanID, String newStatus) {
         Loan loan = entityManager.find(Loan.class, loanID);
@@ -197,6 +265,15 @@ public class DataHandling {
         }
     }
 
+    /**
+     * addLoan - creates a loan and adds it to the database. Sets device as unavailable and adds the user ID to the device's renterID field.
+     * @param userID ID of the user account the device is being loaned to.
+     * @param deviceID ID of the device being loaned.
+     * @param startDate Start date of the loan.
+     * @param endDate end date of the loan.
+     * @param loanStatus enum Status of the loan. Values: ACTIVE, OVERDUE, RESERVED, REVIEW
+     * @return Loan that is created and added to the database.
+     */
     @Transactional
     public Loan addLoan(int userID, int deviceID, LocalDate startDate, LocalDate endDate, String loanStatus) {
         Loan loan = new Loan(userID, deviceID, startDate, endDate, loanStatus);
@@ -210,6 +287,11 @@ public class DataHandling {
         return loan;
     }
 
+    /**
+     * addLoan - adds a Loan object to the database. Sets loaned device as unavailable with the renting user ID as the renterID.
+     * @param loan Loan object.
+     * @return Loan that is added to the database.
+     */
     @Transactional
     public Loan addLoan(Loan loan) {
         Device device = getDeviceByID(loan.getDeviceID());
@@ -294,6 +376,9 @@ public class DataHandling {
         }
     }
 
+    /**
+     * Methods for managing Device data: getting, adding, deleting devices.
+     */
     @Transactional
     public Device addDevice(String deviceName, boolean availability, int locationID) {
         Location location = entityManager.find(Location.class, locationID);

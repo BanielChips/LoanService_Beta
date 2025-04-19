@@ -25,6 +25,9 @@ public class WebHandling {
         return "index";
     }
 
+    //    ================================
+    //    User endpoints
+    //    ================================
     @PostMapping("/IPaccess/addUser")
     public String addUser(@ModelAttribute User user, RedirectAttributes redirectAttributes){
         String firstName = user.getFirstName();
@@ -59,6 +62,13 @@ public class WebHandling {
         return "redirect:/";
     }
 
+    @GetMapping("/IPaccess/getAllUsers")
+    public String getAllUsers(Model model){
+        List<User> users = dataHandling.getAllUsers();
+        model.addAttribute("users", users);
+        return "user-profile";
+    }
+
     @GetMapping("/IPaccess/login")
     public String login(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes) {
         User user = dataHandling.getUserByEmail(email);
@@ -70,8 +80,9 @@ public class WebHandling {
         return "redirect:/Home.html";
     }
 
-    @GetMapping("/IPaccess/register")
-    public String registrationPage(@ModelAttribute("user") User user) {
+    @GetMapping("IPaccess/register")
+    public String registerPage(Model model) {
+        model.addAttribute("user", new User());
         return "registration";
     }
 
@@ -90,6 +101,14 @@ public class WebHandling {
         return "registerSuccess";
     }
 
+    @PostMapping("/IPaccess/updateUserRole")
+    public String updateUserRole(@RequestParam int userID, @RequestParam String role, RedirectAttributes redirectAttributes) {
+        User user = dataHandling.getUserByID(userID);
+        user.setRole(role);
+        dataHandling.addUser(user);
+        return "redirect:/admin-dashboard.html";
+    }
+
     @PostMapping("/IPaccess/deleteUserByID")
     public String deleteUserByID(@RequestParam int userID, RedirectAttributes redirectAttributes) {
         dataHandling.deleteUserByID(userID);
@@ -104,6 +123,13 @@ public class WebHandling {
         return "redirect:/user-profile.html";
     }
 
+    //    ================================
+    //    Device endpoints
+    //    ================================
+
+    // Created this method to ALL and/or Available devices
+    // If true only returns available devices .. if false returns all devices
+    // Returns list into JSON and sends to response body
     @GetMapping("/IPaccess/getAllDevices")
     @ResponseBody
     public List<Device> getAllDevices(@RequestParam(required = false) Boolean available) {
@@ -159,7 +185,9 @@ public class WebHandling {
         }
         return "redirect:/inventory.html";
     }
-
+    //    ================================
+    //    Loan endpoints
+    //    ================================
     @PostMapping("/IPaccess/addLoan")
     public String addLoan(@RequestParam int userID, @RequestParam int deviceID, @RequestParam String loanStatus, RedirectAttributes redirectAttributes) {
         LocalDate start = LocalDate.now();
@@ -204,6 +232,7 @@ public class WebHandling {
 
         Loan loan = null;
 
+        // Lookup user by name
         User user = dataHandling.getUserByName(firstName.trim(), lastName.trim());
 
         if (user == null) {
@@ -211,6 +240,7 @@ public class WebHandling {
             return "redirect:/Home.html";
         }
 
+        // Get all available devices of the selected type
         List<Device> availableDevices = dataHandling.getAvailableDeviceByType(deviceType);
 
         if (availableDevices != null && !availableDevices.isEmpty()) {
@@ -256,4 +286,29 @@ public class WebHandling {
 
         return "redirect:/loan-list.html";
     }
+
+    // Created on my local file and pushed to repo anyway. Would have to update user-profile.html access this endpoint
+    @GetMapping("/IPaccess/getUserList")
+    @ResponseBody
+    public List<Map<String, Object>> getUserList() {
+        List<User> users = dataHandling.getAllUsers();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        if (users != null) {
+            for (User user : users) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("userID", user.getUserID());
+                map.put("firstName", user.getFirstName());
+                map.put("lastName", user.getLastName());
+                map.put("zipCode", user.getZipCode());
+                map.put("email", user.getEmail());
+                map.put("role", user.getRole());
+                map.put("phoneNumber", user.getPhoneNumber());
+                result.add(map);
+            }
+        }
+        return result;
+    }
+
+
 }
