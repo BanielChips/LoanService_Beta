@@ -36,7 +36,7 @@ public class WebHandling {
 
         dataHandling.addUser(firstName, lastName, zipCode, email, password, phoneNumber);
         redirectAttributes.addFlashAttribute("message", "User created successfully!");
-        return "redirect:/user.html";
+        return "redirect:/IPaccess/getAllUsers";
     }
 
     @GetMapping("/IPaccess/getUserByID")
@@ -46,7 +46,7 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", user.toString());
         else
             redirectAttributes.addFlashAttribute("message", "User not found!");
-        return "redirect:/user.html";
+        return "redirect:/";
     }
 
     @GetMapping("/IPaccess/getUserByName")
@@ -56,7 +56,7 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", user.toString());
         else
             redirectAttributes.addFlashAttribute("message", "User not found!");
-        return "redirect:/user.html";
+        return "redirect:/";
     }
 
     @GetMapping("/IPaccess/login")
@@ -67,7 +67,7 @@ public class WebHandling {
         } else {
             redirectAttributes.addFlashAttribute("message", "Invalid credentials");
         }
-        return "redirect:/user.html";
+        return "redirect:/Home.html";
     }
 
     @GetMapping("/IPaccess/register")
@@ -94,14 +94,14 @@ public class WebHandling {
     public String deleteUserByID(@RequestParam int userID, RedirectAttributes redirectAttributes) {
         dataHandling.deleteUserByID(userID);
         redirectAttributes.addFlashAttribute("message", "User deleted successfully. ID: " + userID);
-        return "redirect:/user.html";
+        return "redirect:/user-profile.html";
     }
 
     @PostMapping("/IPaccess/deleteUserByName")
     public String deleteUserByName(@RequestParam String firstName, @RequestParam String lastName, RedirectAttributes redirectAttributes) {
         dataHandling.deleteUserByName(firstName, lastName);
         redirectAttributes.addFlashAttribute("message", "User deleted successfully. User: " + firstName + " " + lastName);
-        return "redirect:/user.html";
+        return "redirect:/user-profile.html";
     }
 
     @GetMapping("/IPaccess/getAllDevices")
@@ -121,7 +121,7 @@ public class WebHandling {
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to add device: " + e.getMessage());
         }
-        return "redirect:/device.html";
+        return "redirect:/inventory.html";
     }
 
     @GetMapping("/IPaccess/getDeviceByID")
@@ -131,14 +131,20 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", device.toString());
         else
             redirectAttributes.addFlashAttribute("message", "Device not found!");
-        return "redirect:/device.html";
+        return "redirect:/inventory.html";
+    }
+
+    @GetMapping("/IPaccess/getDeviceInventory")
+    @ResponseBody
+    public List<Map<String, Object>> getDeviceInventory(@RequestParam(required = false) Boolean available) {
+        return dataHandling.getDeviceInventoryMap(available != null && available);
     }
 
     @PostMapping("/IPaccess/removeDeviceByID")
     public String removeDeviceByID(@RequestParam int deviceID, RedirectAttributes redirectAttributes) {
         dataHandling.removeDeviceByID(deviceID);
         redirectAttributes.addFlashAttribute("message", "Device removed successfully. ID: " + deviceID);
-        return "redirect:/device.html";
+        return "redirect:/inventory.html";
     }
 
     @PostMapping("/IPaccess/assignDeviceToLocation")
@@ -151,13 +157,7 @@ public class WebHandling {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "Error assigning device: " + e.getMessage());
         }
-        return "redirect:/";
-    }
-
-    @GetMapping("/IPaccess/getDeviceInventory")
-    @ResponseBody
-    public List<Map<String, Object>> getDeviceInventory(@RequestParam(required = false) Boolean available) {
-        return dataHandling.getDeviceInventoryMap(available != null && available);
+        return "redirect:/inventory.html";
     }
 
     @PostMapping("/IPaccess/addLoan")
@@ -167,7 +167,13 @@ public class WebHandling {
 
         Loan loan = dataHandling.addLoan(userID, deviceID, start, end, loanStatus);
         redirectAttributes.addFlashAttribute("message", loan.toString());
-        return "redirect:/loan.html";
+        return "redirect:/loan-list.html";
+    }
+
+    @GetMapping("/IPaccess/getAllLoans")
+    @ResponseBody
+    public List<Loan> getAllLoans() {
+        return dataHandling.getAllLoans();
     }
 
     @GetMapping("/IPaccess/getLoanByID")
@@ -177,15 +183,64 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", loan.toString());
         else
             redirectAttributes.addFlashAttribute("message", "Loan not found!");
-        return "redirect:/loan.html";
+        return "redirect:/loan-list.html";
     }
 
     @GetMapping("/IPaccess/deleteLoanByID")
     public String deleteLoanByID(@RequestParam int loanID, RedirectAttributes redirectAttributes) {
         dataHandling.deleteLoanByID(loanID);
         redirectAttributes.addFlashAttribute("message", "Loan deleted successfully. ID: " + loanID);
-        return "redirect:/loan.html";
+        return "redirect:/loan-list.html";
     }
+
+    @PostMapping("/IPaccess/requestLoan")
+    public String requestLoan(@RequestParam String deviceType,
+                              @RequestParam String location,
+                              @RequestParam String startDate,
+                              @RequestParam String endDate,
+                              @RequestParam String firstName,
+                              @RequestParam String lastName,
+                              RedirectAttributes redirectAttributes) {
+
+        Loan loan = null;
+
+        User user = dataHandling.getUserByName(firstName.trim(), lastName.trim());
+
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "User not found. Please check your name and try again.");
+            return "redirect:/Home.html";
+        }
+
+        List<Device> availableDevices = dataHandling.getAvailableDeviceByType(deviceType);
+
+        if (availableDevices != null && !availableDevices.isEmpty()) {
+            Optional<Device> matchingDevice = availableDevices.stream()
+                    .filter(device -> device.getLocation().getLocationName().equalsIgnoreCase(location))
+                    .findFirst();
+
+            if (matchingDevice.isPresent()) {
+                Device device = matchingDevice.get();
+                loan = dataHandling.addLoan(new Loan(
+                        user.getUserID(),
+                        device.getDeviceID(),
+                        startDate,
+                        endDate,
+                        "RESERVED"
+                ));
+
+                System.out.println("Loan reserved for device: " + device.getDeviceID());
+            } else {
+                System.out.println("No available device found at the selected location.");
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("message", loan != null
+                ? "Loan successfully reserved for " + user.getFirstName() + " " + user.getLastName()
+                : "No devices available at the selected location.");
+
+        return "redirect:/Home.html";
+    }
+
 
     @PostMapping("/IPaccess/updateLoanStatus")
     public String updateLoanStatus(@RequestParam int loanID,
