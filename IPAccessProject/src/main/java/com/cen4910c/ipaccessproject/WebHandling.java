@@ -70,11 +70,24 @@ public class WebHandling {
         return "redirect:/user.html";
     }
 
+    @GetMapping("/IPaccess/register")
+    public String registrationPage(@ModelAttribute("user") User user) {
+        return "registration";
+    }
+
     @PostMapping("/IPaccess/register")
-    public String register(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String zip, @RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber, RedirectAttributes redirectAttributes) {
-        String encodedPassword = passwordEncoder.encode(password);
-        dataHandling.addUser(firstName, lastName, zip, email, encodedPassword, phoneNumber);
-        return "redirect:/";
+    public String register(@ModelAttribute("user") User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        dataHandling.addUser(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getZipCode(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getPhoneNumber()
+        );
+
+        return "registerSuccess";
     }
 
     @PostMapping("/IPaccess/deleteUserByID")
