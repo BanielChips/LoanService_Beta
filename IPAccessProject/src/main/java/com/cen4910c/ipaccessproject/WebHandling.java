@@ -116,14 +116,14 @@ public class WebHandling {
     public String deleteUserByID(@RequestParam int userID, RedirectAttributes redirectAttributes) {
         dataHandling.deleteUserByID(userID);
         redirectAttributes.addFlashAttribute("message", "User deleted successfully. ID: " + userID);
-        return "redirect:/user-profile.html";
+        return "redirect:/IPaccess/getAllUsers";
     }
 
     @PostMapping("/IPaccess/deleteUserByName")
     public String deleteUserByName(@RequestParam String firstName, @RequestParam String lastName, RedirectAttributes redirectAttributes) {
         dataHandling.deleteUserByName(firstName, lastName);
         redirectAttributes.addFlashAttribute("message", "User deleted successfully. User: " + firstName + " " + lastName);
-        return "redirect:/user-profile.html";
+        return "redirect:/IPaccess/getAllUsers";
     }
 
     //    ================================
@@ -133,11 +133,20 @@ public class WebHandling {
     // Created this method to ALL and/or Available devices
     // If true only returns available devices .. if false returns all devices
     // Returns list into JSON and sends to response body
+
+    @GetMapping("/IPaccess/inventory")
+    public String getAllDevices(Model model) {
+        List<Device> devices = dataHandling.getAllDevices();
+        model.addAttribute("devices", devices);
+        return "inventory";
+    }
+
+/*
     @GetMapping("/IPaccess/getAllDevices")
     @ResponseBody
     public List<Device> getAllDevices(@RequestParam(required = false) Boolean available) {
         return (available != null && available) ? dataHandling.getAvailableDevices() : dataHandling.getAllDevices();
-    }
+    }*/
 
     @PostMapping("/IPaccess/addDevice")
     public String addDevice(@RequestParam String deviceName,
@@ -150,7 +159,7 @@ public class WebHandling {
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to add device: " + e.getMessage());
         }
-        return "redirect:/inventory.html";
+        return "redirect:/IPaccess/inventory";
     }
 
     @GetMapping("/IPaccess/getDeviceByID")
@@ -160,34 +169,17 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", device.toString());
         else
             redirectAttributes.addFlashAttribute("message", "Device not found!");
-        return "redirect:/inventory.html";
+        return "redirect:/IPaccess/getAllDevices";
     }
 
-    @GetMapping("/IPaccess/getDeviceInventory")
-    @ResponseBody
-    public List<Map<String, Object>> getDeviceInventory(@RequestParam(required = false) Boolean available) {
-        return dataHandling.getDeviceInventoryMap(available != null && available);
-    }
 
     @PostMapping("/IPaccess/removeDeviceByID")
     public String removeDeviceByID(@RequestParam int deviceID, RedirectAttributes redirectAttributes) {
         dataHandling.removeDeviceByID(deviceID);
         redirectAttributes.addFlashAttribute("message", "Device removed successfully. ID: " + deviceID);
-        return "redirect:/inventory.html";
+        return "redirect:/IPaccess/inventory";
     }
 
-    @PostMapping("/IPaccess/assignDeviceToLocation")
-    public String assignDeviceToLocation(@RequestParam int deviceID,
-                                         @RequestParam int locationID,
-                                         RedirectAttributes redirectAttributes) {
-        try {
-            dataHandling.assignDeviceToLocation(deviceID, locationID);
-            redirectAttributes.addFlashAttribute("message", "Device assigned to location successfully!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Error assigning device: " + e.getMessage());
-        }
-        return "redirect:/inventory.html";
-    }
     //    ================================
     //    Loan endpoints
     //    ================================
@@ -198,14 +190,16 @@ public class WebHandling {
 
         Loan loan = dataHandling.addLoan(userID, deviceID, start, end, loanStatus);
         redirectAttributes.addFlashAttribute("message", loan.toString());
-        return "redirect:/loan-list.html";
+        return "redirect:/IPaccess/getAllLoans";
     }
 
     @GetMapping("/IPaccess/getAllLoans")
-    @ResponseBody
-    public List<Loan> getAllLoans() {
-        return dataHandling.getAllLoans();
+    public String getAllLoans(Model model) {
+        List<Loan> loans = dataHandling.getAllLoans();
+        model.addAttribute("loans", loans);
+        return "loan-list";
     }
+
 
     @GetMapping("/IPaccess/getLoanByID")
     public String getLoanByID(@RequestParam int loanID, RedirectAttributes redirectAttributes) {
@@ -214,14 +208,14 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", loan.toString());
         else
             redirectAttributes.addFlashAttribute("message", "Loan not found!");
-        return "redirect:/loan-list.html";
+        return "redirect:loan-list";
     }
 
     @GetMapping("/IPaccess/deleteLoanByID")
     public String deleteLoanByID(@RequestParam int loanID, RedirectAttributes redirectAttributes) {
         dataHandling.deleteLoanByID(loanID);
         redirectAttributes.addFlashAttribute("message", "Loan deleted successfully. ID: " + loanID);
-        return "redirect:/loan-list.html";
+        return "redirect:/IPaccess/getAllLoans";
     }
 
     @PostMapping("/IPaccess/requestLoan")
@@ -235,7 +229,6 @@ public class WebHandling {
 
         Loan loan = null;
 
-        // Lookup user by name
         User user = dataHandling.getUserByName(firstName.trim(), lastName.trim());
 
         if (user == null) {
@@ -287,36 +280,7 @@ public class WebHandling {
             redirectAttributes.addFlashAttribute("message", "Loan ID #" + loanID + " not found.");
         }
 
-        return "redirect:/loan-list.html";
+        return "redirect:/IPaccess/getAllLoans";
     }
-
-    @GetMapping("/loan-list")
-    public String loanList() {
-        return "loan-list";
-    }
-
-    // Created on my local file and pushed to repo anyway. Would have to update user-profile.html access this endpoint
-    @GetMapping("/IPaccess/getUserList")
-    @ResponseBody
-    public List<Map<String, Object>> getUserList() {
-        List<User> users = dataHandling.getAllUsers();
-        List<Map<String, Object>> result = new ArrayList<>();
-
-        if (users != null) {
-            for (User user : users) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("userID", user.getUserID());
-                map.put("firstName", user.getFirstName());
-                map.put("lastName", user.getLastName());
-                map.put("zipCode", user.getZipCode());
-                map.put("email", user.getEmail());
-                map.put("role", user.getRole());
-                map.put("phoneNumber", user.getPhoneNumber());
-                result.add(map);
-            }
-        }
-        return result;
-    }
-
 
 }

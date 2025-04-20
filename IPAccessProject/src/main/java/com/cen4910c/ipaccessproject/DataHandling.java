@@ -337,10 +337,10 @@ public class DataHandling {
 
         if (loans.isEmpty()) {
             System.out.println("No loans found.");
-            return null;
         }
         return loans;
     }
+
 
     @Transactional
     public void deleteLoanByID(int ID) {

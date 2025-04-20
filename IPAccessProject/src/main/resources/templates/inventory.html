@@ -1,42 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
 <div class="dashboard-sidebar">
     <h3>Admin Dashboard</h3>
     <nav>
         <ul>
-            <li><a href="inventory.html">Inventory</a></li>
-            <li><a href="/loan-list">Loan List</a></li>
+            <li><a href="/IPaccess/inventory">Inventory</a></li>
+            <li><a href="/IPaccess/getAllLoans">Loan List</a></li>
             <li><a href="/IPaccess/getAllUsers">User Profiles</a></li>
         </ul>
     </nav>
 </div>
 
-<div class="dashboard-content">
+<<div class="dashboard-content">
     <h2>Inventory</h2>
-    <form action="/IPaccess/addDevice" method="post">
-        <label for="deviceName">Device Name:</label><br>
-        <select id="deviceName" name="deviceName" required>
-            <option value="Laptop">Laptop</option>
-            <option value="Tablet">Tablet</option>
-            <option value="Phone">Phone</option>
-            <option value="Hotspot">Hotspot</option>
-        </select><br><br>
 
-        <label for="deviceAvailability">Available:</label>
-        <input type="checkbox" id="deviceAvailability" name="availability" value="true"><br><br>
-
-        <button type="submit">Add Device</button>
-        <br><br>
-    </form>
+    <!-- Add Device Form -->
+    <h3>Add Device</h3>
     <form action="/IPaccess/addDevice" method="post">
-        <label for="deviceName">Device Name:</label><br>
+        <label for="deviceName">Device Type:</label><br>
         <select id="deviceName" name="deviceName" required>
             <option value="LAPTOP">Laptop</option>
             <option value="TABLET">Tablet</option>
@@ -44,9 +31,11 @@
             <option value="HOTSPOT">Hotspot</option>
         </select><br><br>
 
-        <label for="deviceAvailability">Available:</label>
-        <input type="checkbox" id="deviceAvailability" name="availability" value="true"><br><br>
-        <select name="locationID">
+        <label for="availability">Available:</label>
+        <input type="checkbox" id="availability" name="availability" value="true"><br><br>
+
+        <label for="locationID">Select Location:</label><br>
+        <select name="locationID" required>
             <option value="1">Dr. J. B. Callahan Neighborhood Center</option>
             <option value="2">Sylvester Hankins Park</option>
             <option value="3">Northwest Community Center</option>
@@ -60,17 +49,31 @@
             <option value="11">Ivey Lane Recreation Site</option>
             <option value="12">Langford Park & Center</option>
             <option value="13">Rock Lake Community Center</option>
-        </select>
+        </select><br><br>
 
         <button type="submit">Add Device</button>
-        <br><br>
     </form>
-    <label for="availability">Show:</label>
-    <select id="availability">
-        <option value="all">All Devices</option>
-        <option value="available">Available Only</option>
-    </select>
-    <table id="deviceTable">
+
+    <!-- Get Device Form -->
+    <h3>Get Device by ID</h3>
+    <form action="/IPaccess/getDeviceByID" method="get">
+        <label for="searchDeviceID">Device ID:</label>
+        <input type="number" id="searchDeviceID" name="deviceID" required><br>
+        <button type="submit">Get Device</button>
+    </form>
+
+    <!-- Delete Device Form -->
+    <h3>Delete Device by ID</h3>
+    <form action="/IPaccess/removeDeviceByID" method="post">
+        <label for="deleteDeviceID">Device ID:</label>
+        <input type="number" id="deleteDeviceID" name="deviceID" required><br>
+        <button type="submit">Remove Device</button>
+    </form>
+
+    <br><hr><br>
+
+    <!-- Device Inventory Table -->
+    <table>
         <thead>
         <tr>
             <th>Device ID</th>
@@ -80,11 +83,16 @@
             <th>Location</th>
         </tr>
         </thead>
-
-        <tbody></tbody>
+        <tbody>
+        <tr th:each="device : ${devices}">
+            <td th:text="${device.deviceID}">1</td>
+            <td th:text="${device.deviceType}">LAPTOP</td>
+            <td th:text="${device.deviceStatus}">ACTIVE</td>
+            <td th:text="${device.available ? 'Yes' : 'No'}">Yes</td>
+            <td th:text="${device.location != null ? device.location.locationName : 'Unassigned'}">Location</td>
+        </tr>
+        </tbody>
     </table>
 </div>
-
-<script src="script.js"></script>
 </body>
 </html>

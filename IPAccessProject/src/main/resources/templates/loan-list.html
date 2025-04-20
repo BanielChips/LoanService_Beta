@@ -1,72 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loan List</title>
-    <link rel="stylesheet" href="../public/style.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
 <div class="dashboard-sidebar">
     <h3>Admin Dashboard</h3>
     <nav>
         <ul>
-            <li><a href="../inventory.html">Inventory</a></li>
-            <li><a href="/loan-list">Loan List</a></li>
+            <li><a href="/IPaccess/inventory">Inventory</a></li>
+            <li><a href="/IPaccess/getAllLoans">Loan List</a></li>
             <li><a href="/IPaccess/getAllUsers">User Profiles</a></li>
         </ul>
     </nav>
 </div>
-<!-- there are two identical forms because of some weird DIV bug. It does not work otherwise
- To anyone who wants to figure this out.. godspeed. (It works fine on the index pages weirdly enough.) -->
-<form action="/IPaccess/updateLoanStatus" method="post">
-    <label for="loanID">Loan ID:</label>
-    <input id="loanID" type="number" name="loanID">
-    <label for="status">Loan Status:</label>
-    <select id="status" name="status">
-        <option value="RESERVED">Reserved</option>
-        <option value="ACTIVE">Active</option>
-        <option value="OVERDUE">Overdue</option>
-        <option value="REVIEW">Review</option>
-    </select>
-    <button type="submit">Submit</button>
-</form>
-<div class="dashboard-content">
-    <form action="/IPaccess/updateLoanStatus" method="post">
-        <label for="loanID">Loan ID:</label>
-        <input id="loanID" type="number" name="loanID">
-        <label for="status">Loan Status:</label>
-        <select id="status" name="status">
-            <option value="RESERVED">Reserved</option>
-            <option value="ACTIVE">Active</option>
-            <option value="OVERDUE">Overdue</option>
-            <option value="REVIEW">Review</option>
-        </select>
-        <button type="submit">Submit</button>
-    </form>
-    <form action="/IPaccess/deleteLoanByID" method="GET">
-        <label for="loanIDDeletion">Loan ID to Delete:</label>
-        <input id="loanIDDeletion" type="number" name="loanID" required><br>
 
+<div class="dashboard-content">
+    <h2>Loan List</h2>
+
+    <!-- Create Loan Form -->
+    <h3>Create Loan</h3>
+    <form action="/IPaccess/addLoan" method="post">
+        <label for="userID">User ID:</label>
+        <input type="number" id="userID" name="userID" required><br>
+
+        <label for="deviceID">Device ID:</label>
+        <input type="number" id="deviceID" name="deviceID" required><br>
+
+        <label for="loanStatus">Loan Status:</label>
+        <select id="loanStatus" name="loanStatus" required>
+            <option value="active">Active</option>
+            <option value="overdue">Past Due</option>
+            <option value="reserved">Reserved</option>
+            <option value="review">Review</option>
+        </select><br>
+
+        <button type="submit">Create Loan</button>
+    </form>
+
+    <!--
+    Get Loan by ID
+    Commented out since it seems redundant to have when devices are all listed as a table already
+     -->
+   <!-- <h3>Get Loan by ID</h3>
+    <form action="/IPaccess/getLoanByID" method="get">
+        <label for="loanID">Loan ID:</label>
+        <input type="number" id="loanID" name="loanID" required><br>
+        <button type="submit">Get Loan</button>
+    </form> -->
+
+    <!-- Delete Loan by ID -->
+    <h3>Delete Loan by ID</h3>
+    <form action="/IPaccess/deleteLoanByID" method="get">
+        <label for="loanID">Loan ID to Delete:</label>
+        <input type="number" name="loanID" required><br>
         <button type="submit">Delete Loan</button>
     </form>
-    <h2>Loan List</h2>
-    <table id="loanTable">
+
+    <!-- Update Loan Status -->
+    <h3>Update Loan Status</h3>
+    <form action="/IPaccess/updateLoanStatus" method="post">
+        <label for="loan_ID">Loan ID:</label>
+        <input type="number" id="loan_ID" name="loanID" required><br>
+
+        <label for="loan_Status">Loan Status:</label>
+        <select id="loan_Status" name="status" required>
+            <option value="ACTIVE">Active</option>
+            <option value="OVERDUE">Overdue</option>
+            <option value="RESERVED">Reserved</option>
+            <option value="REVIEW">Review</option>
+        </select><br>
+
+        <button type="submit">Update Loan</button>
+    </form>
+
+    <hr><br>
+
+    <!-- Loan Table -->
+    <table>
         <thead>
         <tr>
             <th>Loan ID</th>
-            <th>User ID</th>
-            <th>Device ID</th>
+            <th>User</th>
+            <th>Device</th>
+            <th>Status</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Status</th>
         </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+        <tr th:each="loan : ${loans}">
+            <td th:text="${loan.loanID}">1</td>
+            <td th:text="'User ID: ' + ${loan.userID}">User ID</td>
+            <td th:text="'Device ID: ' + ${loan.deviceID}">Device ID</td>
+            <td th:text="${loan.loanStatus}">Status</td>
+            <td th:text="${loan.startDate}">Start Date</td>
+            <td th:text="${loan.endDate}">End Date</td>
+        </tr>
+        </tbody>
     </table>
-
 </div>
-
-<script src="../public/script.js"></script>
 </body>
 </html>
