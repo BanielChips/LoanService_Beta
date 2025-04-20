@@ -541,10 +541,22 @@ public class DataHandling {
         Device device = getDeviceByID(deviceID);
         if (device != null) {
             device.setDeviceStatus(newStatus);
+
+            if (newStatus == Device.DeviceStatus.INACTIVE ||
+                    newStatus == Device.DeviceStatus.DAMAGED ||
+                    newStatus == Device.DeviceStatus.LOANED) {
+                device.setAvailability(false);
+            }
+            else {
+                device.setAvailability(true);
+            }
+
             entityManager.merge(device);
+            System.out.println("Device status updated: " + newStatus + " | Availability: " + device.isAvailable());
         } else {
             System.out.println("Device not found");
         }
     }
 
 }
+
