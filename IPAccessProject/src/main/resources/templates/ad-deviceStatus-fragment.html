@@ -1,0 +1,16 @@
+<div th:fragment="deviceForm">
+  <form th:action="@{/IPaccess/updateDeviceStatus}" th:object="${device}" method="post">
+    <label for="deviceID">Device ID:</label>
+    <input id="deviceID" type="number" th:field="*{deviceID}" required />
+
+    <label for="deviceStatus">Status:</label>
+    <select id="deviceStatus" th:field="*{deviceStatus}">
+      <option value="ACTIVE">ACTIVE</option>
+      <option value="INACTIVE">INACTIVE</option>
+      <option value="LOANED">LOANED</option>
+      <option value="DAMAGED">DAMAGED</option>
+    </select>
+
+    <button type="submit">Update Status</button>
+  </form>
+</div>

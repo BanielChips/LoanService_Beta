@@ -180,6 +180,26 @@ public class WebHandling {
         return "redirect:/IPaccess/inventory";
     }
 
+//    @GetMapping("/IPaccess/admin-dashboard")
+//    public String redirectToDashboard() {
+//        return "admin-dashboard";
+//    }
+
+
+    @GetMapping("/IPaccess/admin-dashboard")
+    public String updateDeviceStatusForm(Model model) {
+        Device device = new Device();
+        model.addAttribute("device", device);
+        return "admin-dashboard";
+    }
+
+
+    @PostMapping("/IPaccess/updateDeviceStatus")
+    public String updateDeviceStatus(@ModelAttribute Device device) {
+        dataHandling.setDeviceStatus(device.getDeviceID(), device.getDeviceStatus());
+        return "redirect:/IPaccess/admin-dashboard";
+    }
+
     //    ================================
     //    Loan endpoints
     //    ================================

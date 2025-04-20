@@ -535,4 +535,16 @@ public class DataHandling {
             System.out.println("Device not found");
         }
     }
+
+    @Transactional
+    public void setDeviceStatus(int deviceID, Device.DeviceStatus newStatus) {
+        Device device = getDeviceByID(deviceID);
+        if (device != null) {
+            device.setDeviceStatus(newStatus);
+            entityManager.merge(device);
+        } else {
+            System.out.println("Device not found");
+        }
+    }
+
 }
