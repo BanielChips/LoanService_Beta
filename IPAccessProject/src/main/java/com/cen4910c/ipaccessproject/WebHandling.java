@@ -22,7 +22,7 @@ public class WebHandling {
 
     @GetMapping("/")
     public String home() {
-        return "index";
+        return "redirect:/Login.html";
     }
 
     //    ================================
