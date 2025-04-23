@@ -70,18 +70,27 @@ public class WebHandling {
     }
 
     @GetMapping("/IPaccess/login")
-    public String login(@RequestParam String email, @RequestParam String password, RedirectAttributes redirectAttributes) {
-        User user = dataHandling.getUserByEmail(email);
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            redirectAttributes.addFlashAttribute("message", "User logged in successfully!");
-        } else {
-            redirectAttributes.addFlashAttribute("message", "Invalid credentials");
-        }
-        assert user != null;
-        if(user.getRole() == User.Role.ADMIN)
-            return "admin-dashboard";
-        return "redirect:/Home.html";
+    public String login() {
+        return "redirect:/Login.html";
     }
+
+    @PostMapping("/IPaccess/login")
+    public String login(@RequestParam String email, @RequestParam String password) {
+        User user = dataHandling.getUserByEmail(email);
+
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            if(user.getRole() == User.Role.ADMIN)
+                return "redirect:/IPaccess/admin-dashboard";
+            return "redirect:/Home.html";
+        } else {
+            return "redirect:/";
+        }
+    }
+
+//    @GetMapping("/admin-dashboard")
+//    public String adminDashboard() {
+//        return "admin-dashboard";
+//    }
 
     @GetMapping("IPaccess/register")
     public String registerPage(Model model) {
