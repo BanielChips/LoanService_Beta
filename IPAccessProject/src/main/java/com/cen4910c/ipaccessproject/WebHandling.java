@@ -109,7 +109,7 @@ public class WebHandling {
         User user = dataHandling.getUserByID(userID);
         user.setRole(role);
         dataHandling.addUser(user);
-        return "redirect:/admin-dashboard.html";
+        return "redirect:/IPaccess/admin-dashboard";
     }
 
     @PostMapping("/IPaccess/deleteUserByID")
@@ -243,13 +243,12 @@ public class WebHandling {
                               @RequestParam String location,
                               @RequestParam String startDate,
                               @RequestParam String endDate,
-                              @RequestParam String firstName,
-                              @RequestParam String lastName,
+                              @RequestParam String email,
                               RedirectAttributes redirectAttributes) {
 
         Loan loan = null;
 
-        User user = dataHandling.getUserByName(firstName.trim(), lastName.trim());
+        User user = dataHandling.getUserByEmail(email);
 
         if (user == null) {
             redirectAttributes.addFlashAttribute("message", "User not found. Please check your name and try again.");
@@ -281,7 +280,7 @@ public class WebHandling {
         }
 
         redirectAttributes.addFlashAttribute("message", loan != null
-                ? "Loan successfully reserved for " + user.getFirstName() + " " + user.getLastName()
+                ? "Loan successfully reserved for " + user.getEmail()
                 : "No devices available at the selected location.");
 
         return "redirect:/Home.html";
