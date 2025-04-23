@@ -34,7 +34,16 @@
         </select>
         <button type="submit">Submit</button>
     </form>
-
+    <form action="/IPaccess/updateUserRole" method="post">
+        <label for="userID">User ID:</label>
+        <input type="number" name="userID" id="userID">
+        <label for="role">Role:</label>
+        <select id="role" name="role">
+            <option name="USER">User</option>
+            <option name="ADMIN">Admin</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
 
     <div th:replace="~{ad-deviceStatus-fragment :: deviceForm(device=${device})}"></div>
     <script src="../public/script.js"></script>
