@@ -16,72 +16,58 @@
         </ul>
     </nav>
 </div>
-<!-- there are two identical forms because of some weird DIV bug. It does not work otherwise
- To anyone who wants to figure this out.. godspeed. (It works fine on the index pages weirdly enough.) -->
-
 
 <div class="dashboard-content">
     <h2>Loan List</h2>
 
-    <!-- Create Loan Form -->
-    <h3>Create Loan</h3>
-    <form action="/IPaccess/addLoan" method="post">
-        <label for="userID">User ID:</label>
-        <input type="number" id="userID" name="userID" required><br>
+    <div class="form-section">
 
-        <label for="deviceID">Device ID:</label>
-        <input type="number" id="deviceID" name="deviceID" required><br>
+        <form action="/IPaccess/addLoan" method="post">
+            <h3>Create Loan</h3>
+            <label for="userID">User ID:</label>
+            <input type="number" id="userID" name="userID" required>
 
-        <label for="loanStatus">Loan Status:</label>
-        <select id="loanStatus" name="loanStatus" required>
-            <option value="active">Active</option>
-            <option value="overdue">Past Due</option>
-            <option value="reserved">Reserved</option>
-            <option value="review">Review</option>
-        </select><br>
+            <label for="deviceID">Device ID:</label>
+            <input type="number" id="deviceID" name="deviceID" required>
 
-        <button type="submit">Create Loan</button>
-    </form>
+            <label for="loanStatus">Loan Status:</label>
+            <select id="loanStatus" name="loanStatus" required>
+                <option value="active">Active</option>
+                <option value="overdue">Past Due</option>
+                <option value="reserved">Reserved</option>
+                <option value="review">Review</option>
+            </select>
 
-    <!--
-    Get Loan by ID
-    Commented out since it seems redundant to have when devices are all listed as a table already
-     -->
-   <!-- <h3>Get Loan by ID</h3>
-    <form action="/IPaccess/getLoanByID" method="get">
-        <label for="loanID">Loan ID:</label>
-        <input type="number" id="loanID" name="loanID" required><br>
-        <button type="submit">Get Loan</button>
-    </form> -->
+            <button type="submit">Create Loan</button>
+        </form>
 
-    <!-- Delete Loan by ID -->
-    <h3>Delete Loan by ID</h3>
-    <form action="/IPaccess/deleteLoanByID" method="get">
-        <label for="loanID">Loan ID to Delete:</label>
-        <input type="number" name="loanID" required><br>
-        <button type="submit">Delete Loan</button>
-    </form>
+        <form action="/IPaccess/deleteLoanByID" method="get">
+            <h3>Delete Loan</h3>
+            <label for="loanID">Loan ID to Delete:</label>
+            <input type="number" id="loanID" name="loanID" required>
 
-    <!-- Update Loan Status -->
-    <h3>Update Loan Status</h3>
-    <form action="/IPaccess/updateLoanStatus" method="post">
-        <label for="loanID">Loan ID:</label>
-        <input id="loanID" type="number" name="loanID" required>
+            <button type="submit">Delete Loan</button>
+        </form>
 
-        <label for="loan_Status">Loan Status:</label>
-        <select id="loan_Status" name="status" required>
-            <option value="ACTIVE">Active</option>
-            <option value="OVERDUE">Overdue</option>
-            <option value="RESERVED">Reserved</option>
-            <option value="REVIEW">Review</option>
-        </select><br>
+        <form action="/IPaccess/updateLoanStatus" method="post">
+            <h3>Update Loan Status</h3>
+            <label for="loanID">Loan ID:</label>
+            <input id="loanID" type="number" name="loanID" required>
 
-        <button type="submit">Update Loan</button>
-    </form>
+            <label for="loan_Status">Loan Status:</label>
+            <select id="loan_Status" name="status" required>
+                <option value="ACTIVE">Active</option>
+                <option value="OVERDUE">Overdue</option>
+                <option value="RESERVED">Reserved</option>
+                <option value="REVIEW">Review</option>
+            </select>
+
+            <button type="submit">Update Loan</button>
+        </form>
+    </div>
 
     <hr><br>
 
-    <!-- Loan Table -->
     <table>
         <thead>
         <tr>

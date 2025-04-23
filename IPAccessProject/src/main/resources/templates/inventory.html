@@ -20,52 +20,56 @@
 <div class="dashboard-content">
     <h2>Inventory</h2>
 
-    <!-- Add Device Form -->
-    <h3>Add Device</h3>
-    <form action="/IPaccess/addDevice" method="post">
-        <label for="deviceName">Device Type:</label><br>
-        <select id="deviceName" name="deviceName" required>
-            <option value="LAPTOP">Laptop</option>
-            <option value="TABLET">Tablet</option>
-            <option value="PHONE">Phone</option>
-            <option value="HOTSPOT">Hotspot</option>
-        </select><br><br>
 
-        <label for="availability">Available:</label>
-        <input type="checkbox" id="availability" name="availability" value="true"><br><br>
+    <div class="form-section">
 
-        <label for="locationID">Select Location:</label><br>
-        <select name="locationID" required>
-            <option value="1">Dr. J. B. Callahan Neighborhood Center</option>
-            <option value="2">Sylvester Hankins Park</option>
-            <option value="3">Northwest Community Center</option>
-            <option value="4">Rosemont Community Center</option>
-            <option value="5">Dr. James R. Smith Neighborhood Center</option>
-            <option value="6">Citrus Square Recreation Site</option>
-            <option value="7">Englewood Neighborhood Center</option>
-            <option value="8">John H. Jackson Community Center</option>
-            <option value="9">L. Claudia Allen Senior Center</option>
-            <option value="10">Grand Avenue Neighborhood Center</option>
-            <option value="11">Ivey Lane Recreation Site</option>
-            <option value="12">Langford Park & Center</option>
-            <option value="13">Rock Lake Community Center</option>
-        </select><br><br>
+        <form action="/IPaccess/addDevice" method="post">
+            <h3>Add Device</h3>
 
-        <button type="submit">Add Device</button>
-    </form>
+            <label for="deviceName">Device Type:</label>
+            <select id="deviceName" name="deviceName" required>
+                <option value="LAPTOP">Laptop</option>
+                <option value="TABLET">Tablet</option>
+                <option value="PHONE">Phone</option>
+                <option value="HOTSPOT">Hotspot</option>
+            </select>
+
+            <label for="availability">Available:</label>
+            <input type="checkbox" id="availability" name="availability" value="true">
+
+            <label for="locationID">Select Location:</label>
+            <select id="locationID" name="locationID" required>
+                <option value="1">Dr. J. B. Callahan Neighborhood Center</option>
+                <option value="2">Sylvester Hankins Park</option>
+                <option value="3">Northwest Community Center</option>
+                <option value="4">Rosemont Community Center</option>
+                <option value="5">Dr. James R. Smith Neighborhood Center</option>
+                <option value="6">Citrus Square Recreation Site</option>
+                <option value="7">Englewood Neighborhood Center</option>
+                <option value="8">John H. Jackson Community Center</option>
+                <option value="9">L. Claudia Allen Senior Center</option>
+                <option value="10">Grand Avenue Neighborhood Center</option>
+                <option value="11">Ivey Lane Recreation Site</option>
+                <option value="12">Langford Park & Center</option>
+                <option value="13">Rock Lake Community Center</option>
+            </select>
+
+            <button type="submit">Add Device</button>
+        </form>
 
 
-    <!-- Delete Device Form -->
-    <h3>Delete Device by ID</h3>
-    <form action="/IPaccess/removeDeviceByID" method="post">
-        <label for="deleteDeviceID">Device ID:</label>
-        <input type="number" id="deleteDeviceID" name="deviceID" required><br>
-        <button type="submit">Remove Device</button>
-    </form>
+        <form action="/IPaccess/removeDeviceByID" method="post">
+            <h3>Delete Device</h3>
 
-    <br><hr><br>
+            <label for="deleteDeviceID">Device ID:</label>
+            <input type="number" id="deleteDeviceID" name="deviceID" required>
 
-    <!-- Device Inventory Table -->
+            <button type="submit">Remove Device</button>
+        </form>
+    </div>
+
+    <hr><br>
+
     <table>
         <thead>
         <tr>
