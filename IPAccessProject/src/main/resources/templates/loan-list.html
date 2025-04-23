@@ -16,6 +16,21 @@
         </ul>
     </nav>
 </div>
+<!-- there are two identical forms because of some weird DIV bug. It does not work otherwise
+ To anyone who wants to figure this out.. godspeed. (It works fine on the index pages weirdly enough.) -->
+<form action="/IPaccess/updateLoanStatus" method="post">
+    <label for="loanID">Loan ID:</label>
+    <input id="loanID" type="number" name="loanID" required>
+    <label for="status">Loan Status:</label>
+    <select id="status" name="status">
+        <option value="RESERVED">Reserved</option>
+        <option value="ACTIVE">Active</option>
+        <option value="OVERDUE">Overdue</option>
+        <option value="REVIEW">Review</option>
+    </select>
+    <button type="submit">Submit</button>
+</form>
+<div class="dashboard-content">
 
 <div class="dashboard-content">
     <h2>Loan List</h2>
@@ -62,6 +77,11 @@
     <!-- Update Loan Status -->
     <h3>Update Loan Status</h3>
     <form action="/IPaccess/updateLoanStatus" method="post">
+        <label for="loanID">Loan ID:</label>
+        <input id="loanID" type="number" name="loanID" required>
+        <label for="status">Loan Status:</label>
+        <select id="status" name="status">
+            <option value="RESERVED">Reserved</option>
         <label for="loan_ID">Loan ID:</label>
         <input type="number" id="loan_ID" name="loanID" required><br>
 
